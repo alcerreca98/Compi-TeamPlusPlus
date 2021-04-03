@@ -1,38 +1,36 @@
 # ------------------------------------------------------------
 # Federico Alcerreca Treviño - A01281459
+# Jaime Andres Montemayor Molina - A01176573
 # ------------------------------------------------------------
 import ply.lex as lex
 
 # Palabras Reservadas
 reserved = {
     'program' : 'PROGRAM',
-    'module' : 'MODULE',
+    'func' : 'FUNCTION',
     'main' : 'MAIN',
+
     'var' : 'VAR',
     'int' : 'INT',
     'float' : 'FLOAT',
     'char' : 'CHAR',
+
     'return' : 'RETURN',
     'void' : 'VOID',
+
     'read' : 'READ',
     'write' : 'WRITE',
+
     'if' : 'IF',
     'then' : 'THEN',
     'else' : 'ELSE',
+
     'while' : 'WHILE',
     'do' : 'DO',
+    
     'for' : 'FOR',
-    #'from' : 'FROM'    #al parecer no se necesita un "desde" 
+    #'from' : 'FROM'    #el "for" ocupa el lugar del "desde" 
     'to' : 'TO',
-    'line' : 'LINE',
-    'point' : 'POINT',
-    'circle' : 'CIRCLE',
-    'arc' : 'ARC',
-    'penup' : 'PENUP',
-    'pendown' : 'PENDOWN',
-    'color' : 'COLOR',
-    'size' : 'SIZE',
-    'clear' : 'CLEAR',
 }
 
 # Lista de Tokens
