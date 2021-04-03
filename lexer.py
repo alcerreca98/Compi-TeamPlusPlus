@@ -10,6 +10,11 @@ reserved = {
     'func' : 'FUNCTION',
     'main' : 'MAIN',
 
+    'class' : 'CLASS',
+    'extends' : 'EXTENDS',
+    'attributes' : 'ATTRIBUTES',
+    'methods' : 'METHODS',
+
     'var' : 'VAR',
     'int' : 'INT',
     'float' : 'FLOAT',
@@ -105,6 +110,10 @@ t_CTE_C = r'\'[A-Za-z]\''
 t_LETRERO = r'\'[A-Za-z]\'' #para el write
 
 # Delcaracion de Funciones
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
 def t_error(t):
     print("Illegal character '%s'" % t.value[0]) # t.lineno
     t.lexer.skip(1)
