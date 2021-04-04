@@ -41,12 +41,14 @@ reserved = {
 # Lista de Tokens
 tokens = [
     'ID',
+    #'CLASS_ID'
 
     'CTE_I',
     'CTE_F',
     'CTE_C',
     'LETRERO',
 
+    'DOT',
     'COMMA',
     'SCOLON',
     'COLON',
@@ -76,6 +78,7 @@ tokens = [
 ] + list(reserved.values())
 
 # Caracteres de Delimmitacion
+t_DOT = r'\.'
 t_COMMA = r'\,'
 t_SCOLON = r'\;'
 t_COLON = r'\:'
