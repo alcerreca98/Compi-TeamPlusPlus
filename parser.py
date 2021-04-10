@@ -15,91 +15,121 @@ from lexer import file, path, entrada, tokens
 #la primera regla gramatical definida toma como default el strating simbol
 def p_program(p):
     '''
-    program : PROGRAM ID global SCOLON gomain vardef lfunc main
+    program : PROGRAM ID SCOLON declarClases declarVar definFunc MAIN LPAREN RPAREN LBRACE estatutos RBRACE
     '''
-def p_global(p):
+
+def p_declarClases(p):
     '''
-    global :
+    declarClases : CLASS ID GT EXTENDS ID LT LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
+                 | empty
     '''
-    #Inicializa directorio de Funciones
-def p_gomain(p):
+def p_declarAttributes(p):
     '''
-    gomain :
+    declarAttributes : listaId COLON tipo SCOLON declarAttributes
+                     | empty
     '''
-    #Genera el cuadruplo con el goto a vars globales e inicio de funciones
-def p_vardef(p):
+def p_listaId(p):
     '''
-    vardef  : VAR vars lvars
-            | empty
+    listaId : idCall 
+            | idCall COMMA listaId
     '''
-def p_lvars(p):
+def p_idCall(p):
     '''
-    lvars   : vars lvars
-            | empty
+    idCall : ID
+           | ID LBRACK exp RBRACK
+           | ID LBRACK exp RBRACK LBRACK exp RBRACK
     '''
-def p_vars(p):
+def p_tipo(p):
     '''
-    vars    : type COLON lid SCOLON
+    tipo : ID
+         | INT
+         | FLOAT
+         | CHAR
     '''
-def p_type(p):
+def p_tipoMethod(p):
     '''
-    type    : INT
-            | FLOAT
-            | CHAR
+    tipo : VOID
+         | INT
+         | FLOAT
+         | CHAR
     '''
-    #Insert de tipo para semantica
-def p_lid(p):
+def p_declarMethods(p):
     '''
-    lid     : ID lidaux
+    declarMethods : tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE estatutos RBRACE declareMethods
+                  | empty
     '''
-def p_lidaux(p):
+def p_listaParam(p):
     '''
-    lidaux  : COMMA ID lidaux
-            | empty
-    '''
-def p_lfunc(p):
-    '''
-    lfunc   : func lfunc
-            | empty
-    '''
-def p_func(p):
-    '''
-    func    : type MODULE ID LPAREN lparam RPAREN vardef LBRACE estatuto lestatutos RBRACE
-    '''
-def p_lparam(p):
-    '''
-    lparam  : param 
-            | param SCOLON lparam
-            | empty
+    listaParam : param
+               | param COMMA listaParam
+               | empty
     '''
 def p_param(p):
     '''
-    param   : type ID
+    param : idCall COLON tipo
     '''
-def p_lestatutos(p):
+def p_declarVar(p):
     '''
-    lestatutos   : estatuto lestatutos
-                 | empty
+    declarVar : VAR listaId COLON tipo SCOLON declarVar
+              | empty
     '''
-def p_estatuto(p):
+def p_definFunc(p):
     '''
-    estatuto    : asigna SCOLON
-                | llamada SCOLON
-                | retorno SCOLON
-                | lectura SCOLON
-                | escritura SCOLON
-                | condicion SCOLON
-                | ciclo_w SCOLON
-                | ciclo_f SCOLON
-                | func_esp SCOLON
+    definFunc : tipoMethod FUNC ID LPAREN listaParam RPAREN declarVar LBRACE estatutos RBRACE definFunc
+              | empty
     '''
-def p_asigna(p):
+
+def p_estatutos(p):
     '''
-    asigna  : variable exp
+    estatutos   : asignacion
+                | llamada 
+                | returnf
+                | lectura
+                | escritura 
+                | condicion 
+                | cond-w
+                | cond_f
     '''
-def p_variable(p):
+def p_asignacion(p):
     '''
-    variable   : ID
+    asigna  : idCall ASIGNA exp SCOLON
+    '''
+def p_llamada(p):
+    '''
+    llamada   : ID DOT ID LPAREN exp RPAREN SCOLON
+              | ID LPAREN exp RPAREN SCOLON
+    '''
+def p_returnf(p):
+    '''
+    returnf   : RETURN LPAREN exp RPAREN SCOLON
+    '''
+def p_lectura(p):
+    '''
+    lectura   : READ LPAREN idCall RPAREN SCOLON
+    '''
+def p_escritura(p):
+    '''
+    escritura   : WRITE LPAREN exp lextra RPAREN
+                | WRITE LPAREN LETRERO lextra RPAREN
+    '''
+def p_lextra(p):
+    '''
+    lextra  : COMMA exp lextra
+            | COMMA LETRERO lextra
+            | empty
+    '''
+def p_condicion(p):
+    '''
+    condicion   : IF LPAREN exp RPAREN THEN LBRACE estatutos RBRACE
+                | IF LPAREN exp RPAREN THEN LBRACE estatutos RBRACE ELSE LBRACE estatutos RBRACE
+    '''
+def p_cond_w(p):
+    '''
+    cond_w : WHILE LPAREN exp RPAREN DO LBRACE estatutos RBRACE
+    '''
+def p_cond_f(p):
+    '''
+    cond_f : FOR ID ASIGNA exp TO exp DO LBRACE estatutos BRACE
     '''
 def p_exp(p):
     '''
@@ -137,101 +167,8 @@ def p_f(p):
         | CTE_I
         | CTE_F
         | CTE_C
-        | variable
+        | idCall
         | llamada
-    '''
-def p_llamada(p):
-    '''
-    llamada   : LPAREN exp lexpresiones RPAREN
-    '''
-def p_lexpresiones(p):
-    '''
-    lexpresiones    : COMMA exp lexpresiones
-                    | empty
-    '''
-def p_retorno(p):
-    '''
-    retorno   : RETURN LPAREN exp RPAREN
-    '''
-def p_lectura(p):
-    '''
-    lectura   : READ LPAREN variable RPAREN
-    '''
-def p_escritura(p):
-    '''
-    escritura   : WRITE LPAREN exp lextra RPAREN
-                | WRITE LPAREN LETRERO lextra RPAREN
-    '''
-def p_lextra(p):
-    '''
-    lextra  : exp lextra
-            | LETRERO lextra
-            | empty
-    '''
-def p_condicion(p):
-    '''
-    condicion   : IF LPAREN exp RPAREN THEN LBRACE estatuto lestatutos RBRACE
-                | IF LPAREN exp RPAREN THEN LBRACE estatuto lestatutos RBRACE ELSE LBRACE estatuto lestatutos RBRACE
-    '''
-def p_ciclo_w(p):
-    '''
-    ciclo_w : WHILE LPAREN exp RPAREN DO LBRACE estatuto lestatutos RBRACE
-    '''
-def p_ciclo_f(p):
-    '''
-    ciclo_f : FOR ID ASIGNA exp TO exp DO LBRACE estatuto lestatutos RBRACE
-    '''
-def p_func_esp(p):
-    '''
-    func_esp    : line
-                | point
-                | circle
-                | arc
-                | penup
-                | pendown
-                | color
-                | size
-                | clear
-    '''    
-def p_line(p):
-    '''
-    line : LINE LPAREN exp RPAREN
-    '''
-def p_point(p):
-    '''
-    point : POINT LPAREN exp COMMA exp RPAREN
-    '''
-def p_circle(p):
-    '''
-    circle : CIRCLE LPAREN exp RPAREN
-    '''
-def p_arc(p):
-    '''
-    arc : ARC LPAREN exp RPAREN
-    '''
-def p_penup(p):
-    '''
-    penup : PENUP LPAREN RPAREN
-    '''
-def p_pendown(p):
-    '''
-    pendown : PENDOWN LPAREN RPAREN
-    '''
-def p_color(p):
-    '''
-    color : COLOR LPAREN exp RPAREN
-    '''
-def p_size(p):
-    '''
-    size : SIZE LPAREN exp RPAREN
-    '''
-def p_clear(p):
-    '''
-    clear : CLEAR LPAREN RPAREN
-    '''
-def p_main(p):
-    '''
-    main : MAIN LPAREN RPAREN lvars LBRACE estatuto lestatutos RBRACE
     '''
 def p_empty(p):
     '''
