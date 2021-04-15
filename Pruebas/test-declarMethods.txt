@@ -1,0 +1,26 @@
+program Team_pp;
+
+class hijo < extends padre >{
+	attributes
+        p1, p2[], p3[][] : int;
+        x1, x2[], x3[][] : float;
+	methods
+        void func print (){
+
+        }
+        int func suma ( y1:int , y2[]:float, y3[][]:int){
+            
+        }
+}
+
+class hija{
+	attributes
+        p1, p2[], p3[][] : int;
+        x1, x2[], x3[][] : float;
+	methods
+}
+
+
+main(){
+	
+}

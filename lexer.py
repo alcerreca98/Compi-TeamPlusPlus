@@ -7,7 +7,7 @@ import ply.lex as lex
 # Palabras Reservadas
 reserved = {
     'program' : 'PROGRAM',
-    'func' : 'FUNCTION',
+    'func' : 'FUNC',
     'main' : 'MAIN',
 
     'class' : 'CLASS',
@@ -78,7 +78,7 @@ tokens = [
 ] + list(reserved.values())
 
 # Caracteres de Delimmitacion
-t_DOT = r'\.'
+t_DOT = r'\-\>'
 t_COMMA = r'\,'
 t_SCOLON = r'\;'
 t_COLON = r'\:'
@@ -109,6 +109,7 @@ t_OR = r'\|\|'
 
 t_ignore = ' \t\n'
 
+#string antes de char
 t_CTE_C = r'\'[A-Za-z]\''
 t_LETRERO = r'\'[A-Za-z]\'' #para el write
 
@@ -121,9 +122,10 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0]) # t.lineno
     t.lexer.skip(1)
 
-def t_ID(t):
-    r'[a-zA-Z][a-zA-Z0-9]*'
-    t.type = reserved.get(t.value, 'ID')
+#'(?:\d+(?:\.\d*)?|\.\d+)'
+def t_CTE_F(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)
     return t
 
 def t_CTE_I(t):
@@ -131,9 +133,9 @@ def t_CTE_I(t):
     t.value = int(t.value)
     return t
 
-def t_CTE_F(t):
-    r'\d+\.\d+'
-    t.value = float(t.value)
+def t_ID(t):
+    r'[a-zA-Z][a-zA-Z0-9_]*'
+    t.type = reserved.get(t.value, 'ID')
     return t
 
 # Lexer
@@ -156,6 +158,6 @@ try:
         if not tok:
             break
         print(tok)
-    print("\n===== Finalizando C cuack cuack =====\n")
+    print("\n===== Finalizando Lexer C cuack cuack =====\n")
 except OSError as e:
     print("\n===== Error en C cuack cuack =====\n")

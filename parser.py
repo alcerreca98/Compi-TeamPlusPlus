@@ -15,13 +15,18 @@ from lexer import file, path, entrada, tokens
 #la primera regla gramatical definida toma como default el strating simbol
 def p_program(p):
     '''
-    program : PROGRAM ID SCOLON declarClases declarVar definFunc MAIN LPAREN RPAREN LBRACE estatutos RBRACE
+    program : PROGRAM ID SCOLON declarClases declarVar definFunc MAIN LPAREN RPAREN LBRACE listaEstatutos RBRACE
     '''
-
+#
 def p_declarClases(p):
     '''
-    declarClases : CLASS ID GT EXTENDS ID LT LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
+    declarClases : CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
                  | empty
+    '''
+def p_herencia(p):
+    '''
+    herencia : LT EXTENDS ID GT
+             | empty
     '''
 def p_declarAttributes(p):
     '''
@@ -46,17 +51,17 @@ def p_tipo(p):
          | FLOAT
          | CHAR
     '''
-def p_tipoMethod(p):
-    '''
-    tipo : VOID
-         | INT
-         | FLOAT
-         | CHAR
-    '''
 def p_declarMethods(p):
     '''
-    declarMethods : tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE estatutos RBRACE declareMethods
+    declarMethods : tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
                   | empty
+    '''
+def p_tipoMethod(p):
+    '''
+    tipoMethod : VOID
+               | INT
+               | FLOAT
+               | CHAR
     '''
 def p_listaParam(p):
     '''
@@ -75,62 +80,76 @@ def p_declarVar(p):
     '''
 def p_definFunc(p):
     '''
-    definFunc : tipoMethod FUNC ID LPAREN listaParam RPAREN declarVar LBRACE estatutos RBRACE definFunc
+    definFunc : tipoMethod FUNC ID LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE definFunc
               | empty
     '''
-
+def p_listaEstatutos(p):
+    '''
+    listaEstatutos : estatutos listaEstatutos
+                   | empty
+    '''
+#def p_estatutos(p):
+#    '''
+#    estatutos   : asignacion
+#                | llamada 
+#                | returnf
+#                | lectura
+#                | escritura 
+#                | condicion 
+#                | cond-w
+#                | cond_f
+#    '''
 def p_estatutos(p):
     '''
-    estatutos   : asignacion
-                | llamada 
-                | returnf
-                | lectura
-                | escritura 
-                | condicion 
-                | cond-w
-                | cond_f
+    estatutos   : llamada SCOLON
     '''
-def p_asignacion(p):
-    '''
-    asigna  : idCall ASIGNA exp SCOLON
-    '''
+#def p_asignacion(p):
+#    '''
+#    asigna  : idCall ASIGNA exp SCOLON
+#    '''
 def p_llamada(p):
     '''
-    llamada   : ID DOT ID LPAREN exp RPAREN SCOLON
-              | ID LPAREN exp RPAREN SCOLON
+    llamada   : ID DOT ID LPAREN enviaReferencia RPAREN
+              | ID LPAREN enviaReferencia RPAREN 
     '''
-def p_returnf(p):
+def p_enviaReferencia(p):
     '''
-    returnf   : RETURN LPAREN exp RPAREN SCOLON
+    enviaReferencia   : exp
+                      | exp COMMA enviaReferencia
+                      | empty
     '''
-def p_lectura(p):
-    '''
-    lectura   : READ LPAREN idCall RPAREN SCOLON
-    '''
-def p_escritura(p):
-    '''
-    escritura   : WRITE LPAREN exp lextra RPAREN
-                | WRITE LPAREN LETRERO lextra RPAREN
-    '''
-def p_lextra(p):
-    '''
-    lextra  : COMMA exp lextra
-            | COMMA LETRERO lextra
-            | empty
-    '''
-def p_condicion(p):
-    '''
-    condicion   : IF LPAREN exp RPAREN THEN LBRACE estatutos RBRACE
-                | IF LPAREN exp RPAREN THEN LBRACE estatutos RBRACE ELSE LBRACE estatutos RBRACE
-    '''
-def p_cond_w(p):
-    '''
-    cond_w : WHILE LPAREN exp RPAREN DO LBRACE estatutos RBRACE
-    '''
-def p_cond_f(p):
-    '''
-    cond_f : FOR ID ASIGNA exp TO exp DO LBRACE estatutos BRACE
-    '''
+#def p_returnf(p):
+#    '''
+#    returnf   : RETURN LPAREN exp RPAREN SCOLON
+#    '''
+#def p_lectura(p):
+#    '''
+#    lectura   : READ LPAREN idCall RPAREN SCOLON
+#    '''
+#def p_escritura(p):
+#    '''
+#    escritura   : WRITE LPAREN exp lextra RPAREN
+#                | WRITE LPAREN LETRERO lextra RPAREN
+#    '''
+#def p_lextra(p):
+#    '''
+#    lextra  : COMMA exp lextra
+#            | COMMA LETRERO lextra
+#            | empty
+#    '''
+#def p_condicion(p):
+#    '''
+#    condicion   : IF LPAREN exp RPAREN THEN LBRACE estatutos RBRACE
+#                | IF LPAREN exp RPAREN THEN LBRACE estatutos RBRACE ELSE LBRACE estatutos RBRACE
+#    '''
+#def p_cond_w(p):
+#    '''
+#    cond_w : WHILE LPAREN exp RPAREN DO LBRACE estatutos RBRACE
+#    '''
+#def p_cond_f(p):
+#    '''
+#    cond_f : FOR ID ASIGNA exp TO exp DO LBRACE estatutos BRACE
+#    '''
 def p_exp(p):
     '''
     exp     : texp
@@ -167,8 +186,8 @@ def p_f(p):
         | CTE_I
         | CTE_F
         | CTE_C
-        | idCall
         | llamada
+        | idCall
     '''
 def p_empty(p):
     '''
