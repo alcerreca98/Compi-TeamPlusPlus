@@ -111,7 +111,7 @@ t_ignore = ' \t\n'
 
 #string antes de char
 t_CTE_C = r'\'[A-Za-z]\''
-t_LETRERO = r'\'[A-Za-z]\'' #para el write
+t_LETRERO = r'\"(.*?)\"' #para el write
 
 # Delcaracion de Funciones
 def t_newline(t):

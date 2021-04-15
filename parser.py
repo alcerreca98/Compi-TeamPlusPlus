@@ -88,25 +88,21 @@ def p_listaEstatutos(p):
     listaEstatutos : estatutos listaEstatutos
                    | empty
     '''
-#def p_estatutos(p):
-#    '''
-#    estatutos   : asignacion
-#                | llamada 
-#                | returnf
-#                | lectura
-#                | escritura 
-#                | condicion 
-#                | cond-w
-#                | cond_f
-#    '''
 def p_estatutos(p):
     '''
     estatutos   : llamada SCOLON
+                | asignacion SCOLON
+                | returnf SCOLON
+                | lectura SCOLON
+                | escritura SCOLON
+                | condicion
+                | cond_w
+                | cond_f
     '''
-#def p_asignacion(p):
-#    '''
-#    asigna  : idCall ASIGNA exp SCOLON
-#    '''
+def p_asignacion(p):
+    '''
+    asignacion  : idCall ASIGNA exp 
+    '''
 def p_llamada(p):
     '''
     llamada   : ID DOT ID LPAREN enviaReferencia RPAREN
@@ -118,38 +114,38 @@ def p_enviaReferencia(p):
                       | exp COMMA enviaReferencia
                       | empty
     '''
-#def p_returnf(p):
-#    '''
-#    returnf   : RETURN LPAREN exp RPAREN SCOLON
-#    '''
-#def p_lectura(p):
-#    '''
-#    lectura   : READ LPAREN idCall RPAREN SCOLON
-#    '''
-#def p_escritura(p):
-#    '''
-#    escritura   : WRITE LPAREN exp lextra RPAREN
-#                | WRITE LPAREN LETRERO lextra RPAREN
-#    '''
-#def p_lextra(p):
-#    '''
-#    lextra  : COMMA exp lextra
-#            | COMMA LETRERO lextra
-#            | empty
-#    '''
-#def p_condicion(p):
-#    '''
-#    condicion   : IF LPAREN exp RPAREN THEN LBRACE estatutos RBRACE
-#                | IF LPAREN exp RPAREN THEN LBRACE estatutos RBRACE ELSE LBRACE estatutos RBRACE
-#    '''
-#def p_cond_w(p):
-#    '''
-#    cond_w : WHILE LPAREN exp RPAREN DO LBRACE estatutos RBRACE
-#    '''
-#def p_cond_f(p):
-#    '''
-#    cond_f : FOR ID ASIGNA exp TO exp DO LBRACE estatutos BRACE
-#    '''
+def p_returnf(p):
+    '''
+    returnf   : RETURN LPAREN exp RPAREN 
+    '''
+def p_lectura(p):
+    '''
+    lectura   : READ LPAREN idCall RPAREN
+    '''
+def p_escritura(p):
+    '''
+    escritura   : WRITE LPAREN exp lextra RPAREN
+                | WRITE LPAREN LETRERO lextra RPAREN
+    '''
+def p_lextra(p):
+    '''
+    lextra  : COMMA exp lextra
+            | COMMA LETRERO lextra
+            | empty
+    '''
+def p_condicion(p):
+    '''
+    condicion   : IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
+                | IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
+    '''
+def p_cond_w(p):
+    '''
+    cond_w : WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos RBRACE
+    '''
+def p_cond_f(p):
+    '''
+    cond_f : FOR idCall ASIGNA exp TO exp DO LBRACE listaEstatutos RBRACE
+    '''
 def p_exp(p):
     '''
     exp     : texp
