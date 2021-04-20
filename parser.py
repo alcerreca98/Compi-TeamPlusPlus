@@ -1,43 +1,59 @@
 # ------------------------------------------------------------
 # Federico Alcerreca Treviño - A01281459
+# Jaime Andres Montemayor Molina - A01176573
 # ------------------------------------------------------------
 
 import ply.yacc as yacc
 import logging
 from lexer import file, path, entrada, tokens
 
-#test = open(path,"r")
-#entrada = test.read()
-#test.close()
-
 # Gramatica
 #No defini starting symbol, pero segun documentacion
 #la primera regla gramatical definida toma como default el strating simbol
+
+# ------------------------------------------------------------
+# Programa, para la estructura general
+# ------------------------------------------------------------
 def p_program(p):
     '''
     program : PROGRAM ID SCOLON declarClases declarVar definFunc MAIN LPAREN RPAREN LBRACE listaEstatutos RBRACE
     '''
-#
+# ------------------------------------------------------------
+# Declaracion de Clases
+# ------------------------------------------------------------
 def p_declarClases(p):
     '''
     declarClases : CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
                  | empty
     '''
+#la Herencia es opcional
 def p_herencia(p):
     '''
     herencia : LT EXTENDS ID GT
              | empty
     '''
+#atributos de clase, opcionales
 def p_declarAttributes(p):
     '''
-    declarAttributes : listaId COLON tipo SCOLON declarAttributes
+    declarAttributes : idDeclare COLON tipo SCOLON declarAttributes
                      | empty
     '''
-def p_listaId(p):
+def p_listaIdDeclare(p):
     '''
-    listaId : idCall 
-            | idCall COMMA listaId
+    listaIdDeclare : idDeclare 
+            | idDeclare COMMA idDeclare
     '''
+def p_idDeclare(p):
+    '''
+    idDeclare : ID
+           | ID LBRACK CTE_I RBRACK
+           | ID LBRACK CTE_I RBRACK LBRACK CTE_I RBRACK
+    '''
+#def p_listaId(p):
+#    '''
+#    listaId : idCall 
+#            | idCall COMMA listaId
+#    '''
 def p_idCall(p):
     '''
     idCall : ID
@@ -51,6 +67,7 @@ def p_tipo(p):
          | FLOAT
          | CHAR
     '''
+# Metodos de la clase, opcionales
 def p_declarMethods(p):
     '''
     declarMethods : tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
@@ -63,6 +80,7 @@ def p_tipoMethod(p):
                | FLOAT
                | CHAR
     '''
+#Para parametros, en declaracion de metodos o funciones, arreglos y matrices van con exp o con CTE_I
 def p_listaParam(p):
     '''
     listaParam : param
@@ -73,16 +91,25 @@ def p_param(p):
     '''
     param : idCall COLON tipo
     '''
+# ------------------------------------------------------------
+# Declaración de Variables
+# ------------------------------------------------------------
 def p_declarVar(p):
     '''
-    declarVar : VAR listaId COLON tipo SCOLON declarVar
+    declarVar : VAR idDeclare COLON tipo SCOLON declarVar
               | empty
     '''
+# ------------------------------------------------------------
+# Definicion de Funciones
+# ------------------------------------------------------------
 def p_definFunc(p):
     '''
     definFunc : tipoMethod FUNC ID LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE definFunc
               | empty
     '''
+# ------------------------------------------------------------
+# Estatutos
+# ------------------------------------------------------------
 def p_listaEstatutos(p):
     '''
     listaEstatutos : estatutos listaEstatutos
@@ -99,10 +126,16 @@ def p_estatutos(p):
                 | cond_w
                 | cond_f
     '''
+# ------------------------------------------------------------
+# asignacion de valores a variables.
+# ------------------------------------------------------------
 def p_asignacion(p):
     '''
     asignacion  : idCall ASIGNA exp 
     '''
+# ------------------------------------------------------------
+# Llamada de funciones, para clases y normales.
+# ------------------------------------------------------------
 def p_llamada(p):
     '''
     llamada   : ID DOT ID LPAREN enviaReferencia RPAREN
@@ -114,14 +147,23 @@ def p_enviaReferencia(p):
                       | exp COMMA enviaReferencia
                       | empty
     '''
+# ------------------------------------------------------------
+# Return
+# ------------------------------------------------------------
 def p_returnf(p):
     '''
     returnf   : RETURN LPAREN exp RPAREN 
     '''
+# ------------------------------------------------------------
+# Lectura
+# ------------------------------------------------------------
 def p_lectura(p):
     '''
     lectura   : READ LPAREN idCall RPAREN
     '''
+# ------------------------------------------------------------
+# Escritura
+# ------------------------------------------------------------
 def p_escritura(p):
     '''
     escritura   : WRITE LPAREN exp lextra RPAREN
@@ -133,19 +175,32 @@ def p_lextra(p):
             | COMMA LETRERO lextra
             | empty
     '''
+# ------------------------------------------------------------
+# Condicion, If, If Else
+# ------------------------------------------------------------
 def p_condicion(p):
     '''
     condicion   : IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
                 | IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
     '''
+# ------------------------------------------------------------
+# Ciclo While
+# ------------------------------------------------------------
 def p_cond_w(p):
     '''
     cond_w : WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos RBRACE
     '''
+# ------------------------------------------------------------
+# Ciclo For
+# ------------------------------------------------------------
+#idCall despues del for? debe ser definido 
 def p_cond_f(p):
     '''
     cond_f : FOR idCall ASIGNA exp TO exp DO LBRACE listaEstatutos RBRACE
     '''
+# ------------------------------------------------------------
+# Expresiones
+# ------------------------------------------------------------
 def p_exp(p):
     '''
     exp     : texp
@@ -185,12 +240,17 @@ def p_f(p):
         | llamada
         | idCall
     '''
+# ------------------------------------------------------------
+# Regla Empty
+# ------------------------------------------------------------
 def p_empty(p):
     '''
     empty :
     '''
     pass
-
+# ------------------------------------------------------------
+# Error
+# ------------------------------------------------------------
 def p_error(p):
     print("Error de Sintaxis", p, p.lineno)
 
