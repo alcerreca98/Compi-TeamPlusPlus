@@ -23,6 +23,16 @@ class variable(object):
     def __init__(self, id, type):
         self.id = id
         self.type = type
+
+class clases(object):
+    def __init__(self, id, herencia):
+        self.id = id
+        self.herencia = herencia
+
+class objeto(object):
+    def __init__(self, id, type):
+        self.id = id
+        self.type = type
     
     def printVar(self):
         print("id ="+self.id+" tipo= "+self.type)
