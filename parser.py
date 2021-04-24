@@ -35,7 +35,7 @@ def p_herencia(p):
 #atributos de clase, opcionales
 def p_declarAttributes(p):
     '''
-    declarAttributes : idDeclare COLON tipo SCOLON declarAttributes
+    declarAttributes : listaidDeclare COLON tipo SCOLON declarAttributes
                      | empty
     '''
 def p_listaIdDeclare(p):
@@ -96,7 +96,7 @@ def p_param(p):
 # ------------------------------------------------------------
 def p_declarVar(p):
     '''
-    declarVar : VAR idDeclare COLON tipo SCOLON declarVar
+    declarVar : VAR listaidDeclare COLON tipo SCOLON declarVar
               | empty
     '''
 # ------------------------------------------------------------
