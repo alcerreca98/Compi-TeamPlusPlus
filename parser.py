@@ -89,7 +89,7 @@ def p_listaParam(p):
     '''
 def p_param(p):
     '''
-    param : idCall COLON tipo
+    param : ID COLON tipo
     '''
 # ------------------------------------------------------------
 # Declaración de Variables

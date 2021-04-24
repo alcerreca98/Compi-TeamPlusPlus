@@ -65,3 +65,9 @@
     Se realiza la correción completa de la gramática junto con los documentos de pruebas de sintáxis y se realizan los cambios necesarios tanto en el lexer como en el documento de diagramas de sintaxis. 
     Actualmente no se pudo escribir a código lo que se esperaba para el avance pero estamos evaluando el esquema en el que se crearán las tablas de funciones y de variables. Esperamos seguir trabajando el día de mañana para pasarlo a código y crear los diagramas correspondientes.
 </p>
+<h3>
+    Entrega 3
+</h3>
+<p>
+    Se realiza una primera version de las estructuras para el directorio de funciones y la tabla de variables, junto con el diseño de las estructuras especificas para clases (directorio de clases y tabla de objetos) además de que se implementa el cubosemantico. Se corrige levemente gramatica (listaidDeclare y param) tanto en código como en los diagramas de documentación. Se genera la documentación de los puntos neuralgicos para entrega 2. Quedamos faltante con la implementación de estos mismos además de los cuadruplos.
+</p>
