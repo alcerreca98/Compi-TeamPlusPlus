@@ -71,3 +71,10 @@
 <p>
     Se realiza una primera version de las estructuras para el directorio de funciones y la tabla de variables, junto con el diseño de las estructuras especificas para clases (directorio de clases y tabla de objetos) además de que se implementa el cubosemantico. Se corrige levemente gramatica (listaidDeclare y param) tanto en código como en los diagramas de documentación. Se genera la documentación de los puntos neuralgicos para entrega 2. Quedamos faltante con la implementación de estos mismos además de los cuadruplos.
 </p>
+<h3>
+    Entrega 4
+</h3>
+<p>
+    No se realizaron muchos cambios, debido a que estamos trabados con el directorio de funciones y tablas de variables, se cambio el archivo de estructuras y se implementaron metodos de inserción y chequeos semanticos de duplicados de id, para llamar en los puntos neuralgicos, pero aun no se implementan sus llamadas en dichos puntos, queda pendiente seguir los diagramas de puntos neuralgicos para la modificacion de la gramática.
+</p>
+
