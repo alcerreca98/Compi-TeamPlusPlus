@@ -77,4 +77,11 @@
 <p>
     No se realizaron muchos cambios, debido a que estamos trabados con el directorio de funciones y tablas de variables, se cambio el archivo de estructuras y se implementaron metodos de inserción y chequeos semanticos de duplicados de id, para llamar en los puntos neuralgicos, pero aun no se implementan sus llamadas en dichos puntos, queda pendiente seguir los diagramas de puntos neuralgicos para la modificacion de la gramática.
 </p>
+<h3>
+    Entrega 5
+</h3>
+<p>
+    Sin cambios
+</p>
+
 
