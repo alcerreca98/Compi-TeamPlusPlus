@@ -89,13 +89,6 @@ t_RBRACE = r'\}'
 t_LBRACK = r'\['
 t_RBRACK = r'\]'
 t_QUOTE = r'\"'
-
-# Operadores Aritmeticos
-t_ASIGNA = r'\='
-t_PLUS = r'\+'
-t_MINUS = r'\-'
-t_MULT = r'\*'
-t_DIV = r'\/'
     
 # Operadores Logicos y de Comparacion
 t_EQUALS = r'=='
@@ -106,6 +99,14 @@ t_GTE = r'>='
 t_LTE = r'<='
 t_AND = r'&&'
 t_OR = r'\|\|'
+
+# Operadores Aritmeticos
+t_ASIGNA = r'\='
+t_PLUS = r'\+'
+t_MINUS = r'\-'
+t_MULT = r'\*'
+t_DIV = r'\/'
+
 
 t_ignore = ' \t\n'
 
@@ -144,7 +145,7 @@ lex.lex()
 #Test
 print("===== Iniciando C cuack cuack =====\n")
 file = input('Test file name : ')
-if len(file) < 1 : file = "testGlobal.txt"
+if len(file) < 1 : file = "test-global.txt"
 path = "Pruebas/" + file
 print("Read from: " + path )
 try:

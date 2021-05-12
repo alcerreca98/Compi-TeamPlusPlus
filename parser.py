@@ -35,28 +35,24 @@ def p_herencia(p):
 #atributos de clase, opcionales
 def p_declarAttributes(p):
     '''
-    declarAttributes : listaidDeclare COLON tipo SCOLON declarAttributes
+    declarAttributes : listaIdDeclare COLON tipo SCOLON declarAttributes
                      | empty
     '''
 def p_listaIdDeclare(p):
     '''
     listaIdDeclare : idDeclare 
-            | idDeclare COMMA idDeclare
+                   | idDeclare COMMA listaIdDeclare
     '''
 def p_idDeclare(p):
     '''
     idDeclare : ID
-           | ID LBRACK CTE_I RBRACK
-           | ID LBRACK CTE_I RBRACK LBRACK CTE_I RBRACK
+              | ID LBRACK CTE_I RBRACK
+              | ID LBRACK CTE_I RBRACK LBRACK CTE_I RBRACK
     '''
-#def p_listaId(p):
-#    '''
-#    listaId : idCall 
-#            | idCall COMMA listaId
-#    '''
 def p_idCall(p):
     '''
     idCall : ID
+           | ID DOT ID
            | ID LBRACK exp RBRACK
            | ID LBRACK exp RBRACK LBRACK exp RBRACK
     '''
@@ -96,7 +92,7 @@ def p_param(p):
 # ------------------------------------------------------------
 def p_declarVar(p):
     '''
-    declarVar : VAR listaidDeclare COLON tipo SCOLON declarVar
+    declarVar : VAR listaIdDeclare COLON tipo SCOLON declarVar
               | empty
     '''
 # ------------------------------------------------------------
@@ -138,14 +134,18 @@ def p_asignacion(p):
 # ------------------------------------------------------------
 def p_llamada(p):
     '''
-    llamada   : ID DOT ID LPAREN enviaReferencia RPAREN
-              | ID LPAREN enviaReferencia RPAREN 
+    llamada   : ID DOT ID LPAREN enviaParam RPAREN
+              | ID LPAREN enviaParam RPAREN 
     '''
-def p_enviaReferencia(p):
+def p_enviaParam(p):
     '''
-    enviaReferencia   : exp
-                      | exp COMMA enviaReferencia
-                      | empty
+    enviaParam  : paramReferencia
+                | empty
+    '''
+def p_paramReferencia(p):
+    '''
+    paramReferencia : exp
+                    | exp COMMA paramReferencia
     '''
 # ------------------------------------------------------------
 # Return
@@ -159,7 +159,12 @@ def p_returnf(p):
 # ------------------------------------------------------------
 def p_lectura(p):
     '''
-    lectura   : READ LPAREN idCall RPAREN
+    lectura   : READ LPAREN listaId RPAREN
+    '''
+def p_listaId(p):
+    '''
+    listaId : idCall 
+            | idCall COMMA listaId
     '''
 # ------------------------------------------------------------
 # Escritura

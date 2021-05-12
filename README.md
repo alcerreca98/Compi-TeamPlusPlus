@@ -83,5 +83,10 @@
 <p>
     Sin cambios
 </p>
-
+<h3>
+    Entrega 6
+</h3>
+<p>
+    Cambio a Estructuras e implementacion de codigo intermedio.
+</p>
 
