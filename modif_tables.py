@@ -16,11 +16,36 @@ dirFuncs = {}
 isGlobal = True
 
 #Insertar datos a tabla de funciones, no contiene el diccionario
-def ingresarTabla(id, type, dict_func):
-    temp = funcion(id, type, None)
+def ingresarTabla(id, type, dict_var):
+    temp = funcion.table(id, type, None)
     dirFuncs[id] = temp
 
-#Imprime el directorio de funciones
+#Identificación de tipo de insert
+def insert(id, type):
+    if isGlobal:
+        globalInsert(id, type)
+    else:
+        varInsert(id, type)
+
+#Insert variable global
+def globalInsert(id, type):
+    temp = 
+
+#Insert variable local
+
+
+#Imprime el directorio de funciones: ID | TYPE
 def dirPrint():
     for id in dirFuncs:
-        print('ID: ', id, ', Type: ', dirFuncs[id].type, ', Diccionario: ', dirFuncs[id].dict_func)
+        print('ID: ', id, ', Type: ', dirFuncs[id].type)
+
+#Imprimir los diccionarios de variables globales: ID | TYPE //Está mal la condición
+def dirLocalPrint():
+    if(id == 'program'):
+        print('ID: ', id, ', Type: ', dict_var[id].type)
+
+#Imprimir los diccionarios de variables locales: ID | TYPE
+def dirLocalPrint():
+    for id in dict_var:
+        print('ID: ', id, ', Type: ', dict_var[id].type)
+

@@ -76,7 +76,14 @@ class objeto(object):
         self.id = id
         self.type = type
 
-
+#Estructura de cuadruplos
+class cuadruplo(object):
+    def __init__(self, count, action, dirIzq, dirDer, result):
+        self.count = count
+        self.action = action
+        self.dirIzq = dirIzq
+        self.dirDer = dirDer
+        self.result = result
 
 
 
