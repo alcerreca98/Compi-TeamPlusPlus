@@ -87,6 +87,6 @@
     Entrega 6
 </h3>
 <p>
-    Cambio a Estructuras e implementacion de codigo intermedio.
+    Cambio a Estructuras, Se genera un archivo de modificacion de tablas para ayudar con el manejo de funciones para directorio de funciones y tablas de variables. Se empiezan a hacer los puntos neuralgicos pertinentes a directorio de funciones y tabla de variables y queda "funcional" menos el aspecto de que no logramos manejar los dicionarios de manera dinamica nisiquiera con la funcion copy, cuando modificamos el original cambia la referencia a todo y cuando queremos limpiar la tabla de variables para reciclar, se borran todas. La estructura ya esta funcionando comprobado, nuevo test "test-tablaVariables-declarVar
 </p>
 
