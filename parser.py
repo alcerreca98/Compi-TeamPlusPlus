@@ -7,6 +7,10 @@ import ply.yacc as yacc
 import logging
 from lexer import file, path, entrada, tokens
 
+import modif_tables as table
+#import cuadruplos as cuad
+import estructuras as estructura
+
 # Gramatica
 #No defini starting symbol, pero segun documentacion
 #la primera regla gramatical definida toma como default el strating simbol
@@ -16,8 +20,39 @@ from lexer import file, path, entrada, tokens
 # ------------------------------------------------------------
 def p_program(p):
     '''
-    program : PROGRAM ID SCOLON declarClases declarVar definFunc MAIN LPAREN RPAREN LBRACE listaEstatutos RBRACE
+    program : PROGRAM ID a1InitProg SCOLON declarClases globalTrue declarVar globalFalse definFunc MAIN auxMain LPAREN RPAREN LBRACE declarVar listaEstatutos RBRACE prueba
     '''
+def p_prueba(p):
+    '''
+    prueba : 
+    '''
+    table.dirPrint()
+#Introduce el nombre del programa en la tabla de funciones
+def p_a1InitProg(p):
+    '''
+    a1InitProg : 
+    '''
+    table.ingresarTabla(p[-1], None, None)
+    table.programa = p[-1]
+
+def p_globalTrue(p):
+    '''
+    globalTrue : 
+    '''
+    table.isGlobal = True
+
+def p_globalFalse(p):
+    '''
+    globalFalse : 
+    '''
+    table.isGlobal = False
+
+def p_auxMain(p):
+    '''
+    auxMain :
+    '''
+    table.ingresarTabla("Main", None, None)
+
 # ------------------------------------------------------------
 # Declaracion de Clases
 # ------------------------------------------------------------
@@ -35,20 +70,23 @@ def p_herencia(p):
 #atributos de clase, opcionales
 def p_declarAttributes(p):
     '''
-    declarAttributes : listaIdDeclare COLON tipo SCOLON declarAttributes
+    declarAttributes : tipo COLON listaIdDeclare SCOLON declarAttributes
                      | empty
     '''
 def p_listaIdDeclare(p):
     '''
-    listaIdDeclare : idDeclare 
+    listaIdDeclare : idDeclare  
                    | idDeclare COMMA listaIdDeclare
     '''
+
 def p_idDeclare(p):
     '''
-    idDeclare : ID
-              | ID LBRACK CTE_I RBRACK
+    idDeclare : ID 
+              | ID LBRACK CTE_I RBRACK 
               | ID LBRACK CTE_I RBRACK LBRACK CTE_I RBRACK
     '''
+    table.ingresarVariables(p[1], table.tipo)
+
 def p_idCall(p):
     '''
     idCall : ID
@@ -63,6 +101,8 @@ def p_tipo(p):
          | FLOAT
          | CHAR
     '''
+    table.tipo = p[1]
+
 # Metodos de la clase, opcionales
 def p_declarMethods(p):
     '''
@@ -76,6 +116,7 @@ def p_tipoMethod(p):
                | FLOAT
                | CHAR
     '''
+    table.tipoMeth = p[1]
 #Para parametros, en declaracion de metodos o funciones, arreglos y matrices van con exp o con CTE_I
 def p_listaParam(p):
     '''
@@ -85,24 +126,36 @@ def p_listaParam(p):
     '''
 def p_param(p):
     '''
-    param : ID COLON tipo
+    param : tipo COLON ID
     '''
 # ------------------------------------------------------------
 # Declaración de Variables
 # ------------------------------------------------------------
 def p_declarVar(p):
     '''
-    declarVar : VAR listaIdDeclare COLON tipo SCOLON declarVar
+    declarVar : VAR tipo COLON listaIdDeclare SCOLON declarVar
               | empty
     '''
+    if table.isGlobal:
+        table.dirFuncs[table.programa].dir_var = table.dirVarTemp.copy()
+    else:
+        table.dirFuncs[table.auxFunc].dir_var = table.dirVarTemp.copy()
+    table.dirVarTemp = {}
+
 # ------------------------------------------------------------
 # Definicion de Funciones
 # ------------------------------------------------------------
 def p_definFunc(p):
     '''
-    definFunc : tipoMethod FUNC ID LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE definFunc
+    definFunc : tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE definFunc
               | empty
     '''
+def p_auxFuncion(p):
+    '''
+    auxFuncion :
+    '''
+    table.auxFunc = p[-1]
+    table.ingresarTabla(table.auxFunc, table.tipoMeth, None)
 # ------------------------------------------------------------
 # Estatutos
 # ------------------------------------------------------------

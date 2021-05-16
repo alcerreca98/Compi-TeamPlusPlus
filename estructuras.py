@@ -55,10 +55,10 @@
 import sys
 
 class funcion(object):
-    def __init__(self, id, type, dict_func):#, vart):
+    def __init__(self, id, type, dir_var):#, vart):
         self.id = id
         self.type = type
-        self.dict_func = dict_func
+        self.dir_var = dir_var
 #        self.vart = vart
 
 class variable(object):

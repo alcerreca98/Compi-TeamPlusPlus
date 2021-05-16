@@ -3,7 +3,7 @@
 # Jaime Andres Montemayor Molina - A01176573
 # ------------------------------------------------------------
 import sys
-import estructuras as cuad
+import estructuras as estructura
 import cuboSemantico as oracle
 import modif_tables as tabla
 
@@ -16,4 +16,4 @@ avail = []
 Quad = []
 
 #Variables globales
-oraculo = oracle.cuboSemantico().cube
+#oraculo = oracle.cuboSemantico().cube
