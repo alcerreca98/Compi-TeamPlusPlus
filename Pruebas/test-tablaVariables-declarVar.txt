@@ -3,7 +3,7 @@ program Team_pp;
 var int: i, j, p;
 
 float func fact(int: j)
-var int : z;{
+var char : z;{
 	i = j+(p-j*2+j);
 	if(j==1)then{
 		return(j);
@@ -14,7 +14,7 @@ var int : z;{
 }
 
 void func pelos(int : y)
-var int : x ;{
+var float : x ;{
 	x = y;
 	while(x < 10) do{
 		write(x+1);
