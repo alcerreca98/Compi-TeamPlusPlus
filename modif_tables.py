@@ -12,6 +12,7 @@ programa = ""
 tipo = None
 auxFunc = ""
 tipoMeth = None
+dictPrueba = {}
 
 #Insertar datos a tabla de funciones, no contiene el diccionario
 def ingresarTabla(id, type):

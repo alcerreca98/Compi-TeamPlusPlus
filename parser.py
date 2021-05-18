@@ -5,9 +5,7 @@
 
 import ply.yacc as yacc
 import logging
-import copy
 from lexer import file, path, entrada, tokens
-
 import modif_tables as table
 #import cuadruplos as cuad
 from estructuras import *
