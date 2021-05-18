@@ -37,10 +37,26 @@ def repeatedFunctions(id):
             return True
     return False
 
+def ingresarParams(id):
+    dirFuncs[auxFunc].addParam(id)
+
+def checkIfExists(id):
+    #chequeo existe en globales
+    if(dirFuncs[programa].searchIfExists(id) == False):
+        #chequeo existe en locales
+        if(dirFuncs[auxFunc].searchIfExists(id) == False):
+        #si no existe, print el error
+            print('Variable :  ', id, " is not previously declared as global nor local in function ",auxFunc)
+            sys.exit()
+    #else :
+        #se comprueba que existe y se hace lo demás.
+
+
 #Imprime el directorio de funciones: ID | TYPE
 def dirPrint():
     for key in dirFuncs:
       dirFuncs[key].printFuncion()
       dirFuncs[key].printVarTable()
+      dirFuncs[key].printParams()
 
 
