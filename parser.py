@@ -5,6 +5,7 @@
 
 import ply.yacc as yacc
 import logging
+import copy
 from lexer import file, path, entrada, tokens
 import copy
 
@@ -21,38 +22,29 @@ import estructuras as estructura
 # ------------------------------------------------------------
 def p_program(p):
     '''
-    program : PROGRAM ID a1InitProg SCOLON declarClases globalTrue declarVar globalFalse definFunc MAIN auxMain LPAREN RPAREN LBRACE declarVar listaEstatutos RBRACE prueba
+    program : PROGRAM ID a1InitProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE prueba
     '''
 def p_prueba(p):
     '''
     prueba : 
     '''
     table.dirPrint()
+    #table.Print2()
 #Introduce el nombre del programa en la tabla de funciones
 def p_a1InitProg(p):
     '''
     a1InitProg : 
     '''
-    table.ingresarTabla(p[-1], None, None)
+    table.ingresarTabla(p[-1], None)
     table.programa = p[-1]
-
-def p_globalTrue(p):
-    '''
-    globalTrue : 
-    '''
-    table.isGlobal = True
-
-def p_globalFalse(p):
-    '''
-    globalFalse : 
-    '''
-    table.isGlobal = False
+    table.auxFunc = p[-1]
 
 def p_auxMain(p):
     '''
     auxMain :
     '''
-    table.ingresarTabla("Main", None, None)
+    table.ingresarTabla("Main", None)
+    table.auxFunc = "Main"
 
 # ------------------------------------------------------------
 # Declaracion de Clases
@@ -125,10 +117,12 @@ def p_listaParam(p):
                | param COMMA listaParam
                | empty
     '''
+
 def p_param(p):
     '''
     param : tipo COLON ID
     '''
+    table.ingresarVariables(p[3], table.tipo)
 # ------------------------------------------------------------
 # Declaración de Variables
 # ------------------------------------------------------------
@@ -137,12 +131,6 @@ def p_declarVar(p):
     declarVar : VAR tipo COLON listaIdDeclare SCOLON declarVar
               | empty
     '''
-    if table.isGlobal:
-        table.dirFuncs[table.programa].dir_var = copy.deepcopy(table.dirVarTemp)
-    else:
-        table.dirFuncs[table.auxFunc].dir_var = copy.deepcopy(table.dirVarTemp)
-    table.dirVarTemp.clear()
-
 # ------------------------------------------------------------
 # Definicion de Funciones
 # ------------------------------------------------------------
@@ -156,7 +144,7 @@ def p_auxFuncion(p):
     auxFuncion :
     '''
     table.auxFunc = p[-1]
-    table.ingresarTabla(table.auxFunc, table.tipoMeth, None)
+    table.ingresarTabla(table.auxFunc, table.tipoMeth)
 # ------------------------------------------------------------
 # Estatutos
 # ------------------------------------------------------------
