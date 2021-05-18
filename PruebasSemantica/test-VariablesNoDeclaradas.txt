@@ -26,9 +26,9 @@ main()
 var int : loquesea ;{
 	read(p); j=p*2;
 	i = fact(p);
-	read(i);
+	read(x);
 	pelos(p);
 	for i = 1 to 10 do {
-		write("HelloWorld", i);
+		write("HelloWorld", x);
 	}
 }

@@ -5,13 +5,10 @@
 
 import ply.yacc as yacc
 import logging
-import copy
 from lexer import file, path, entrada, tokens
-import copy
-
 import modif_tables as table
 import cuadruplos as cuad
-import estructuras as estructura
+from estructuras import *
 
 # Gramatica
 #No defini starting symbol, pero segun documentacion
@@ -29,7 +26,7 @@ def p_prueba(p):
     prueba : 
     '''
     table.dirPrint()
-    #table.Print2()
+
 #Introduce el nombre del programa en la tabla de funciones
 def p_initProg(p):
     '''
@@ -91,6 +88,8 @@ def p_idCall(p):
            | ID LBRACK exp RBRACK
            | ID LBRACK exp RBRACK LBRACK exp RBRACK
     '''
+    table.checkIfExists(p[1])
+
 def p_tipo(p):
     '''
     tipo : ID
@@ -114,6 +113,7 @@ def p_tipoMethod(p):
                | CHAR
     '''
     table.tipoMeth = p[1]
+
 #Para parametros, en declaracion de metodos o funciones, arreglos y matrices van con exp o con CTE_I
 def p_listaParam(p):
     '''
@@ -127,6 +127,8 @@ def p_param(p):
     param : tipo COLON ID
     '''
     table.ingresarVariables(p[3], table.tipo)
+    table.ingresarParams(p[3])
+
 # ------------------------------------------------------------
 # Declaración de Variables
 # ------------------------------------------------------------

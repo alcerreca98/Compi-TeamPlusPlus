@@ -14,7 +14,9 @@ var char : z;{
 }
 
 void func pelos(int : y)
-var float : x;{
+var float : x;
+var int : x;
+var char : loquesea ;{
 	x = y;
 	while(x < 10) do{
 		write(x+1);

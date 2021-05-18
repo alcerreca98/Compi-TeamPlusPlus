@@ -13,7 +13,7 @@ var char : z;{
 	}
 }
 
-void func pelos(int : y)
+void func pelos(int : y, int : z)
 var float : x;{
 	x = y;
 	while(x < 10) do{

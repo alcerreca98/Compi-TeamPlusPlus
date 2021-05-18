@@ -10,6 +10,7 @@ class funcion(object):
         self.id = id
         self.type = type
         self.dir_var = {}
+        self.params = []
     
     def printFuncion(self):
         print("\nid =", self.id, " tipo =", self.type)
@@ -19,6 +20,16 @@ class funcion(object):
 
     def addVar(self, id, type):
         self.dir_var[id] = variable(id, type)
+    
+    def addParam(self, id):
+        self.params.append(id)
+    
+    def printParams(self):
+        tam = len(self.params)
+        print("Params :")
+        for p in range(tam) :
+            var = self.dir_var.get(self.params[p])
+            var.printVariable()
 
     def printVarTable(self):
         for var in self.dir_var:
@@ -27,10 +38,13 @@ class funcion(object):
     def repeatedVariables(self, id):
         for ids in self.dir_var:
             if id == ids:
-                print('Variable :  ', id, " already exists")
+                print('Variable :  ', id, " already exists in ", self.id)
                 sys.exit()
                 return True
         return False
+    
+    def searchIfExists(self, id):
+        return self.dir_var.get(id, False)
 
 
 class variable(object):
