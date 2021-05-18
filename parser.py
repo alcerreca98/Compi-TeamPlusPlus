@@ -6,6 +6,7 @@
 import ply.yacc as yacc
 import logging
 from lexer import file, path, entrada, tokens
+import copy
 
 import modif_tables as table
 #import cuadruplos as cuad
@@ -137,10 +138,10 @@ def p_declarVar(p):
               | empty
     '''
     if table.isGlobal:
-        table.dirFuncs[table.programa].dir_var = table.dirVarTemp.copy()
+        table.dirFuncs[table.programa].dir_var = copy.deepcopy(table.dirVarTemp)
     else:
-        table.dirFuncs[table.auxFunc].dir_var = table.dirVarTemp.copy()
-    table.dirVarTemp = {}
+        table.dirFuncs[table.auxFunc].dir_var = copy.deepcopy(table.dirVarTemp)
+    table.dirVarTemp.clear()
 
 # ------------------------------------------------------------
 # Definicion de Funciones
