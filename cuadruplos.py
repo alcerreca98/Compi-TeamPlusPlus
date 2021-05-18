@@ -16,4 +16,19 @@ avail = []
 Quad = []
 
 #Variables globales
-#oraculo = oracle.cuboSemantico().cube
+contQuad = 1
+oraculo = oracle.SemanticCube().cube
+#param = 1
+
+#Insertar un quadruplo
+def quadInsert(action, dirIzq, dirDer, result):
+  temp = estructura.cuadruplo(contQuad-1, action, dirIzq, dirDer, result)
+  Quad.append(temp)
+
+#Insertar operacion en el stack de operadores
+def addPoper(action):
+  Poper.append(action)
+
+#Sacar fondo falso
+def popFF():
+  Poper.pop()

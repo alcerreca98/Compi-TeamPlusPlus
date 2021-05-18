@@ -10,7 +10,7 @@ from lexer import file, path, entrada, tokens
 import copy
 
 import modif_tables as table
-#import cuadruplos as cuad
+import cuadruplos as cuad
 import estructuras as estructura
 
 # Gramatica
@@ -22,7 +22,7 @@ import estructuras as estructura
 # ------------------------------------------------------------
 def p_program(p):
     '''
-    program : PROGRAM ID a1InitProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE prueba
+    program : PROGRAM ID initProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE prueba
     '''
 def p_prueba(p):
     '''
@@ -31,13 +31,15 @@ def p_prueba(p):
     table.dirPrint()
     #table.Print2()
 #Introduce el nombre del programa en la tabla de funciones
-def p_a1InitProg(p):
+def p_initProg(p):
     '''
     a1InitProg : 
     '''
     table.ingresarTabla(p[-1], None)
     table.programa = p[-1]
     table.auxFunc = p[-1]
+    cuad.quadInsert('Goto', None, None, None)
+    cuad.contQuad += 1
 
 def p_auxMain(p):
     '''
@@ -45,6 +47,8 @@ def p_auxMain(p):
     '''
     table.ingresarTabla("Main", None)
     table.auxFunc = "Main"
+    #Regresar valor de salto de Main
+
 
 # ------------------------------------------------------------
 # Declaracion de Clases
@@ -280,13 +284,34 @@ def p_t(p):
     '''
 def p_f(p):
     '''
-    f   : LPAREN exp RPAREN
+    f   : LPAREN addFF exp RPAREN rmFF
         | CTE_I
         | CTE_F
         | CTE_C
         | llamada
         | idCall
     '''
+# ------------------------------------------------------------
+# Meter fondo falso
+# ------------------------------------------------------------
+def p_addFF(p):
+    '''
+    addFF:
+    '''
+    cuad.addPoper(p[-1])
+# ------------------------------------------------------------
+# Meter fondo falso
+# ------------------------------------------------------------
+def p_rmFF(p):
+    '''
+    rmFF:
+    '''
+    cuad.popFF()
+# ------------------------------------------------------------
+# Ingreso a stacks de cuadruplos
+# ------------------------------------------------------------
+def p_addpoper(p):
+    cuad.addPoper(p[-1])
 # ------------------------------------------------------------
 # Regla Empty
 # ------------------------------------------------------------
