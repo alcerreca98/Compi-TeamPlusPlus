@@ -15,10 +15,27 @@ tipoMeth = None
 
 #Insertar datos a tabla de funciones, no contiene el diccionario
 def ingresarTabla(id, type):
-    dirFuncs[id] = funcion(id, type)
+    #chequeo dobles funciones
+    if(repeatedFunctions(id) == False):
+        #ingresa la funcion a directorio de Funciones si no se repite
+        dirFuncs[id] = funcion(id, type)
+    
 
 def ingresarVariables(id,type):
-    dirFuncs[auxFunc].addVar(id, type)
+    #chequeo contra globales
+    if(dirFuncs[programa].repeatedVariables(id) == False):
+        #chequeo dobles locales
+        if(dirFuncs[auxFunc].repeatedVariables(id) == False):
+            #ingresa la variable a la tabla de variables si no se repite
+            dirFuncs[auxFunc].addVar(id, type)
+
+def repeatedFunctions(id):
+    for ids in dirFuncs:
+        if id == ids:
+            print("Function : ", id, " already exists")
+            sys.exit()
+            return True
+    return False
 
 #Imprime el directorio de funciones: ID | TYPE
 def dirPrint():

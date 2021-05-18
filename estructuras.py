@@ -4,6 +4,7 @@
 # ------------------------------------------------------------
 import sys
 
+
 class funcion(object):
     def __init__(self, id, type):#, vart):
         self.id = id
@@ -11,7 +12,7 @@ class funcion(object):
         self.dir_var = {}
     
     def printFuncion(self):
-        print("id =", self.id, " tipo =", self.type)
+        print("\nid =", self.id, " tipo =", self.type)
 
     def getVarTable(self):
         return self.dir_var
@@ -22,6 +23,14 @@ class funcion(object):
     def printVarTable(self):
         for var in self.dir_var:
             self.dir_var[var].printVariable()
+    
+    def repeatedVariables(self, id):
+        for ids in self.dir_var:
+            if id == ids:
+                print('Variable :  ', id, " already exists")
+                sys.exit()
+                return True
+        return False
 
 
 class variable(object):

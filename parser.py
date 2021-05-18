@@ -21,7 +21,7 @@ import estructuras as estructura
 # ------------------------------------------------------------
 def p_program(p):
     '''
-    program : PROGRAM ID a1InitProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN LBRACE declarVar listaEstatutos RBRACE prueba
+    program : PROGRAM ID a1InitProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE prueba
     '''
 def p_prueba(p):
     '''
@@ -116,11 +116,12 @@ def p_listaParam(p):
                | param COMMA listaParam
                | empty
     '''
-    estructura.variable(id, type)
+
 def p_param(p):
     '''
     param : tipo COLON ID
     '''
+    table.ingresarVariables(p[3], table.tipo)
 # ------------------------------------------------------------
 # Declaración de Variables
 # ------------------------------------------------------------

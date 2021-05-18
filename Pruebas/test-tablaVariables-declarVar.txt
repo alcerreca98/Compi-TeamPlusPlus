@@ -2,7 +2,7 @@ program Team_pp;
 
 var int: i, j, p;
 
-float func fact(int: j)
+float func fact(int: n)
 var char : z;{
 	i = j+(p-j*2+j);
 	if(j==1)then{
@@ -22,7 +22,8 @@ var float : x ;{
 	}
 }
 
-main(){
+main()
+var int : loquesea ;{
 	read(p); j=p*2;
 	i = fact(p);
 	read(x);
