@@ -69,12 +69,15 @@ class objeto(object):
 
 #Estructura de cuadruplos
 class cuadruplo(object):
-    def __init__(self, count, action, dirIzq, dirDer, result):
+    def __init__(self, count, action, opIzq, opDer, result):
         self.count = count
         self.action = action
-        self.dirIzq = dirIzq
-        self.dirDer = dirDer
+        self.opIzq = opIzq
+        self.opDer = opDer
         self.result = result
+    
+    def printCuad(self):
+        print(self.count,"\t",self.action,"\t",self.opIzq,"\t",self.opDer,"\t",self.result)
 
 
 

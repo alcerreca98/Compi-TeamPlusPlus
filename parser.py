@@ -30,13 +30,14 @@ def p_prueba(p):
 #Introduce el nombre del programa en la tabla de funciones
 def p_initProg(p):
     '''
-    a1InitProg : 
+    initProg : 
     '''
     table.ingresarTabla(p[-1], None)
     table.programa = p[-1]
     table.auxFunc = p[-1]
     cuad.quadInsert('Goto', None, None, None)
-    cuad.contQuad += 1
+    cuad.contQuad = cuad.contQuad+1
+
 
 def p_auxMain(p):
     '''
@@ -88,7 +89,10 @@ def p_idCall(p):
            | ID LBRACK exp RBRACK
            | ID LBRACK exp RBRACK LBRACK exp RBRACK
     '''
-    table.checkIfExists(p[1])
+    if(table.checkIfExists(p[1])):
+        cuad.pushPilaO(p[1])
+
+        cuad.pushType()
 
 def p_tipo(p):
     '''
@@ -249,7 +253,7 @@ def p_cond_w(p):
 #idCall despues del for? debe ser definido 
 def p_cond_f(p):
     '''
-    cond_f : FOR idCall ASIGNA exp TO exp DO LBRACE listaEstatutos RBRACE
+    cond_f : FOR asignacion TO exp DO LBRACE listaEstatutos RBRACE
     '''
 # ------------------------------------------------------------
 # Expresiones
@@ -269,6 +273,8 @@ def p_gexp(p):
     gexp    : mexp
             | mexp LT mexp
             | mexp GT mexp
+            | mexp LTE mexp
+            | mexp GTE mexp
             | mexp EQUALS mexp
             | mexp NEQUALS mexp
     '''
@@ -287,33 +293,34 @@ def p_t(p):
 def p_f(p):
     '''
     f   : LPAREN addFF exp RPAREN rmFF
-        | CTE_I
-        | CTE_F
-        | CTE_C
+        | CTE_I step1
+        | CTE_F step1
+        | CTE_C step1
         | llamada
         | idCall
     '''
+def p_step1(p):
+    '''
+    step1   : 
+    '''
+    cuad.pushPilaO(p[-1])
+    cuad.pushType(cuad.getType(p[-1]))
 # ------------------------------------------------------------
 # Meter fondo falso
 # ------------------------------------------------------------
 def p_addFF(p):
     '''
-    addFF:
+    addFF :
     '''
-    cuad.addPoper(p[-1])
+    cuad.pushPoper(p[-1])
 # ------------------------------------------------------------
-# Meter fondo falso
+# Remover fondo falso
 # ------------------------------------------------------------
 def p_rmFF(p):
     '''
-    rmFF:
+    rmFF :
     '''
     cuad.popFF()
-# ------------------------------------------------------------
-# Ingreso a stacks de cuadruplos
-# ------------------------------------------------------------
-def p_addpoper(p):
-    cuad.addPoper(p[-1])
 # ------------------------------------------------------------
 # Regla Empty
 # ------------------------------------------------------------
