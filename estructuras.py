@@ -86,6 +86,9 @@ class variable(object):
         """ Print de todos los atributos en la instancia de Variable seleccionada """
         print("id =",self.id," tipo =",self.type)
 
+    def getType(self):
+        return self.type
+
 #Estructura de clases
 class clases(object):
     """ Estructura de clases """

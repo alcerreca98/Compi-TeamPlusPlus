@@ -92,8 +92,14 @@ def p_idCall(p):
     '''
     if(table.checkIfExists(p[1])):
         cuad.pushPilaO(p[1])
-        var_tipo = table.dirFuncs[table.auxFunc].dir_var.get(p[1])
-        cuad.pushType(var_tipo)
+        print(p[1])
+        if(table.dirFuncs[table.programa].searchIfExists(p[1]) == False):
+        #chequeo existe en locales
+            var = table.dirFuncs[table.auxFunc].searchIfExists(p[1])
+        else:
+            var = table.dirFuncs[table.programa].searchIfExists(p[1])
+        cuad.pushType(var.getType())
+
 
 def p_tipo(p):
     '''
@@ -180,8 +186,21 @@ def p_estatutos(p):
 # ------------------------------------------------------------
 def p_asignacion(p):
     '''
-    asignacion  : idCall ASIGNA exp 
+    asignacion  : idCall ASIGNA asignStep1 exp asignStep2
     '''
+
+def p_asignStep1(p):
+    '''
+    asignStep1  :
+    '''
+    cuad.pushPoper(p[-1])
+
+def p_asignStep2(p):
+    '''
+    asignStep2  :
+    '''
+    cuad.asignaStep2()
+
 # ------------------------------------------------------------
 # Llamada de funciones, para clases y normales.
 # ------------------------------------------------------------
