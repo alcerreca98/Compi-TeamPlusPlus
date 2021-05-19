@@ -56,7 +56,7 @@ def pushType(type):
 #Insertar operacion en el stack de operadores
 def pushPoper(action):
   Poper.append(action)
-  print(action)
+  #print(action)
 
 #Sacar fondo falso
 def popFF():
@@ -68,20 +68,23 @@ def expStep3():
   if size > 0:
     if Poper[size -1] != '(':
       if Poper[size-1] == '*' or Poper[size-1] == '/':
+        #print("ENTRE A 3")
         tempR = PilaO.pop()
-        print(tempR)
         rType = Ptypes.pop()
         tempL = PilaO.pop()
-        print(tempL)
         lType = Ptypes.pop()
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
           quadInsert(operator, tempL, tempR, Resultado)
+          print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
+          #imprimirPilaO()
           Ptypes.append(result_type)
           #Prueba Resultado
           Resultado = Resultado + 1
+          imprimirPilaO()
+          print("\n")
           return True
         else:
           print("Error: typemismatch,*,/")
@@ -94,20 +97,23 @@ def expStep4():
   if size > 0:
     if Poper[size -1] != '(':
       if Poper[size-1] == '+' or Poper[size-1] == '-':
+        #print("ENTRE A 4")
         tempR = PilaO.pop()
-        print(tempR)
         rType = Ptypes.pop()
         tempL = PilaO.pop()
-        print(tempL)
         lType = Ptypes.pop()
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
           quadInsert(operator, tempL, tempR, Resultado)
+          print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
+          #imprimirPilaO()
           Ptypes.append(result_type)
           #Prueba Resultado
           Resultado = Resultado + 1
+          imprimirPilaO()
+          print("\n")
           return True
         else:
           print("Error: typemismatch,+,-")
@@ -120,6 +126,7 @@ def expStep5():
   if size > 0:
     if Poper[size -1] != '(':
       if Poper[size-1] == '>' or Poper[size-1] == '<' or Poper[size-1] == '>=' or Poper[size-1] == '<=' or Poper[size-1] == '==' or Poper[size-1] == '!=':
+        print("ENTRE A 5")
         tempR = PilaO.pop()
         rType = Ptypes.pop()
         tempL = PilaO.pop()
@@ -190,21 +197,24 @@ def asignaStep2():
   global Resultado
   size = len(Poper)
   if size > 0:
-    tempR = PilaO.pop()
-    rType = Ptypes.pop()
-    tempL = PilaO.pop()
-    lType = Ptypes.pop()
-    operator = Poper.pop()
-    if lType == rType:
-      quadInsert(operator, tempR, None, tempL)
-      PilaO.append(tempL)
-      Ptypes.append(lType)
-      #Prueba Resultado
-      Resultado = Resultado + 1
-      return True
-    else:
-      print("Error: typemismatch em asignacion =")
-      sys.exit()
+    if Poper[size-1] == '=' :
+      imprimirPilaO()
+      tempR = PilaO.pop(0)
+      #print("Mi Right operands es: ",tempR)
+      rType = Ptypes.pop()
+      tempL = PilaO.pop()
+      lType = Ptypes.pop()
+      operator = Poper.pop()
+      if lType == rType:
+        quadInsert(operator, tempR, None, tempL)
+        PilaO.append(tempL)
+        Ptypes.append(lType)
+        #Prueba Resultado
+        Resultado = Resultado + 1
+        return True
+      else:
+        print("Error: typemismatch em asignacion =")
+        sys.exit()
   return False
 
 
@@ -215,3 +225,8 @@ def imprimirCuadruplos():
   tam = len(Quad)
   for x in range(tam):
     Quad[x].printCuad()
+
+def imprimirPilaO():
+  tam = len(PilaO)
+  for x in range(tam):
+    print("PilaO en [", x,"]", PilaO[x])
