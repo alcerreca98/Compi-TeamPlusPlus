@@ -19,6 +19,7 @@ Quad = []
 contQuad = 1
 oraculo = oracle.SemanticCube().cube
 #param = 1
+result = 0
 
 def quadInsert(action, dirIzq, dirDer, result):
   """Genera un quadruplo y lo inserta en la lista de cuadruplos"""
@@ -60,6 +61,128 @@ def pushPoper(action):
 #Sacar fondo falso
 def popFF():
   Poper.pop()
+
+def expStep3():
+  size = len(Poper)
+  if size > 0:
+    if Poper[size -1] != '(':
+      if Poper[size-1] == '*' or Poper[size-1] == '/':
+        tempR = PilaO.pop()
+        rType = Ptypes.pop()
+        tempL = PilaO.pop()
+        lType = Ptypes.pop()
+        operator = Poper.pop()
+        result_type = oracle[operator][lType][rType]
+        if result_type != 'error':
+          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
+          Quad.append(temp)
+          PilaO.append(result)
+          Ptypes.append(result_type)
+          #Prueba result
+          result = result + 1
+          return True
+        else:
+          print("Error: typemismatch,*,/")
+          sys.exit()
+  return False
+
+def expStep4():
+  size = len(Poper)
+  if size > 0:
+    if Poper[size -1] != '(':
+      if Poper[size-1] == '+' or Poper[size-1] == '-':
+        tempR = PilaO.pop()
+        rType = Ptypes.pop()
+        tempL = PilaO.pop()
+        lType = Ptypes.pop()
+        operator = Poper.pop()
+        result_type = oracle[operator][lType][rType]
+        if result_type != 'error':
+          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
+          Quad.append(temp)
+          PilaO.append(result)
+          Ptypes.append(result_type)
+          #Prueba result
+          result = result + 1
+          return True
+        else:
+          print("Error: typemismatch,+,-")
+          sys.exit()
+  return False
+
+def expStep5():
+  size = len(Poper)
+  if size > 0:
+    if Poper[size -1] != '(':
+      if Poper[size-1] == '>' or Poper[size-1] == '<' or Poper[size-1] == '>=' or Poper[size-1] == '<=' or Poper[size-1] == '==' or Poper[size-1] == '!=':
+        tempR = PilaO.pop()
+        rType = Ptypes.pop()
+        tempL = PilaO.pop()
+        lType = Ptypes.pop()
+        operator = Poper.pop()
+        result_type = oracle[operator][lType][rType]
+        if result_type != 'error':
+          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
+          Quad.append(temp)
+          PilaO.append(result)
+          Ptypes.append(result_type)
+          #Prueba result
+          result = result + 1
+          return True
+        else:
+          print("Error: typemismatch,>,<, >=, <=, ==, !=")
+          sys.exit()
+  return False
+
+def expStep6():
+  size = len(Poper)
+  if size > 0:
+    if Poper[size -1] != '(':
+      if Poper[size-1] == '&&' :
+        tempR = PilaO.pop()
+        rType = Ptypes.pop()
+        tempL = PilaO.pop()
+        lType = Ptypes.pop()
+        operator = Poper.pop()
+        result_type = oracle[operator][lType][rType]
+        if result_type != 'error':
+          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
+          Quad.append(temp)
+          PilaO.append(result)
+          Ptypes.append(result_type)
+          #Prueba result
+          result = result + 1
+          return True
+        else:
+          print("Error: typemismatch,&&")
+          sys.exit()
+  return False
+
+def expStep7():
+  size = len(Poper)
+  if size > 0:
+    if Poper[size -1] != '(':
+      if Poper[size-1] == '||' :
+        tempR = PilaO.pop()
+        rType = Ptypes.pop()
+        tempL = PilaO.pop()
+        lType = Ptypes.pop()
+        operator = Poper.pop()
+        result_type = oracle[operator][lType][rType]
+        if result_type != 'error':
+          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
+          Quad.append(temp)
+          PilaO.append(result)
+          Ptypes.append(result_type)
+          #Prueba result
+          result = result + 1
+          return True
+        else:
+          print("Error: typemismatch,||")
+          sys.exit()
+  return False
+
+
 
 #Imprime toda la lista de cuadruplos
 def imprimirCuadruplos():

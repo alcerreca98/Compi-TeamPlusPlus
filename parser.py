@@ -91,8 +91,8 @@ def p_idCall(p):
     '''
     if(table.checkIfExists(p[1])):
         cuad.pushPilaO(p[1])
-
-        cuad.pushType()
+        var_tipo = dirFunc[auxFunc].dir_var.get(p[1])
+        cuad.pushType(var_tipo)
 
 def p_tipo(p):
     '''
@@ -260,35 +260,35 @@ def p_cond_f(p):
 # ------------------------------------------------------------
 def p_exp(p):
     '''
-    exp     : texp
-            | texp OR exp
+    exp     : texp step7
+            | texp step7 OR step2 exp
     '''
 def p_texp(p):
     '''
-    texp    : gexp
-            | gexp AND texp
+    texp    : gexp step6
+            | gexp step6 AND step2 texp
     '''
 def p_gexp(p):
     '''
-    gexp    : mexp
-            | mexp LT mexp
-            | mexp GT mexp
-            | mexp LTE mexp
-            | mexp GTE mexp
-            | mexp EQUALS mexp
-            | mexp NEQUALS mexp
+    gexp    : mexp step5
+            | mexp step5 LT step2 mexp
+            | mexp step5 GT step2 mexp
+            | mexp step5 LTE step2 mexp
+            | mexp step5 GTE step2 mexp
+            | mexp step5 EQUALS step2 mexp
+            | mexp step5 NEQUALS step2 mexp
     '''
 def p_mexp(p):
     '''
-    mexp    : t
-            | t PLUS mexp
-            | t MINUS mexp
+    mexp    : t step4
+            | t step4 PLUS step2 mexp
+            | t step4 MINUS step2 mexp
     '''
 def p_t(p):
     '''
-    t   : f
-        | f MULT t
-        | f DIV t
+    t   : f step3
+        | f step3 MULT step2 t
+        | f step3 DIV step2 t
     '''
 def p_f(p):
     '''
@@ -305,6 +305,52 @@ def p_step1(p):
     '''
     cuad.pushPilaO(p[-1])
     cuad.pushType(cuad.getType(p[-1]))
+
+def p_step2(p):
+    '''
+    step2   : 
+    '''
+    cuad.pushPoper(p[-1])
+
+def p_step3(p):
+    '''
+    step3   : 
+    '''
+    temp = cuad.expStep3()
+    if temp:
+        cuad.contQuad = cuad.contQuad +1
+
+def p_step4(p):
+    '''
+    step4   : 
+    '''
+    temp = cuad.expStep4()
+    if temp:
+        cuad.contQuad = cuad.contQuad +1
+
+def p_step5(p):
+    '''
+    step5   : 
+    '''
+    temp = cuad.expStep5()
+    if temp:
+        cuad.contQuad = cuad.contQuad +1
+
+def p_step6(p):
+    '''
+    step6   : 
+    '''
+    temp = cuad.expStep6()
+    if temp:
+        cuad.contQuad = cuad.contQuad +1
+
+def p_step7(p):
+    '''
+    step7   : 
+    '''
+    temp = cuad.expStep7()
+    if temp:
+        cuad.contQuad = cuad.contQuad +1
 # ------------------------------------------------------------
 # Meter fondo falso
 # ------------------------------------------------------------
