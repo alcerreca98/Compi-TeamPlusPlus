@@ -5,7 +5,7 @@
 
 import ply.yacc as yacc
 import logging
-from lexer import file, path, entrada, tokens
+from lexer import file,entrada, path, tokens
 import modif_tables as table
 import cuadruplos as cuad
 from estructuras import *
@@ -26,6 +26,7 @@ def p_prueba(p):
     prueba : 
     '''
     table.dirPrint()
+    cuad.imprimirCuadruplos()
 
 #Introduce el nombre del programa en la tabla de funciones
 def p_initProg(p):
