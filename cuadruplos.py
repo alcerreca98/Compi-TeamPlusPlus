@@ -64,6 +64,8 @@ def popFF():
 
 def expStep3():
   size = len(Poper)
+  for x in Poper:
+    print(x)
   if size > 0:
     if Poper[size -1] != '(':
       if Poper[size-1] == '*' or Poper[size-1] == '/':

@@ -92,7 +92,7 @@ def p_idCall(p):
     '''
     if(table.checkIfExists(p[1])):
         cuad.pushPilaO(p[1])
-        var_tipo = dirFunc[auxFunc].dir_var.get(p[1])
+        var_tipo = table.dirFuncs[table.auxFunc].dir_var.get(p[1])
         cuad.pushType(var_tipo)
 
 def p_tipo(p):
