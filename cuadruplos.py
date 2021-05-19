@@ -18,7 +18,7 @@ Quad = []
 #Variables globales
 contQuad = 1
 oraculo = oracle.SemanticCube().cube
-Resultado = 1
+Resultado = 1000
 
 def quadInsert(action, dirIzq, dirDer, Resultado):
   """Genera un quadruplo y lo inserta en la lista de cuadruplos"""
@@ -65,8 +65,6 @@ def popFF():
 def expStep3():
   global Resultado
   size = len(Poper)
-  for x in Poper:
-    print(x)
   if size > 0:
     if Poper[size -1] != '(':
       if Poper[size-1] == '*' or Poper[size-1] == '/':
