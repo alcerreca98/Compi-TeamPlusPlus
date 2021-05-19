@@ -18,12 +18,11 @@ Quad = []
 #Variables globales
 contQuad = 1
 oraculo = oracle.SemanticCube().cube
-#param = 1
-result = 0
+Resultado = 1
 
-def quadInsert(action, dirIzq, dirDer, result):
+def quadInsert(action, dirIzq, dirDer, Resultado):
   """Genera un quadruplo y lo inserta en la lista de cuadruplos"""
-  temp = estructura.cuadruplo(contQuad-1, action, dirIzq, dirDer, result)
+  temp = estructura.cuadruplo(contQuad-1, action, dirIzq, dirDer, Resultado)
   Quad.append(temp)
 
 
@@ -57,29 +56,32 @@ def pushType(type):
 #Insertar operacion en el stack de operadores
 def pushPoper(action):
   Poper.append(action)
+  print(action)
 
 #Sacar fondo falso
 def popFF():
   Poper.pop()
 
 def expStep3():
+  global Resultado
   size = len(Poper)
   if size > 0:
     if Poper[size -1] != '(':
       if Poper[size-1] == '*' or Poper[size-1] == '/':
         tempR = PilaO.pop()
+        print(tempR)
         rType = Ptypes.pop()
         tempL = PilaO.pop()
+        print(tempL)
         lType = Ptypes.pop()
         operator = Poper.pop()
-        result_type = oracle[operator][lType][rType]
+        result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
-          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
-          Quad.append(temp)
-          PilaO.append(result)
+          quadInsert(operator, tempL, tempR, Resultado)
+          PilaO.append(Resultado)
           Ptypes.append(result_type)
-          #Prueba result
-          result = result + 1
+          #Prueba Resultado
+          Resultado = Resultado + 1
           return True
         else:
           print("Error: typemismatch,*,/")
@@ -87,23 +89,25 @@ def expStep3():
   return False
 
 def expStep4():
+  global Resultado
   size = len(Poper)
   if size > 0:
     if Poper[size -1] != '(':
       if Poper[size-1] == '+' or Poper[size-1] == '-':
         tempR = PilaO.pop()
+        print(tempR)
         rType = Ptypes.pop()
         tempL = PilaO.pop()
+        print(tempL)
         lType = Ptypes.pop()
         operator = Poper.pop()
-        result_type = oracle[operator][lType][rType]
+        result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
-          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
-          Quad.append(temp)
-          PilaO.append(result)
+          quadInsert(operator, tempL, tempR, Resultado)
+          PilaO.append(Resultado)
           Ptypes.append(result_type)
-          #Prueba result
-          result = result + 1
+          #Prueba Resultado
+          Resultado = Resultado + 1
           return True
         else:
           print("Error: typemismatch,+,-")
@@ -111,6 +115,7 @@ def expStep4():
   return False
 
 def expStep5():
+  global Resultado
   size = len(Poper)
   if size > 0:
     if Poper[size -1] != '(':
@@ -120,14 +125,13 @@ def expStep5():
         tempL = PilaO.pop()
         lType = Ptypes.pop()
         operator = Poper.pop()
-        result_type = oracle[operator][lType][rType]
+        result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
-          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
-          Quad.append(temp)
-          PilaO.append(result)
+          quadInsert(operator, tempL, tempR, Resultado)
+          PilaO.append(Resultado)
           Ptypes.append(result_type)
-          #Prueba result
-          result = result + 1
+          #Prueba Resultado
+          Resultado = Resultado + 1
           return True
         else:
           print("Error: typemismatch,>,<, >=, <=, ==, !=")
@@ -135,6 +139,7 @@ def expStep5():
   return False
 
 def expStep6():
+  global Resultado
   size = len(Poper)
   if size > 0:
     if Poper[size -1] != '(':
@@ -144,14 +149,13 @@ def expStep6():
         tempL = PilaO.pop()
         lType = Ptypes.pop()
         operator = Poper.pop()
-        result_type = oracle[operator][lType][rType]
+        result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
-          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
-          Quad.append(temp)
-          PilaO.append(result)
+          quadInsert(operator, tempL, tempR, Resultado)
+          PilaO.append(Resultado)
           Ptypes.append(result_type)
-          #Prueba result
-          result = result + 1
+          #Prueba Resultado
+          Resultado = Resultado + 1
           return True
         else:
           print("Error: typemismatch,&&")
@@ -159,6 +163,7 @@ def expStep6():
   return False
 
 def expStep7():
+  global Resultado
   size = len(Poper)
   if size > 0:
     if Poper[size -1] != '(':
@@ -168,19 +173,40 @@ def expStep7():
         tempL = PilaO.pop()
         lType = Ptypes.pop()
         operator = Poper.pop()
-        result_type = oracle[operator][lType][rType]
+        result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
-          temp = estructura.cuadruplo(count-1, operator, tempL, tempR, result)
-          Quad.append(temp)
-          PilaO.append(result)
+          quadInsert(operator, tempL, tempR, Resultado)
+          PilaO.append(Resultado)
           Ptypes.append(result_type)
-          #Prueba result
-          result = result + 1
+          #Prueba Resultado
+          Resultado = Resultado + 1
           return True
         else:
           print("Error: typemismatch,||")
           sys.exit()
   return False
+
+def asignaStep2():
+  global Resultado
+  size = len(Poper)
+  if size > 0:
+    tempR = PilaO.pop()
+    rType = Ptypes.pop()
+    tempL = PilaO.pop()
+    lType = Ptypes.pop()
+    operator = Poper.pop()
+    if lType == rType:
+      quadInsert(operator, tempR, None, tempL)
+      PilaO.append(tempL)
+      Ptypes.append(lType)
+      #Prueba Resultado
+      Resultado = Resultado + 1
+      return True
+    else:
+      print("Error: typemismatch em asignacion =")
+      sys.exit()
+  return False
+
 
 
 

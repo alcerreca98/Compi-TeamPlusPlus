@@ -49,7 +49,8 @@ def checkIfExists(id):
         #si no existe, print el error
             print('Variable :  ', id, " is not previously declared as global nor local in function ",auxFunc)
             sys.exit()
-    #else :
+    else :
+        return True
         #se comprueba que existe y se hace lo demás.
 
 
