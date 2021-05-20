@@ -203,8 +203,9 @@ def p_asignStep2(p):
     '''
     asignStep2  :
     '''
-    if cuad.asignaStep2() == True:
-        print("Terminé asignación")
+    if (cuad.asignaStep2() == True):
+        cuad.contQuad = cuad.contQuad + 1
+
      
 
 # ------------------------------------------------------------
