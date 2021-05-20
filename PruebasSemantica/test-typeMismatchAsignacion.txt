@@ -8,7 +8,7 @@ var int : z;{
 }
 
 void func pelos(int : y, int : z)
-var int : x;{
+var float : x;{
 	x = y;
 }
 

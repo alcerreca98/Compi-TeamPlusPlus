@@ -59,15 +59,19 @@ class funcion(object):
         for var in self.dir_var:
             self.dir_var[var].printVariable()
     
-    #Busca si hay dobles declaracones e imprime error si existen
+    #Busca si hay dobles declaracones de variable e imprime error si existen
     def repeatedVariables(self, id):
         """ Busca si hay dobles declaracones e imprime error si existen """
-        for ids in self.dir_var:
-            if id == ids:
-                print('Variable :  ', id, " already exists in ", self.id)
-                sys.exit()
-                return True
-        return False
+        repeated = self.dir_var.get(id, False)
+        if repeated == False:
+            return False
+        print('Variable :  ', id, " already exists in ", self.id)
+        sys.exit()
+        #for ids in self.dir_var:
+        #    if id == ids:
+        #        print('Variable :  ', id, " already exists in ", self.id)
+        #        sys.exit()
+        #return False
     
     #Busca si al momento de llamar la variable ya este previamente declarada
     def searchIfExists(self, id):
@@ -116,7 +120,7 @@ class cuadruplo(object):
     #Print de todos los atributos en la instancia de Cuadruplo seleccionada
     def printCuad(self):
         """ Print de todos los atributos en la instancia de Cuadruplo seleccionada """
-        print(self.count,"\t",self.action,"\t",self.opIzq,"\t",self.opDer,"\t",self.result)
+        print(self.cont,"\t",self.action,"\t",self.opIzq,"\t",self.opDer,"\t",self.result)
 
 
 
