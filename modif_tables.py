@@ -14,15 +14,17 @@ auxFunc = ""
 tipoMeth = None
 dictPrueba = {}
 
-#Insertar datos a tabla de funciones, no contiene el diccionario
+#Insertar datos a tabla de funciones
 def ingresarTabla(id, type):
+    """ Insertar datos a tabla de funciones """
     #chequeo dobles funciones
     if(repeatedFunctions(id) == False):
         #ingresa la funcion a directorio de Funciones si no se repite
         dirFuncs[id] = funcion(id, type)
     
-
+#Crear e insertar en tabla de variables con chequeo semantico de declaracion doble
 def ingresarVariables(id,type):
+    """ Crear e insertar en tabla de variables con chequeo semantico de declaracion doble """
     #chequeo contra globales
     if(dirFuncs[programa].repeatedVariables(id) == False):
         #chequeo dobles locales
@@ -30,18 +32,28 @@ def ingresarVariables(id,type):
             #ingresa la variable a la tabla de variables si no se repite
             dirFuncs[auxFunc].addVar(id, type)
 
+#Busca si el nombre de la funcion ya estaba previamente declarado
 def repeatedFunctions(id):
-    for ids in dirFuncs:
-        if id == ids:
-            print("Function : ", id, " already exists")
-            sys.exit()
-            return True
-    return False
+    """ Busca si el nombre de la funcion ya estaba previamente declarado """
+    repeated = dirFuncs.get(id, False)
+    if repeated == False:
+        return False
+    print("Function : ", id, " already exists")
+    sys.exit()
+    #for ids in dirFuncs:
+    #    if id == ids:
+    #        print("Function : ", id, " already exists")
+    #        sys.exit()
+    #return False
 
+#agrega el nombre de la variable a la lista de Parametros de la funcion
 def ingresarParams(id):
+    """ agrega el nombre de la variable a la lista de Parametros de la funcion """
     dirFuncs[auxFunc].addParam(id)
 
+#Busca si la variable estaba previamente declarada ya sea en contexto global o local
 def checkIfExists(id):
+    """ Busca si la variable estaba previamente declarada ya sea en contexto global o local """
     #chequeo existe en globales
     if(dirFuncs[programa].searchIfExists(id) == False):
         #chequeo existe en locales
@@ -52,9 +64,9 @@ def checkIfExists(id):
     return True
         #se comprueba que existe y se hace lo demás.
 
-
-#Imprime el directorio de funciones: ID | TYPE
+#Imprime el directorio de funciones con sus respectivas tablas de variables y especificando parametros
 def dirPrint():
+    """ Imprime el directorio de funciones con sus respectivas tablas de variables y especificando parametros """
     for key in dirFuncs:
       dirFuncs[key].printFuncion()
       dirFuncs[key].printVarTable()

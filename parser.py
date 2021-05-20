@@ -39,7 +39,6 @@ def p_initProg(p):
     cuad.quadInsert('Goto', None, None, None)
     cuad.contQuad = cuad.contQuad+1
 
-
 def p_auxMain(p):
     '''
     auxMain :
@@ -47,7 +46,6 @@ def p_auxMain(p):
     table.ingresarTabla("Main", None)
     table.auxFunc = "Main"
     #Regresar valor de salto de Main
-
 
 # ------------------------------------------------------------
 # Declaracion de Clases
@@ -57,24 +55,29 @@ def p_declarClases(p):
     declarClases : CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
                  | empty
     '''
+
 #la Herencia es opcional
 def p_herencia(p):
     '''
     herencia : LT EXTENDS ID GT
              | empty
     '''
+
 #atributos de clase, opcionales
 def p_declarAttributes(p):
     '''
     declarAttributes : tipo COLON listaIdDeclare SCOLON declarAttributes
                      | empty
     '''
+
+#iterador de idDeclare separado por comma
 def p_listaIdDeclare(p):
     '''
     listaIdDeclare : idDeclare  
                    | idDeclare COMMA listaIdDeclare
     '''
 
+#sintaxis de declaración de variables
 def p_idDeclare(p):
     '''
     idDeclare : ID 
@@ -83,6 +86,7 @@ def p_idDeclare(p):
     '''
     table.ingresarVariables(p[1], table.tipo)
 
+#sintacis para indexación o llamada de variables
 def p_idCall(p):
     '''
     idCall : ID
@@ -92,16 +96,14 @@ def p_idCall(p):
     '''
     if(table.checkIfExists(p[1])):
         cuad.pushPilaO(p[1])
-        #print(p[1])
         condicion = table.dirFuncs[table.programa].searchIfExists(p[1])
         if(condicion == False):
-        #chequeo existe en locales
             var = table.dirFuncs[table.auxFunc].searchIfExists(p[1])
         else:
             var = table.dirFuncs[table.programa].searchIfExists(p[1])
         cuad.pushType(var.getType())
 
-
+#tipo de variables
 def p_tipo(p):
     '''
     tipo : ID
@@ -117,6 +119,8 @@ def p_declarMethods(p):
     declarMethods : tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
                   | empty
     '''
+
+#tipo de metodos y funciones
 def p_tipoMethod(p):
     '''
     tipoMethod : VOID
@@ -134,6 +138,7 @@ def p_listaParam(p):
                | empty
     '''
 
+#sintaxis de declaracion de parametros
 def p_param(p):
     '''
     param : tipo COLON ID
@@ -157,6 +162,8 @@ def p_definFunc(p):
     definFunc : tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE definFunc
               | empty
     '''
+
+#guarda en el directorio de funciones la nueva instancia de funcion, con su nombre y tipo
 def p_auxFuncion(p):
     '''
     auxFuncion :
@@ -321,6 +328,7 @@ def p_f(p):
         | llamada
         | idCall
     '''
+
 def p_step1(p):
     '''
     step1   : 
@@ -373,22 +381,21 @@ def p_step7(p):
     temp = cuad.expStep7()
     if temp:
         cuad.contQuad = cuad.contQuad +1
-# ------------------------------------------------------------
+
 # Meter fondo falso
-# ------------------------------------------------------------
 def p_addFF(p):
     '''
     addFF :
     '''
     cuad.pushPoper(p[-1])
-# ------------------------------------------------------------
+
 # Remover fondo falso
-# ------------------------------------------------------------
 def p_rmFF(p):
     '''
     rmFF :
     '''
     cuad.popFF()
+
 # ------------------------------------------------------------
 # Regla Empty
 # ------------------------------------------------------------
