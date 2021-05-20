@@ -256,7 +256,7 @@ def asignaStep2():
 def popIO():
   size = len(Poper)
   if size > 0:
-    if Poper[size-1] == 'read':
+    if Poper[size-1] == 'read' or Poper[size-1] == 'write':
       tempR = PilaO.pop()
       Ptypes.pop()
       operator = Poper.pop()

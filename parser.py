@@ -262,15 +262,26 @@ def p_popIO(p):
 # ------------------------------------------------------------
 def p_escritura(p):
     '''
-    escritura   : WRITE LPAREN exp lextra RPAREN
-                | WRITE LPAREN LETRERO lextra RPAREN
+    escritura   : WRITE pushPoper LPAREN exp popIO lextra RPAREN
+                | WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
     '''
 def p_lextra(p):
     '''
-    lextra  : COMMA exp lextra
-            | COMMA LETRERO lextra
+    lextra  : COMMA insertOpWrite exp popIO lextra
+            | COMMA insertOpWrite LETRERO letreroPush popIO lextra
             | empty
     '''
+def p_insertOpWrite(p):
+    '''
+    insertOpWrite  :
+    '''
+    cuad.pushPoper('write')
+#Prueba de letrero
+def p_letreroPush(p):
+    '''
+    letreroPush  :
+    '''
+    cuad.pushPilaO(cuad.Resultado)
 # ------------------------------------------------------------
 # Condicion, If, If Else
 # ------------------------------------------------------------
