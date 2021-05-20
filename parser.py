@@ -102,7 +102,6 @@ def p_idCall(p):
         else:
             var = table.dirFuncs[table.programa].searchIfExists(p[1])
         cuad.pushType(var.getType())
-    #cuad.imprimirPilaO()
 
 #tipo de variables
 def p_tipo(p):
@@ -204,9 +203,9 @@ def p_asignStep2(p):
     '''
     asignStep2  :
     '''
-    if cuad.asignaStep2() == True:
+    if (cuad.asignaStep2() == True):
         cuad.contQuad = cuad.contQuad + 1
-        print("Terminé asignación")
+
      
 
 # ------------------------------------------------------------

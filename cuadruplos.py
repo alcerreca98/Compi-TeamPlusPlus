@@ -106,7 +106,7 @@ def expStep3():
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
           quadInsert(operator, tempL, tempR, Resultado)
-          print(tempL, operator, tempR, Resultado)
+          #print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
           #Prueba Resultado
@@ -134,7 +134,7 @@ def expStep4():
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
           quadInsert(operator, tempL, tempR, Resultado)
-          print(tempL, operator, tempR, Resultado)
+          #print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
           Resultado = Resultado + 1
@@ -150,18 +150,15 @@ def expStep5():
   global Resultado
   size = len(Poper)
   if size > 0:
-    print("La gfa de oli ",size)
     if Poper[size -1] != '(':
-      print("La gfa de fede ",Poper[size-1])
       if Poper[size-1] == '>' or Poper[size-1] == '<' or Poper[size-1] == '>=' or Poper[size-1] == '<=' or Poper[size-1] == '==' or Poper[size-1] == '!=':
-        print("ENTRE A 5")
+        #print("ENTRE A 5")
         tempR = PilaO.pop()
         rType = Ptypes.pop()
         tempL = PilaO.pop()
         lType = Ptypes.pop()
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
-        print(result_type)
         if result_type != 'error':
           quadInsert(operator, tempL, tempR, Resultado)
           PilaO.append(Resultado)
@@ -235,12 +232,9 @@ def asignaStep2():
   size = len(Poper)
   if size > 0:
     if Poper[size-1] == '=' :
-      #imprimirPilaO()
       tempR = PilaO.pop()
-      #print("Mi Right operands es: ",tempR)
       rType = Ptypes.pop()
       tempL = PilaO.pop()
-      #print("Mi Izq operands es: ",tempL)
       lType = Ptypes.pop()
       operator = Poper.pop()
       if lType == rType:
@@ -258,6 +252,7 @@ def asignaStep2():
 
 def popIO():
   size = len(Poper)
+  imprimirPilaO()
   if size > 0:
     if Poper[size-1] == 'read' or Poper[size-1] == 'write':
       tempR = PilaO.pop()
@@ -292,10 +287,12 @@ def Gotof_IF():
   
 def fillGOTO():
   end = Psaltos.pop()
-  Quad[end].result = contQuad
+  print("fillFOTO END",end, "Estoy en ", contQuad)
+  Quad[end].result = contQuad-1
 
 def Goto_IF():
   quadInsert('Goto', None, None, None)
   falso = Psaltos.pop()
+  print("GotoIF falso",falso)
   Psaltos.append(contQuad-1)
-  Quad[falso].result = contQuad
+  Quad[falso].result = contQuad-1
