@@ -86,7 +86,7 @@ def p_idDeclare(p):
     '''
     table.ingresarVariables(p[1], table.tipo)
 
-#sintacis para indexación o llamada de variables
+#sintaxis para indexación o llamada de variables
 def p_idCall(p):
     '''
     idCall : ID
@@ -195,15 +195,10 @@ def p_estatutos(p):
 # ------------------------------------------------------------
 def p_asignacion(p):
     '''
-    asignacion  : idCall ASIGNA asignStep1 exp asignStep2 
+    asignacion  : idCall ASIGNA pushPoper exp asignStep2 
     '''
 
-def p_asignStep1(p):
-    '''
-    asignStep1  :
-    '''
-    cuad.pushPoper(p[-1])
-    #cuad.imprimirPilaO()
+#asignStep1 es pushPoper()
 
 def p_asignStep2(p):
     '''
@@ -243,13 +238,25 @@ def p_returnf(p):
 # ------------------------------------------------------------
 def p_lectura(p):
     '''
-    lectura   : READ LPAREN listaId RPAREN
+    lectura   : READ pushPoper LPAREN listaId RPAREN
     '''
 def p_listaId(p):
     '''
-    listaId : idCall 
-            | idCall COMMA listaId
+    listaId : idCall popIO
+            | idCall COMMA popIO insertOpRead listaId
     '''
+def p_insertOpRead(p):
+    '''
+    insertOpRead : 
+    '''
+    cuad.pushPoper("read")
+def p_popIO(p):
+    '''
+    popIO : 
+    '''
+    temp = cuad.popIO()
+    if temp == True:
+        cuad.contQuad = cuad.contQuad +1
 # ------------------------------------------------------------
 # Escritura
 # ------------------------------------------------------------
@@ -293,34 +300,34 @@ def p_cond_f(p):
 def p_exp(p):
     '''
     exp     : texp step7
-            | texp step7 OR step2 exp
+            | texp step7 OR pushPoper exp
     '''
 def p_texp(p):
     '''
     texp    : gexp step6
-            | gexp step6 AND step2 texp
+            | gexp step6 AND pushPoper texp
     '''
 def p_gexp(p):
     '''
     gexp    : mexp step5
-            | mexp step5 LT step2 mexp
-            | mexp step5 GT step2 mexp
-            | mexp step5 LTE step2 mexp
-            | mexp step5 GTE step2 mexp
-            | mexp step5 EQUALS step2 mexp
-            | mexp step5 NEQUALS step2 mexp
+            | mexp step5 LT pushPoper mexp
+            | mexp step5 GT pushPoper mexp
+            | mexp step5 LTE pushPoper mexp
+            | mexp step5 GTE pushPoper mexp
+            | mexp step5 EQUALS pushPoper mexp
+            | mexp step5 NEQUALS pushPoper mexp
     '''
 def p_mexp(p):
     '''
     mexp    : t step4
-            | t step4 PLUS step2 mexp
-            | t step4 MINUS step2 mexp
+            | t step4 PLUS pushPoper mexp
+            | t step4 MINUS pushPoper mexp
     '''
 def p_t(p):
     '''
     t   : f step3
-        | f step3 MULT step2 t
-        | f step3 DIV step2 t
+        | f step3 MULT pushPoper t
+        | f step3 DIV pushPoper t
     '''
 def p_f(p):
     '''
@@ -339,11 +346,7 @@ def p_step1(p):
     cuad.pushPilaO(p[-1])
     cuad.pushType(cuad.getType(p[-1]))
 
-def p_step2(p):
-    '''
-    step2   : 
-    '''
-    cuad.pushPoper(p[-1])
+#Step2 es pushPoper()
 
 def p_step3(p):
     '''
@@ -399,6 +402,11 @@ def p_rmFF(p):
     '''
     cuad.popFF()
 
+def p_pushPoper(p):
+    '''
+    pushPoper :
+    '''
+    cuad.pushPoper(p[-1])
 # ------------------------------------------------------------
 # Regla Empty
 # ------------------------------------------------------------

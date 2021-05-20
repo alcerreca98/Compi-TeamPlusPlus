@@ -1,0 +1,21 @@
+program Team_pp;
+
+var int: i, j, p;
+
+float func fact(int: n)
+var int : z;{
+	j = n+(p-z*2+j);
+	read(j,n);
+}
+
+void func pelos(int : y, int : z)
+var int : x;{
+	x = y;
+}
+
+main()
+var int : loquesea ;{
+    j= p*2;
+		read(j,p[2]);
+
+}

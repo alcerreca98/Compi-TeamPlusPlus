@@ -55,20 +55,20 @@ Rule 45    estatutos -> escritura SCOLON
 Rule 46    estatutos -> condicion
 Rule 47    estatutos -> cond_w
 Rule 48    estatutos -> cond_f
-Rule 49    asignacion -> idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
-Rule 50    pruebaPrint -> <empty>
-Rule 51    asignStep1 -> <empty>
-Rule 52    asignStep2 -> <empty>
-Rule 53    llamada -> ID DOT ID LPAREN enviaParam RPAREN
-Rule 54    llamada -> ID LPAREN enviaParam RPAREN
-Rule 55    enviaParam -> paramReferencia
-Rule 56    enviaParam -> empty
-Rule 57    paramReferencia -> exp
-Rule 58    paramReferencia -> exp COMMA paramReferencia
-Rule 59    returnf -> RETURN LPAREN exp RPAREN
-Rule 60    lectura -> READ LPAREN listaId RPAREN
-Rule 61    listaId -> idCall
-Rule 62    listaId -> idCall COMMA listaId
+Rule 49    asignacion -> idCall ASIGNA pushPoper exp asignStep2
+Rule 50    asignStep2 -> <empty>
+Rule 51    llamada -> ID DOT ID LPAREN enviaParam RPAREN
+Rule 52    llamada -> ID LPAREN enviaParam RPAREN
+Rule 53    enviaParam -> paramReferencia
+Rule 54    enviaParam -> empty
+Rule 55    paramReferencia -> exp
+Rule 56    paramReferencia -> exp COMMA paramReferencia
+Rule 57    returnf -> RETURN LPAREN exp RPAREN
+Rule 58    lectura -> READ pushPoper LPAREN listaId RPAREN
+Rule 59    listaId -> idCall popIO
+Rule 60    listaId -> idCall COMMA popIO insertOpRead listaId
+Rule 61    insertOpRead -> <empty>
+Rule 62    popIO -> <empty>
 Rule 63    escritura -> WRITE LPAREN exp lextra RPAREN
 Rule 64    escritura -> WRITE LPAREN LETRERO lextra RPAREN
 Rule 65    lextra -> COMMA exp lextra
@@ -79,22 +79,22 @@ Rule 69    condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE E
 Rule 70    cond_w -> WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos RBRACE
 Rule 71    cond_f -> FOR asignacion TO exp DO LBRACE listaEstatutos RBRACE
 Rule 72    exp -> texp step7
-Rule 73    exp -> texp step7 OR step2 exp
+Rule 73    exp -> texp step7 OR pushPoper exp
 Rule 74    texp -> gexp step6
-Rule 75    texp -> gexp step6 AND step2 texp
+Rule 75    texp -> gexp step6 AND pushPoper texp
 Rule 76    gexp -> mexp step5
-Rule 77    gexp -> mexp step5 LT step2 mexp
-Rule 78    gexp -> mexp step5 GT step2 mexp
-Rule 79    gexp -> mexp step5 LTE step2 mexp
-Rule 80    gexp -> mexp step5 GTE step2 mexp
-Rule 81    gexp -> mexp step5 EQUALS step2 mexp
-Rule 82    gexp -> mexp step5 NEQUALS step2 mexp
+Rule 77    gexp -> mexp step5 LT pushPoper mexp
+Rule 78    gexp -> mexp step5 GT pushPoper mexp
+Rule 79    gexp -> mexp step5 LTE pushPoper mexp
+Rule 80    gexp -> mexp step5 GTE pushPoper mexp
+Rule 81    gexp -> mexp step5 EQUALS pushPoper mexp
+Rule 82    gexp -> mexp step5 NEQUALS pushPoper mexp
 Rule 83    mexp -> t step4
-Rule 84    mexp -> t step4 PLUS step2 mexp
-Rule 85    mexp -> t step4 MINUS step2 mexp
+Rule 84    mexp -> t step4 PLUS pushPoper mexp
+Rule 85    mexp -> t step4 MINUS pushPoper mexp
 Rule 86    t -> f step3
-Rule 87    t -> f step3 MULT step2 t
-Rule 88    t -> f step3 DIV step2 t
+Rule 87    t -> f step3 MULT pushPoper t
+Rule 88    t -> f step3 DIV pushPoper t
 Rule 89    f -> LPAREN addFF exp RPAREN rmFF
 Rule 90    f -> CTE_I step1
 Rule 91    f -> CTE_F step1
@@ -102,14 +102,14 @@ Rule 92    f -> CTE_C step1
 Rule 93    f -> llamada
 Rule 94    f -> idCall
 Rule 95    step1 -> <empty>
-Rule 96    step2 -> <empty>
-Rule 97    step3 -> <empty>
-Rule 98    step4 -> <empty>
-Rule 99    step5 -> <empty>
-Rule 100   step6 -> <empty>
-Rule 101   step7 -> <empty>
-Rule 102   addFF -> <empty>
-Rule 103   rmFF -> <empty>
+Rule 96    step3 -> <empty>
+Rule 97    step4 -> <empty>
+Rule 98    step5 -> <empty>
+Rule 99    step6 -> <empty>
+Rule 100   step7 -> <empty>
+Rule 101   addFF -> <empty>
+Rule 102   rmFF -> <empty>
+Rule 103   pushPoper -> <empty>
 Rule 104   empty -> <empty>
 
 Terminals, with rules where they appear
@@ -120,13 +120,13 @@ ATTRIBUTES           : 5
 CHAR                 : 23 29
 CLASS                : 5
 COLON                : 9 33 34
-COMMA                : 12 31 58 62 65 66
+COMMA                : 12 31 56 60 65 66
 CTE_C                : 92
 CTE_F                : 91
 CTE_I                : 14 15 15 90
 DIV                  : 88
 DO                   : 70 71
-DOT                  : 17 53
+DOT                  : 17 51
 ELSE                 : 69
 EQUALS               : 81
 EXTENDS              : 7
@@ -135,13 +135,13 @@ FOR                  : 71
 FUNC                 : 24 36
 GT                   : 7 78
 GTE                  : 80
-ID                   : 1 5 7 13 14 15 16 17 17 18 19 20 24 33 36 53 53 54
+ID                   : 1 5 7 13 14 15 16 17 17 18 19 20 24 33 36 51 51 52
 IF                   : 68 69
 INT                  : 21 27
 LBRACE               : 1 5 24 36 68 69 69 70 71
 LBRACK               : 14 15 15 18 19 19
 LETRERO              : 64 66
-LPAREN               : 1 24 36 53 54 59 60 63 64 68 69 70 89
+LPAREN               : 1 24 36 51 52 57 58 63 64 68 69 70 89
 LT                   : 7 77
 LTE                  : 79
 MAIN                 : 1
@@ -155,9 +155,9 @@ PROGRAM              : 1
 QUOTE                : 
 RBRACE               : 1 5 24 36 68 69 69 70 71
 RBRACK               : 14 15 15 18 19 19
-READ                 : 60
-RETURN               : 59
-RPAREN               : 1 24 36 53 54 59 60 63 64 68 69 70 89
+READ                 : 58
+RETURN               : 57
+RPAREN               : 1 24 36 51 52 57 58 63 64 68 69 70 89
 SCOLON               : 1 9 34 41 42 43 44 45
 THEN                 : 68 69
 TO                   : 71
@@ -170,7 +170,6 @@ error                :
 Nonterminals, with rules where they appear
 
 addFF                : 89
-asignStep1           : 49
 asignStep2           : 49
 asignacion           : 42 71
 auxFuncion           : 36
@@ -183,34 +182,35 @@ declarClases         : 1 5
 declarMethods        : 5 24
 declarVar            : 1 1 34 36
 definFunc            : 1 36
-empty                : 6 8 10 25 32 35 37 40 56 67
-enviaParam           : 53 54
+empty                : 6 8 10 25 32 35 37 40 54 67
+enviaParam           : 51 52
 escritura            : 45
 estatutos            : 39
-exp                  : 18 19 19 49 57 58 59 63 65 68 69 70 71 73 89
+exp                  : 18 19 19 49 55 56 57 63 65 68 69 70 71 73 89
 f                    : 86 87 88
 gexp                 : 74 75
 herencia             : 5
-idCall               : 49 61 62 94
+idCall               : 49 59 60 94
 idDeclare            : 11 12
 initProg             : 1
+insertOpRead         : 60
 lectura              : 44
 lextra               : 63 64 65 66
 listaEstatutos       : 1 24 36 39 68 69 69 70 71
-listaId              : 60 62
+listaId              : 58 60
 listaIdDeclare       : 9 12 34
 listaParam           : 24 31 36
 llamada              : 41 93
 mexp                 : 76 77 77 78 78 79 79 80 80 81 81 82 82 84 85
 param                : 30 31
-paramReferencia      : 55 58
+paramReferencia      : 53 56
+popIO                : 59 60
 program              : 0
 prueba               : 1
-pruebaPrint          : 49
+pushPoper            : 49 58 73 75 77 78 79 80 81 82 84 85 87 88
 returnf              : 43
 rmFF                 : 89
 step1                : 90 91 92
-step2                : 73 75 77 78 79 80 81 82 84 85 87 88
 step3                : 86 87 88
 step4                : 83 84 85
 step5                : 76 77 78 79 80 81 82
@@ -866,11 +866,11 @@ state 66
     (47) estatutos -> . cond_w
     (48) estatutos -> . cond_f
     (104) empty -> .
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (49) asignacion -> . idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
-    (59) returnf -> . RETURN LPAREN exp RPAREN
-    (60) lectura -> . READ LPAREN listaId RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (49) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
+    (57) returnf -> . RETURN LPAREN exp RPAREN
+    (58) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (63) escritura -> . WRITE LPAREN exp lextra RPAREN
     (64) escritura -> . WRITE LPAREN LETRERO lextra RPAREN
     (68) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
@@ -1003,8 +1003,8 @@ state 73
 
 state 74
 
-    (53) llamada -> ID . DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> ID . LPAREN enviaParam RPAREN
+    (51) llamada -> ID . DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> ID . LPAREN enviaParam RPAREN
     (16) idCall -> ID .
     (17) idCall -> ID . DOT ID
     (18) idCall -> ID . LBRACK exp RBRACK
@@ -1055,11 +1055,11 @@ state 76
     (47) estatutos -> . cond_w
     (48) estatutos -> . cond_f
     (104) empty -> .
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (49) asignacion -> . idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
-    (59) returnf -> . RETURN LPAREN exp RPAREN
-    (60) lectura -> . READ LPAREN listaId RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (49) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
+    (57) returnf -> . RETURN LPAREN exp RPAREN
+    (58) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (63) escritura -> . WRITE LPAREN exp lextra RPAREN
     (64) escritura -> . WRITE LPAREN LETRERO lextra RPAREN
     (68) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
@@ -1179,24 +1179,26 @@ state 85
 
 state 86
 
-    (49) asignacion -> idCall . ASIGNA asignStep1 exp pruebaPrint asignStep2
+    (49) asignacion -> idCall . ASIGNA pushPoper exp asignStep2
 
     ASIGNA          shift and go to state 110
 
 
 state 87
 
-    (59) returnf -> RETURN . LPAREN exp RPAREN
+    (57) returnf -> RETURN . LPAREN exp RPAREN
 
     LPAREN          shift and go to state 111
 
 
 state 88
 
-    (60) lectura -> READ . LPAREN listaId RPAREN
+    (58) lectura -> READ . pushPoper LPAREN listaId RPAREN
+    (103) pushPoper -> .
 
-    LPAREN          shift and go to state 112
+    LPAREN          reduce using rule 103 (pushPoper -> .)
 
+    pushPoper                      shift and go to state 112
 
 state 89
 
@@ -1224,7 +1226,7 @@ state 91
 state 92
 
     (71) cond_f -> FOR . asignacion TO exp DO LBRACE listaEstatutos RBRACE
-    (49) asignacion -> . idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
+    (49) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -1292,7 +1294,7 @@ state 99
 
 state 100
 
-    (53) llamada -> ID DOT . ID LPAREN enviaParam RPAREN
+    (51) llamada -> ID DOT . ID LPAREN enviaParam RPAREN
     (17) idCall -> ID DOT . ID
 
     ID              shift and go to state 121
@@ -1300,37 +1302,37 @@ state 100
 
 state 101
 
-    (54) llamada -> ID LPAREN . enviaParam RPAREN
-    (55) enviaParam -> . paramReferencia
-    (56) enviaParam -> . empty
-    (57) paramReferencia -> . exp
-    (58) paramReferencia -> . exp COMMA paramReferencia
+    (52) llamada -> ID LPAREN . enviaParam RPAREN
+    (53) enviaParam -> . paramReferencia
+    (54) enviaParam -> . empty
+    (55) paramReferencia -> . exp
+    (56) paramReferencia -> . exp COMMA paramReferencia
     (104) empty -> .
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -1360,30 +1362,30 @@ state 102
     (18) idCall -> ID LBRACK . exp RBRACK
     (19) idCall -> ID LBRACK . exp RBRACK LBRACK exp RBRACK
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -1492,45 +1494,45 @@ state 109
 
 state 110
 
-    (49) asignacion -> idCall ASIGNA . asignStep1 exp pruebaPrint asignStep2
-    (51) asignStep1 -> .
+    (49) asignacion -> idCall ASIGNA . pushPoper exp asignStep2
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 51 (asignStep1 -> .)
-    CTE_I           reduce using rule 51 (asignStep1 -> .)
-    CTE_F           reduce using rule 51 (asignStep1 -> .)
-    CTE_C           reduce using rule 51 (asignStep1 -> .)
-    ID              reduce using rule 51 (asignStep1 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    asignStep1                     shift and go to state 139
+    pushPoper                      shift and go to state 139
 
 state 111
 
-    (59) returnf -> RETURN LPAREN . exp RPAREN
+    (57) returnf -> RETURN LPAREN . exp RPAREN
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -1553,61 +1555,53 @@ state 111
 
 state 112
 
-    (60) lectura -> READ LPAREN . listaId RPAREN
-    (61) listaId -> . idCall
-    (62) listaId -> . idCall COMMA listaId
-    (16) idCall -> . ID
-    (17) idCall -> . ID DOT ID
-    (18) idCall -> . ID LBRACK exp RBRACK
-    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
+    (58) lectura -> READ pushPoper . LPAREN listaId RPAREN
 
-    ID              shift and go to state 117
+    LPAREN          shift and go to state 141
 
-    listaId                        shift and go to state 141
-    idCall                         shift and go to state 142
 
 state 113
 
     (63) escritura -> WRITE LPAREN . exp lextra RPAREN
     (64) escritura -> WRITE LPAREN . LETRERO lextra RPAREN
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
     (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
 
-    LETRERO         shift and go to state 144
+    LETRERO         shift and go to state 143
     LPAREN          shift and go to state 122
     CTE_I           shift and go to state 132
     CTE_F           shift and go to state 133
     CTE_C           shift and go to state 134
     ID              shift and go to state 74
 
-    exp                            shift and go to state 143
+    exp                            shift and go to state 142
     texp                           shift and go to state 127
     gexp                           shift and go to state 128
     mexp                           shift and go to state 129
@@ -1621,30 +1615,78 @@ state 114
     (68) condicion -> IF LPAREN . exp RPAREN THEN LBRACE listaEstatutos RBRACE
     (69) condicion -> IF LPAREN . exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (16) idCall -> . ID
+    (17) idCall -> . ID DOT ID
+    (18) idCall -> . ID LBRACK exp RBRACK
+    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
+
+    LPAREN          shift and go to state 122
+    CTE_I           shift and go to state 132
+    CTE_F           shift and go to state 133
+    CTE_C           shift and go to state 134
+    ID              shift and go to state 74
+
+    exp                            shift and go to state 144
+    texp                           shift and go to state 127
+    gexp                           shift and go to state 128
+    mexp                           shift and go to state 129
+    t                              shift and go to state 130
+    f                              shift and go to state 131
+    llamada                        shift and go to state 135
+    idCall                         shift and go to state 136
+
+state 115
+
+    (70) cond_w -> WHILE LPAREN . exp RPAREN DO LBRACE listaEstatutos RBRACE
+    (72) exp -> . texp step7
+    (73) exp -> . texp step7 OR pushPoper exp
+    (74) texp -> . gexp step6
+    (75) texp -> . gexp step6 AND pushPoper texp
+    (76) gexp -> . mexp step5
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
+    (83) mexp -> . t step4
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
+    (86) t -> . f step3
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
+    (89) f -> . LPAREN addFF exp RPAREN rmFF
+    (90) f -> . CTE_I step1
+    (91) f -> . CTE_F step1
+    (92) f -> . CTE_C step1
+    (93) f -> . llamada
+    (94) f -> . idCall
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -1665,59 +1707,11 @@ state 114
     llamada                        shift and go to state 135
     idCall                         shift and go to state 136
 
-state 115
-
-    (70) cond_w -> WHILE LPAREN . exp RPAREN DO LBRACE listaEstatutos RBRACE
-    (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
-    (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
-    (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
-    (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
-    (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
-    (89) f -> . LPAREN addFF exp RPAREN rmFF
-    (90) f -> . CTE_I step1
-    (91) f -> . CTE_F step1
-    (92) f -> . CTE_C step1
-    (93) f -> . llamada
-    (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (16) idCall -> . ID
-    (17) idCall -> . ID DOT ID
-    (18) idCall -> . ID LBRACK exp RBRACK
-    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
-
-    LPAREN          shift and go to state 122
-    CTE_I           shift and go to state 132
-    CTE_F           shift and go to state 133
-    CTE_C           shift and go to state 134
-    ID              shift and go to state 74
-
-    exp                            shift and go to state 146
-    texp                           shift and go to state 127
-    gexp                           shift and go to state 128
-    mexp                           shift and go to state 129
-    t                              shift and go to state 130
-    f                              shift and go to state 131
-    llamada                        shift and go to state 135
-    idCall                         shift and go to state 136
-
 state 116
 
     (71) cond_f -> FOR asignacion . TO exp DO LBRACE listaEstatutos RBRACE
 
-    TO              shift and go to state 147
+    TO              shift and go to state 146
 
 
 state 117
@@ -1730,7 +1724,7 @@ state 117
     ASIGNA          reduce using rule 16 (idCall -> ID .)
     COMMA           reduce using rule 16 (idCall -> ID .)
     RPAREN          reduce using rule 16 (idCall -> ID .)
-    DOT             shift and go to state 148
+    DOT             shift and go to state 147
     LBRACK          shift and go to state 102
 
 
@@ -1748,11 +1742,11 @@ state 118
     (47) estatutos -> . cond_w
     (48) estatutos -> . cond_f
     (104) empty -> .
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (49) asignacion -> . idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
-    (59) returnf -> . RETURN LPAREN exp RPAREN
-    (60) lectura -> . READ LPAREN listaId RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (49) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
+    (57) returnf -> . RETURN LPAREN exp RPAREN
+    (58) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (63) escritura -> . WRITE LPAREN exp lextra RPAREN
     (64) escritura -> . WRITE LPAREN LETRERO lextra RPAREN
     (68) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
@@ -1773,7 +1767,7 @@ state 118
     WHILE           shift and go to state 91
     FOR             shift and go to state 92
 
-    listaEstatutos                 shift and go to state 149
+    listaEstatutos                 shift and go to state 148
     estatutos                      shift and go to state 76
     empty                          shift and go to state 77
     llamada                        shift and go to state 78
@@ -1813,17 +1807,17 @@ state 120
     FLOAT           shift and go to state 23
     CHAR            shift and go to state 24
 
-    listaParam                     shift and go to state 150
+    listaParam                     shift and go to state 149
     param                          shift and go to state 58
     empty                          shift and go to state 59
     tipo                           shift and go to state 60
 
 state 121
 
-    (53) llamada -> ID DOT ID . LPAREN enviaParam RPAREN
+    (51) llamada -> ID DOT ID . LPAREN enviaParam RPAREN
     (17) idCall -> ID DOT ID .
 
-    LPAREN          shift and go to state 151
+    LPAREN          shift and go to state 150
     ASIGNA          reduce using rule 17 (idCall -> ID DOT ID .)
     MULT            reduce using rule 17 (idCall -> ID DOT ID .)
     DIV             reduce using rule 17 (idCall -> ID DOT ID .)
@@ -1848,160 +1842,160 @@ state 121
 state 122
 
     (89) f -> LPAREN . addFF exp RPAREN rmFF
-    (102) addFF -> .
+    (101) addFF -> .
 
-    LPAREN          reduce using rule 102 (addFF -> .)
-    CTE_I           reduce using rule 102 (addFF -> .)
-    CTE_F           reduce using rule 102 (addFF -> .)
-    CTE_C           reduce using rule 102 (addFF -> .)
-    ID              reduce using rule 102 (addFF -> .)
+    LPAREN          reduce using rule 101 (addFF -> .)
+    CTE_I           reduce using rule 101 (addFF -> .)
+    CTE_F           reduce using rule 101 (addFF -> .)
+    CTE_C           reduce using rule 101 (addFF -> .)
+    ID              reduce using rule 101 (addFF -> .)
 
-    addFF                          shift and go to state 152
+    addFF                          shift and go to state 151
 
 state 123
 
-    (54) llamada -> ID LPAREN enviaParam . RPAREN
+    (52) llamada -> ID LPAREN enviaParam . RPAREN
 
-    RPAREN          shift and go to state 153
+    RPAREN          shift and go to state 152
 
 
 state 124
 
-    (55) enviaParam -> paramReferencia .
+    (53) enviaParam -> paramReferencia .
 
-    RPAREN          reduce using rule 55 (enviaParam -> paramReferencia .)
+    RPAREN          reduce using rule 53 (enviaParam -> paramReferencia .)
 
 
 state 125
 
-    (56) enviaParam -> empty .
+    (54) enviaParam -> empty .
 
-    RPAREN          reduce using rule 56 (enviaParam -> empty .)
+    RPAREN          reduce using rule 54 (enviaParam -> empty .)
 
 
 state 126
 
-    (57) paramReferencia -> exp .
-    (58) paramReferencia -> exp . COMMA paramReferencia
+    (55) paramReferencia -> exp .
+    (56) paramReferencia -> exp . COMMA paramReferencia
 
-    RPAREN          reduce using rule 57 (paramReferencia -> exp .)
-    COMMA           shift and go to state 154
+    RPAREN          reduce using rule 55 (paramReferencia -> exp .)
+    COMMA           shift and go to state 153
 
 
 state 127
 
     (72) exp -> texp . step7
-    (73) exp -> texp . step7 OR step2 exp
-    (101) step7 -> .
+    (73) exp -> texp . step7 OR pushPoper exp
+    (100) step7 -> .
 
-    OR              reduce using rule 101 (step7 -> .)
-    COMMA           reduce using rule 101 (step7 -> .)
-    RPAREN          reduce using rule 101 (step7 -> .)
-    RBRACK          reduce using rule 101 (step7 -> .)
-    SCOLON          reduce using rule 101 (step7 -> .)
-    TO              reduce using rule 101 (step7 -> .)
-    DO              reduce using rule 101 (step7 -> .)
+    OR              reduce using rule 100 (step7 -> .)
+    COMMA           reduce using rule 100 (step7 -> .)
+    RPAREN          reduce using rule 100 (step7 -> .)
+    RBRACK          reduce using rule 100 (step7 -> .)
+    SCOLON          reduce using rule 100 (step7 -> .)
+    TO              reduce using rule 100 (step7 -> .)
+    DO              reduce using rule 100 (step7 -> .)
 
-    step7                          shift and go to state 155
+    step7                          shift and go to state 154
 
 state 128
 
     (74) texp -> gexp . step6
-    (75) texp -> gexp . step6 AND step2 texp
-    (100) step6 -> .
+    (75) texp -> gexp . step6 AND pushPoper texp
+    (99) step6 -> .
 
-    AND             reduce using rule 100 (step6 -> .)
-    OR              reduce using rule 100 (step6 -> .)
-    COMMA           reduce using rule 100 (step6 -> .)
-    RPAREN          reduce using rule 100 (step6 -> .)
-    RBRACK          reduce using rule 100 (step6 -> .)
-    SCOLON          reduce using rule 100 (step6 -> .)
-    TO              reduce using rule 100 (step6 -> .)
-    DO              reduce using rule 100 (step6 -> .)
+    AND             reduce using rule 99 (step6 -> .)
+    OR              reduce using rule 99 (step6 -> .)
+    COMMA           reduce using rule 99 (step6 -> .)
+    RPAREN          reduce using rule 99 (step6 -> .)
+    RBRACK          reduce using rule 99 (step6 -> .)
+    SCOLON          reduce using rule 99 (step6 -> .)
+    TO              reduce using rule 99 (step6 -> .)
+    DO              reduce using rule 99 (step6 -> .)
 
-    step6                          shift and go to state 156
+    step6                          shift and go to state 155
 
 state 129
 
     (76) gexp -> mexp . step5
-    (77) gexp -> mexp . step5 LT step2 mexp
-    (78) gexp -> mexp . step5 GT step2 mexp
-    (79) gexp -> mexp . step5 LTE step2 mexp
-    (80) gexp -> mexp . step5 GTE step2 mexp
-    (81) gexp -> mexp . step5 EQUALS step2 mexp
-    (82) gexp -> mexp . step5 NEQUALS step2 mexp
-    (99) step5 -> .
+    (77) gexp -> mexp . step5 LT pushPoper mexp
+    (78) gexp -> mexp . step5 GT pushPoper mexp
+    (79) gexp -> mexp . step5 LTE pushPoper mexp
+    (80) gexp -> mexp . step5 GTE pushPoper mexp
+    (81) gexp -> mexp . step5 EQUALS pushPoper mexp
+    (82) gexp -> mexp . step5 NEQUALS pushPoper mexp
+    (98) step5 -> .
 
-    LT              reduce using rule 99 (step5 -> .)
-    GT              reduce using rule 99 (step5 -> .)
-    LTE             reduce using rule 99 (step5 -> .)
-    GTE             reduce using rule 99 (step5 -> .)
-    EQUALS          reduce using rule 99 (step5 -> .)
-    NEQUALS         reduce using rule 99 (step5 -> .)
-    AND             reduce using rule 99 (step5 -> .)
-    OR              reduce using rule 99 (step5 -> .)
-    COMMA           reduce using rule 99 (step5 -> .)
-    RPAREN          reduce using rule 99 (step5 -> .)
-    RBRACK          reduce using rule 99 (step5 -> .)
-    SCOLON          reduce using rule 99 (step5 -> .)
-    TO              reduce using rule 99 (step5 -> .)
-    DO              reduce using rule 99 (step5 -> .)
+    LT              reduce using rule 98 (step5 -> .)
+    GT              reduce using rule 98 (step5 -> .)
+    LTE             reduce using rule 98 (step5 -> .)
+    GTE             reduce using rule 98 (step5 -> .)
+    EQUALS          reduce using rule 98 (step5 -> .)
+    NEQUALS         reduce using rule 98 (step5 -> .)
+    AND             reduce using rule 98 (step5 -> .)
+    OR              reduce using rule 98 (step5 -> .)
+    COMMA           reduce using rule 98 (step5 -> .)
+    RPAREN          reduce using rule 98 (step5 -> .)
+    RBRACK          reduce using rule 98 (step5 -> .)
+    SCOLON          reduce using rule 98 (step5 -> .)
+    TO              reduce using rule 98 (step5 -> .)
+    DO              reduce using rule 98 (step5 -> .)
 
-    step5                          shift and go to state 157
+    step5                          shift and go to state 156
 
 state 130
 
     (83) mexp -> t . step4
-    (84) mexp -> t . step4 PLUS step2 mexp
-    (85) mexp -> t . step4 MINUS step2 mexp
-    (98) step4 -> .
+    (84) mexp -> t . step4 PLUS pushPoper mexp
+    (85) mexp -> t . step4 MINUS pushPoper mexp
+    (97) step4 -> .
 
-    PLUS            reduce using rule 98 (step4 -> .)
-    MINUS           reduce using rule 98 (step4 -> .)
-    LT              reduce using rule 98 (step4 -> .)
-    GT              reduce using rule 98 (step4 -> .)
-    LTE             reduce using rule 98 (step4 -> .)
-    GTE             reduce using rule 98 (step4 -> .)
-    EQUALS          reduce using rule 98 (step4 -> .)
-    NEQUALS         reduce using rule 98 (step4 -> .)
-    AND             reduce using rule 98 (step4 -> .)
-    OR              reduce using rule 98 (step4 -> .)
-    COMMA           reduce using rule 98 (step4 -> .)
-    RPAREN          reduce using rule 98 (step4 -> .)
-    RBRACK          reduce using rule 98 (step4 -> .)
-    SCOLON          reduce using rule 98 (step4 -> .)
-    TO              reduce using rule 98 (step4 -> .)
-    DO              reduce using rule 98 (step4 -> .)
+    PLUS            reduce using rule 97 (step4 -> .)
+    MINUS           reduce using rule 97 (step4 -> .)
+    LT              reduce using rule 97 (step4 -> .)
+    GT              reduce using rule 97 (step4 -> .)
+    LTE             reduce using rule 97 (step4 -> .)
+    GTE             reduce using rule 97 (step4 -> .)
+    EQUALS          reduce using rule 97 (step4 -> .)
+    NEQUALS         reduce using rule 97 (step4 -> .)
+    AND             reduce using rule 97 (step4 -> .)
+    OR              reduce using rule 97 (step4 -> .)
+    COMMA           reduce using rule 97 (step4 -> .)
+    RPAREN          reduce using rule 97 (step4 -> .)
+    RBRACK          reduce using rule 97 (step4 -> .)
+    SCOLON          reduce using rule 97 (step4 -> .)
+    TO              reduce using rule 97 (step4 -> .)
+    DO              reduce using rule 97 (step4 -> .)
 
-    step4                          shift and go to state 158
+    step4                          shift and go to state 157
 
 state 131
 
     (86) t -> f . step3
-    (87) t -> f . step3 MULT step2 t
-    (88) t -> f . step3 DIV step2 t
-    (97) step3 -> .
+    (87) t -> f . step3 MULT pushPoper t
+    (88) t -> f . step3 DIV pushPoper t
+    (96) step3 -> .
 
-    MULT            reduce using rule 97 (step3 -> .)
-    DIV             reduce using rule 97 (step3 -> .)
-    PLUS            reduce using rule 97 (step3 -> .)
-    MINUS           reduce using rule 97 (step3 -> .)
-    LT              reduce using rule 97 (step3 -> .)
-    GT              reduce using rule 97 (step3 -> .)
-    LTE             reduce using rule 97 (step3 -> .)
-    GTE             reduce using rule 97 (step3 -> .)
-    EQUALS          reduce using rule 97 (step3 -> .)
-    NEQUALS         reduce using rule 97 (step3 -> .)
-    AND             reduce using rule 97 (step3 -> .)
-    OR              reduce using rule 97 (step3 -> .)
-    COMMA           reduce using rule 97 (step3 -> .)
-    RPAREN          reduce using rule 97 (step3 -> .)
-    RBRACK          reduce using rule 97 (step3 -> .)
-    SCOLON          reduce using rule 97 (step3 -> .)
-    TO              reduce using rule 97 (step3 -> .)
-    DO              reduce using rule 97 (step3 -> .)
+    MULT            reduce using rule 96 (step3 -> .)
+    DIV             reduce using rule 96 (step3 -> .)
+    PLUS            reduce using rule 96 (step3 -> .)
+    MINUS           reduce using rule 96 (step3 -> .)
+    LT              reduce using rule 96 (step3 -> .)
+    GT              reduce using rule 96 (step3 -> .)
+    LTE             reduce using rule 96 (step3 -> .)
+    GTE             reduce using rule 96 (step3 -> .)
+    EQUALS          reduce using rule 96 (step3 -> .)
+    NEQUALS         reduce using rule 96 (step3 -> .)
+    AND             reduce using rule 96 (step3 -> .)
+    OR              reduce using rule 96 (step3 -> .)
+    COMMA           reduce using rule 96 (step3 -> .)
+    RPAREN          reduce using rule 96 (step3 -> .)
+    RBRACK          reduce using rule 96 (step3 -> .)
+    SCOLON          reduce using rule 96 (step3 -> .)
+    TO              reduce using rule 96 (step3 -> .)
+    DO              reduce using rule 96 (step3 -> .)
 
-    step3                          shift and go to state 159
+    step3                          shift and go to state 158
 
 state 132
 
@@ -2027,7 +2021,7 @@ state 132
     TO              reduce using rule 95 (step1 -> .)
     DO              reduce using rule 95 (step1 -> .)
 
-    step1                          shift and go to state 160
+    step1                          shift and go to state 159
 
 state 133
 
@@ -2053,7 +2047,7 @@ state 133
     TO              reduce using rule 95 (step1 -> .)
     DO              reduce using rule 95 (step1 -> .)
 
-    step1                          shift and go to state 161
+    step1                          shift and go to state 160
 
 state 134
 
@@ -2079,7 +2073,7 @@ state 134
     TO              reduce using rule 95 (step1 -> .)
     DO              reduce using rule 95 (step1 -> .)
 
-    step1                          shift and go to state 162
+    step1                          shift and go to state 161
 
 state 135
 
@@ -2134,7 +2128,7 @@ state 137
     (18) idCall -> ID LBRACK exp . RBRACK
     (19) idCall -> ID LBRACK exp . RBRACK LBRACK exp RBRACK
 
-    RBRACK          shift and go to state 163
+    RBRACK          shift and go to state 162
 
 
 state 138
@@ -2146,32 +2140,32 @@ state 138
 
 state 139
 
-    (49) asignacion -> idCall ASIGNA asignStep1 . exp pruebaPrint asignStep2
+    (49) asignacion -> idCall ASIGNA pushPoper . exp asignStep2
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -2184,7 +2178,7 @@ state 139
     ID              shift and go to state 74
 
     idCall                         shift and go to state 136
-    exp                            shift and go to state 164
+    exp                            shift and go to state 163
     texp                           shift and go to state 127
     gexp                           shift and go to state 128
     mexp                           shift and go to state 129
@@ -2194,28 +2188,27 @@ state 139
 
 state 140
 
-    (59) returnf -> RETURN LPAREN exp . RPAREN
+    (57) returnf -> RETURN LPAREN exp . RPAREN
 
-    RPAREN          shift and go to state 165
+    RPAREN          shift and go to state 164
 
 
 state 141
 
-    (60) lectura -> READ LPAREN listaId . RPAREN
+    (58) lectura -> READ pushPoper LPAREN . listaId RPAREN
+    (59) listaId -> . idCall popIO
+    (60) listaId -> . idCall COMMA popIO insertOpRead listaId
+    (16) idCall -> . ID
+    (17) idCall -> . ID DOT ID
+    (18) idCall -> . ID LBRACK exp RBRACK
+    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
 
-    RPAREN          shift and go to state 166
+    ID              shift and go to state 117
 
+    listaId                        shift and go to state 165
+    idCall                         shift and go to state 166
 
 state 142
-
-    (61) listaId -> idCall .
-    (62) listaId -> idCall . COMMA listaId
-
-    RPAREN          reduce using rule 61 (listaId -> idCall .)
-    COMMA           shift and go to state 167
-
-
-state 143
 
     (63) escritura -> WRITE LPAREN exp . lextra RPAREN
     (65) lextra -> . COMMA exp lextra
@@ -2223,13 +2216,13 @@ state 143
     (67) lextra -> . empty
     (104) empty -> .
 
-    COMMA           shift and go to state 169
+    COMMA           shift and go to state 168
     RPAREN          reduce using rule 104 (empty -> .)
 
-    lextra                         shift and go to state 168
-    empty                          shift and go to state 170
+    lextra                         shift and go to state 167
+    empty                          shift and go to state 169
 
-state 144
+state 143
 
     (64) escritura -> WRITE LPAREN LETRERO . lextra RPAREN
     (65) lextra -> . COMMA exp lextra
@@ -2237,55 +2230,55 @@ state 144
     (67) lextra -> . empty
     (104) empty -> .
 
-    COMMA           shift and go to state 169
+    COMMA           shift and go to state 168
     RPAREN          reduce using rule 104 (empty -> .)
 
-    lextra                         shift and go to state 171
-    empty                          shift and go to state 170
+    lextra                         shift and go to state 170
+    empty                          shift and go to state 169
 
-state 145
+state 144
 
     (68) condicion -> IF LPAREN exp . RPAREN THEN LBRACE listaEstatutos RBRACE
     (69) condicion -> IF LPAREN exp . RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
+
+    RPAREN          shift and go to state 171
+
+
+state 145
+
+    (70) cond_w -> WHILE LPAREN exp . RPAREN DO LBRACE listaEstatutos RBRACE
 
     RPAREN          shift and go to state 172
 
 
 state 146
 
-    (70) cond_w -> WHILE LPAREN exp . RPAREN DO LBRACE listaEstatutos RBRACE
-
-    RPAREN          shift and go to state 173
-
-
-state 147
-
     (71) cond_f -> FOR asignacion TO . exp DO LBRACE listaEstatutos RBRACE
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -2297,7 +2290,7 @@ state 147
     CTE_C           shift and go to state 134
     ID              shift and go to state 74
 
-    exp                            shift and go to state 174
+    exp                            shift and go to state 173
     texp                           shift and go to state 127
     gexp                           shift and go to state 128
     mexp                           shift and go to state 129
@@ -2306,60 +2299,60 @@ state 147
     llamada                        shift and go to state 135
     idCall                         shift and go to state 136
 
-state 148
+state 147
 
     (17) idCall -> ID DOT . ID
 
-    ID              shift and go to state 175
+    ID              shift and go to state 174
+
+
+state 148
+
+    (36) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos . RBRACE definFunc
+
+    RBRACE          shift and go to state 175
 
 
 state 149
 
-    (36) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos . RBRACE definFunc
+    (24) declarMethods -> tipoMethod FUNC ID LPAREN listaParam . RPAREN LBRACE listaEstatutos RBRACE declarMethods
 
-    RBRACE          shift and go to state 176
+    RPAREN          shift and go to state 176
 
 
 state 150
 
-    (24) declarMethods -> tipoMethod FUNC ID LPAREN listaParam . RPAREN LBRACE listaEstatutos RBRACE declarMethods
-
-    RPAREN          shift and go to state 177
-
-
-state 151
-
-    (53) llamada -> ID DOT ID LPAREN . enviaParam RPAREN
-    (55) enviaParam -> . paramReferencia
-    (56) enviaParam -> . empty
-    (57) paramReferencia -> . exp
-    (58) paramReferencia -> . exp COMMA paramReferencia
+    (51) llamada -> ID DOT ID LPAREN . enviaParam RPAREN
+    (53) enviaParam -> . paramReferencia
+    (54) enviaParam -> . empty
+    (55) paramReferencia -> . exp
+    (56) paramReferencia -> . exp COMMA paramReferencia
     (104) empty -> .
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -2372,7 +2365,7 @@ state 151
     CTE_C           shift and go to state 134
     ID              shift and go to state 74
 
-    enviaParam                     shift and go to state 178
+    enviaParam                     shift and go to state 177
     paramReferencia                shift and go to state 124
     empty                          shift and go to state 125
     exp                            shift and go to state 126
@@ -2384,34 +2377,34 @@ state 151
     llamada                        shift and go to state 135
     idCall                         shift and go to state 136
 
-state 152
+state 151
 
     (89) f -> LPAREN addFF . exp RPAREN rmFF
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -2423,7 +2416,7 @@ state 152
     CTE_C           shift and go to state 134
     ID              shift and go to state 74
 
-    exp                            shift and go to state 179
+    exp                            shift and go to state 178
     texp                           shift and go to state 127
     gexp                           shift and go to state 128
     mexp                           shift and go to state 129
@@ -2432,60 +2425,60 @@ state 152
     llamada                        shift and go to state 135
     idCall                         shift and go to state 136
 
+state 152
+
+    (52) llamada -> ID LPAREN enviaParam RPAREN .
+
+    SCOLON          reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    MULT            reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    DIV             reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    PLUS            reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    MINUS           reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    LT              reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    GT              reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    LTE             reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    GTE             reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    EQUALS          reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    NEQUALS         reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    AND             reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    OR              reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    COMMA           reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    RPAREN          reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    RBRACK          reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    TO              reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+    DO              reduce using rule 52 (llamada -> ID LPAREN enviaParam RPAREN .)
+
+
 state 153
 
-    (54) llamada -> ID LPAREN enviaParam RPAREN .
-
-    SCOLON          reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    MULT            reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    DIV             reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    PLUS            reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    MINUS           reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    LT              reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    GT              reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    LTE             reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    GTE             reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    EQUALS          reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    NEQUALS         reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    AND             reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    OR              reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    COMMA           reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    RPAREN          reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    RBRACK          reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    TO              reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-    DO              reduce using rule 54 (llamada -> ID LPAREN enviaParam RPAREN .)
-
-
-state 154
-
-    (58) paramReferencia -> exp COMMA . paramReferencia
-    (57) paramReferencia -> . exp
-    (58) paramReferencia -> . exp COMMA paramReferencia
+    (56) paramReferencia -> exp COMMA . paramReferencia
+    (55) paramReferencia -> . exp
+    (56) paramReferencia -> . exp COMMA paramReferencia
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -2498,7 +2491,7 @@ state 154
     ID              shift and go to state 74
 
     exp                            shift and go to state 126
-    paramReferencia                shift and go to state 180
+    paramReferencia                shift and go to state 179
     texp                           shift and go to state 127
     gexp                           shift and go to state 128
     mexp                           shift and go to state 129
@@ -2507,10 +2500,10 @@ state 154
     llamada                        shift and go to state 135
     idCall                         shift and go to state 136
 
-state 155
+state 154
 
     (72) exp -> texp step7 .
-    (73) exp -> texp step7 . OR step2 exp
+    (73) exp -> texp step7 . OR pushPoper exp
 
     COMMA           reduce using rule 72 (exp -> texp step7 .)
     RPAREN          reduce using rule 72 (exp -> texp step7 .)
@@ -2518,13 +2511,13 @@ state 155
     SCOLON          reduce using rule 72 (exp -> texp step7 .)
     TO              reduce using rule 72 (exp -> texp step7 .)
     DO              reduce using rule 72 (exp -> texp step7 .)
-    OR              shift and go to state 181
+    OR              shift and go to state 180
 
 
-state 156
+state 155
 
     (74) texp -> gexp step6 .
-    (75) texp -> gexp step6 . AND step2 texp
+    (75) texp -> gexp step6 . AND pushPoper texp
 
     OR              reduce using rule 74 (texp -> gexp step6 .)
     COMMA           reduce using rule 74 (texp -> gexp step6 .)
@@ -2533,18 +2526,18 @@ state 156
     SCOLON          reduce using rule 74 (texp -> gexp step6 .)
     TO              reduce using rule 74 (texp -> gexp step6 .)
     DO              reduce using rule 74 (texp -> gexp step6 .)
-    AND             shift and go to state 182
+    AND             shift and go to state 181
 
 
-state 157
+state 156
 
     (76) gexp -> mexp step5 .
-    (77) gexp -> mexp step5 . LT step2 mexp
-    (78) gexp -> mexp step5 . GT step2 mexp
-    (79) gexp -> mexp step5 . LTE step2 mexp
-    (80) gexp -> mexp step5 . GTE step2 mexp
-    (81) gexp -> mexp step5 . EQUALS step2 mexp
-    (82) gexp -> mexp step5 . NEQUALS step2 mexp
+    (77) gexp -> mexp step5 . LT pushPoper mexp
+    (78) gexp -> mexp step5 . GT pushPoper mexp
+    (79) gexp -> mexp step5 . LTE pushPoper mexp
+    (80) gexp -> mexp step5 . GTE pushPoper mexp
+    (81) gexp -> mexp step5 . EQUALS pushPoper mexp
+    (82) gexp -> mexp step5 . NEQUALS pushPoper mexp
 
     AND             reduce using rule 76 (gexp -> mexp step5 .)
     OR              reduce using rule 76 (gexp -> mexp step5 .)
@@ -2554,19 +2547,19 @@ state 157
     SCOLON          reduce using rule 76 (gexp -> mexp step5 .)
     TO              reduce using rule 76 (gexp -> mexp step5 .)
     DO              reduce using rule 76 (gexp -> mexp step5 .)
-    LT              shift and go to state 183
-    GT              shift and go to state 184
-    LTE             shift and go to state 185
-    GTE             shift and go to state 186
-    EQUALS          shift and go to state 187
-    NEQUALS         shift and go to state 188
+    LT              shift and go to state 182
+    GT              shift and go to state 183
+    LTE             shift and go to state 184
+    GTE             shift and go to state 185
+    EQUALS          shift and go to state 186
+    NEQUALS         shift and go to state 187
 
 
-state 158
+state 157
 
     (83) mexp -> t step4 .
-    (84) mexp -> t step4 . PLUS step2 mexp
-    (85) mexp -> t step4 . MINUS step2 mexp
+    (84) mexp -> t step4 . PLUS pushPoper mexp
+    (85) mexp -> t step4 . MINUS pushPoper mexp
 
     LT              reduce using rule 83 (mexp -> t step4 .)
     GT              reduce using rule 83 (mexp -> t step4 .)
@@ -2582,15 +2575,15 @@ state 158
     SCOLON          reduce using rule 83 (mexp -> t step4 .)
     TO              reduce using rule 83 (mexp -> t step4 .)
     DO              reduce using rule 83 (mexp -> t step4 .)
-    PLUS            shift and go to state 189
-    MINUS           shift and go to state 190
+    PLUS            shift and go to state 188
+    MINUS           shift and go to state 189
 
 
-state 159
+state 158
 
     (86) t -> f step3 .
-    (87) t -> f step3 . MULT step2 t
-    (88) t -> f step3 . DIV step2 t
+    (87) t -> f step3 . MULT pushPoper t
+    (88) t -> f step3 . DIV pushPoper t
 
     PLUS            reduce using rule 86 (t -> f step3 .)
     MINUS           reduce using rule 86 (t -> f step3 .)
@@ -2608,11 +2601,11 @@ state 159
     SCOLON          reduce using rule 86 (t -> f step3 .)
     TO              reduce using rule 86 (t -> f step3 .)
     DO              reduce using rule 86 (t -> f step3 .)
-    MULT            shift and go to state 191
-    DIV             shift and go to state 192
+    MULT            shift and go to state 190
+    DIV             shift and go to state 191
 
 
-state 160
+state 159
 
     (90) f -> CTE_I step1 .
 
@@ -2636,7 +2629,7 @@ state 160
     DO              reduce using rule 90 (f -> CTE_I step1 .)
 
 
-state 161
+state 160
 
     (91) f -> CTE_F step1 .
 
@@ -2660,7 +2653,7 @@ state 161
     DO              reduce using rule 91 (f -> CTE_F step1 .)
 
 
-state 162
+state 161
 
     (92) f -> CTE_C step1 .
 
@@ -2684,7 +2677,7 @@ state 162
     DO              reduce using rule 92 (f -> CTE_C step1 .)
 
 
-state 163
+state 162
 
     (18) idCall -> ID LBRACK exp RBRACK .
     (19) idCall -> ID LBRACK exp RBRACK . LBRACK exp RBRACK
@@ -2708,97 +2701,93 @@ state 163
     SCOLON          reduce using rule 18 (idCall -> ID LBRACK exp RBRACK .)
     TO              reduce using rule 18 (idCall -> ID LBRACK exp RBRACK .)
     DO              reduce using rule 18 (idCall -> ID LBRACK exp RBRACK .)
-    LBRACK          shift and go to state 193
+    LBRACK          shift and go to state 192
 
+
+state 163
+
+    (49) asignacion -> idCall ASIGNA pushPoper exp . asignStep2
+    (50) asignStep2 -> .
+
+    SCOLON          reduce using rule 50 (asignStep2 -> .)
+    TO              reduce using rule 50 (asignStep2 -> .)
+
+    asignStep2                     shift and go to state 193
 
 state 164
 
-    (49) asignacion -> idCall ASIGNA asignStep1 exp . pruebaPrint asignStep2
-    (50) pruebaPrint -> .
+    (57) returnf -> RETURN LPAREN exp RPAREN .
 
-    SCOLON          reduce using rule 50 (pruebaPrint -> .)
-    TO              reduce using rule 50 (pruebaPrint -> .)
+    SCOLON          reduce using rule 57 (returnf -> RETURN LPAREN exp RPAREN .)
 
-    pruebaPrint                    shift and go to state 194
 
 state 165
 
-    (59) returnf -> RETURN LPAREN exp RPAREN .
+    (58) lectura -> READ pushPoper LPAREN listaId . RPAREN
 
-    SCOLON          reduce using rule 59 (returnf -> RETURN LPAREN exp RPAREN .)
+    RPAREN          shift and go to state 194
 
 
 state 166
 
-    (60) lectura -> READ LPAREN listaId RPAREN .
+    (59) listaId -> idCall . popIO
+    (60) listaId -> idCall . COMMA popIO insertOpRead listaId
+    (62) popIO -> .
 
-    SCOLON          reduce using rule 60 (lectura -> READ LPAREN listaId RPAREN .)
+    COMMA           shift and go to state 196
+    RPAREN          reduce using rule 62 (popIO -> .)
 
+    popIO                          shift and go to state 195
 
 state 167
 
-    (62) listaId -> idCall COMMA . listaId
-    (61) listaId -> . idCall
-    (62) listaId -> . idCall COMMA listaId
-    (16) idCall -> . ID
-    (17) idCall -> . ID DOT ID
-    (18) idCall -> . ID LBRACK exp RBRACK
-    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
-
-    ID              shift and go to state 117
-
-    idCall                         shift and go to state 142
-    listaId                        shift and go to state 195
-
-state 168
-
     (63) escritura -> WRITE LPAREN exp lextra . RPAREN
 
-    RPAREN          shift and go to state 196
+    RPAREN          shift and go to state 197
 
 
-state 169
+state 168
 
     (65) lextra -> COMMA . exp lextra
     (66) lextra -> COMMA . LETRERO lextra
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
     (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
 
-    LETRERO         shift and go to state 198
+    LETRERO         shift and go to state 199
     LPAREN          shift and go to state 122
     CTE_I           shift and go to state 132
     CTE_F           shift and go to state 133
     CTE_C           shift and go to state 134
     ID              shift and go to state 74
 
-    exp                            shift and go to state 197
+    exp                            shift and go to state 198
     texp                           shift and go to state 127
     gexp                           shift and go to state 128
     mexp                           shift and go to state 129
@@ -2807,43 +2796,43 @@ state 169
     llamada                        shift and go to state 135
     idCall                         shift and go to state 136
 
-state 170
+state 169
 
     (67) lextra -> empty .
 
     RPAREN          reduce using rule 67 (lextra -> empty .)
 
 
-state 171
+state 170
 
     (64) escritura -> WRITE LPAREN LETRERO lextra . RPAREN
 
-    RPAREN          shift and go to state 199
+    RPAREN          shift and go to state 200
 
 
-state 172
+state 171
 
     (68) condicion -> IF LPAREN exp RPAREN . THEN LBRACE listaEstatutos RBRACE
     (69) condicion -> IF LPAREN exp RPAREN . THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
 
-    THEN            shift and go to state 200
+    THEN            shift and go to state 201
 
 
-state 173
+state 172
 
     (70) cond_w -> WHILE LPAREN exp RPAREN . DO LBRACE listaEstatutos RBRACE
-
-    DO              shift and go to state 201
-
-
-state 174
-
-    (71) cond_f -> FOR asignacion TO exp . DO LBRACE listaEstatutos RBRACE
 
     DO              shift and go to state 202
 
 
-state 175
+state 173
+
+    (71) cond_f -> FOR asignacion TO exp . DO LBRACE listaEstatutos RBRACE
+
+    DO              shift and go to state 203
+
+
+state 174
 
     (17) idCall -> ID DOT ID .
 
@@ -2852,7 +2841,7 @@ state 175
     RPAREN          reduce using rule 17 (idCall -> ID DOT ID .)
 
 
-state 176
+state 175
 
     (36) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE . definFunc
     (36) definFunc -> . tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE definFunc
@@ -2870,221 +2859,221 @@ state 176
     MAIN            reduce using rule 104 (empty -> .)
 
     tipoMethod                     shift and go to state 14
-    definFunc                      shift and go to state 203
+    definFunc                      shift and go to state 204
     empty                          shift and go to state 15
 
-state 177
+state 176
 
     (24) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN . LBRACE listaEstatutos RBRACE declarMethods
 
-    LBRACE          shift and go to state 204
+    LBRACE          shift and go to state 205
 
 
-state 178
+state 177
 
-    (53) llamada -> ID DOT ID LPAREN enviaParam . RPAREN
-
-    RPAREN          shift and go to state 205
-
-
-state 179
-
-    (89) f -> LPAREN addFF exp . RPAREN rmFF
+    (51) llamada -> ID DOT ID LPAREN enviaParam . RPAREN
 
     RPAREN          shift and go to state 206
 
 
+state 178
+
+    (89) f -> LPAREN addFF exp . RPAREN rmFF
+
+    RPAREN          shift and go to state 207
+
+
+state 179
+
+    (56) paramReferencia -> exp COMMA paramReferencia .
+
+    RPAREN          reduce using rule 56 (paramReferencia -> exp COMMA paramReferencia .)
+
+
 state 180
 
-    (58) paramReferencia -> exp COMMA paramReferencia .
+    (73) exp -> texp step7 OR . pushPoper exp
+    (103) pushPoper -> .
 
-    RPAREN          reduce using rule 58 (paramReferencia -> exp COMMA paramReferencia .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
+    pushPoper                      shift and go to state 208
 
 state 181
 
-    (73) exp -> texp step7 OR . step2 exp
-    (96) step2 -> .
+    (75) texp -> gexp step6 AND . pushPoper texp
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 207
+    pushPoper                      shift and go to state 209
 
 state 182
 
-    (75) texp -> gexp step6 AND . step2 texp
-    (96) step2 -> .
+    (77) gexp -> mexp step5 LT . pushPoper mexp
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 208
+    pushPoper                      shift and go to state 210
 
 state 183
 
-    (77) gexp -> mexp step5 LT . step2 mexp
-    (96) step2 -> .
+    (78) gexp -> mexp step5 GT . pushPoper mexp
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 209
+    pushPoper                      shift and go to state 211
 
 state 184
 
-    (78) gexp -> mexp step5 GT . step2 mexp
-    (96) step2 -> .
+    (79) gexp -> mexp step5 LTE . pushPoper mexp
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 210
+    pushPoper                      shift and go to state 212
 
 state 185
 
-    (79) gexp -> mexp step5 LTE . step2 mexp
-    (96) step2 -> .
+    (80) gexp -> mexp step5 GTE . pushPoper mexp
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 211
+    pushPoper                      shift and go to state 213
 
 state 186
 
-    (80) gexp -> mexp step5 GTE . step2 mexp
-    (96) step2 -> .
+    (81) gexp -> mexp step5 EQUALS . pushPoper mexp
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 212
+    pushPoper                      shift and go to state 214
 
 state 187
 
-    (81) gexp -> mexp step5 EQUALS . step2 mexp
-    (96) step2 -> .
+    (82) gexp -> mexp step5 NEQUALS . pushPoper mexp
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 213
+    pushPoper                      shift and go to state 215
 
 state 188
 
-    (82) gexp -> mexp step5 NEQUALS . step2 mexp
-    (96) step2 -> .
+    (84) mexp -> t step4 PLUS . pushPoper mexp
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 214
+    pushPoper                      shift and go to state 216
 
 state 189
 
-    (84) mexp -> t step4 PLUS . step2 mexp
-    (96) step2 -> .
+    (85) mexp -> t step4 MINUS . pushPoper mexp
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 215
+    pushPoper                      shift and go to state 217
 
 state 190
 
-    (85) mexp -> t step4 MINUS . step2 mexp
-    (96) step2 -> .
+    (87) t -> f step3 MULT . pushPoper t
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 216
+    pushPoper                      shift and go to state 218
 
 state 191
 
-    (87) t -> f step3 MULT . step2 t
-    (96) step2 -> .
+    (88) t -> f step3 DIV . pushPoper t
+    (103) pushPoper -> .
 
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
+    LPAREN          reduce using rule 103 (pushPoper -> .)
+    CTE_I           reduce using rule 103 (pushPoper -> .)
+    CTE_F           reduce using rule 103 (pushPoper -> .)
+    CTE_C           reduce using rule 103 (pushPoper -> .)
+    ID              reduce using rule 103 (pushPoper -> .)
 
-    step2                          shift and go to state 217
+    pushPoper                      shift and go to state 219
 
 state 192
 
-    (88) t -> f step3 DIV . step2 t
-    (96) step2 -> .
-
-    LPAREN          reduce using rule 96 (step2 -> .)
-    CTE_I           reduce using rule 96 (step2 -> .)
-    CTE_F           reduce using rule 96 (step2 -> .)
-    CTE_C           reduce using rule 96 (step2 -> .)
-    ID              reduce using rule 96 (step2 -> .)
-
-    step2                          shift and go to state 218
-
-state 193
-
     (19) idCall -> ID LBRACK exp RBRACK LBRACK . exp RBRACK
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3096,7 +3085,7 @@ state 193
     CTE_C           shift and go to state 134
     ID              shift and go to state 74
 
-    exp                            shift and go to state 219
+    exp                            shift and go to state 220
     texp                           shift and go to state 127
     gexp                           shift and go to state 128
     mexp                           shift and go to state 129
@@ -3105,31 +3094,45 @@ state 193
     llamada                        shift and go to state 135
     idCall                         shift and go to state 136
 
+state 193
+
+    (49) asignacion -> idCall ASIGNA pushPoper exp asignStep2 .
+
+    SCOLON          reduce using rule 49 (asignacion -> idCall ASIGNA pushPoper exp asignStep2 .)
+    TO              reduce using rule 49 (asignacion -> idCall ASIGNA pushPoper exp asignStep2 .)
+
+
 state 194
 
-    (49) asignacion -> idCall ASIGNA asignStep1 exp pruebaPrint . asignStep2
-    (52) asignStep2 -> .
+    (58) lectura -> READ pushPoper LPAREN listaId RPAREN .
 
-    SCOLON          reduce using rule 52 (asignStep2 -> .)
-    TO              reduce using rule 52 (asignStep2 -> .)
+    SCOLON          reduce using rule 58 (lectura -> READ pushPoper LPAREN listaId RPAREN .)
 
-    asignStep2                     shift and go to state 220
 
 state 195
 
-    (62) listaId -> idCall COMMA listaId .
+    (59) listaId -> idCall popIO .
 
-    RPAREN          reduce using rule 62 (listaId -> idCall COMMA listaId .)
+    RPAREN          reduce using rule 59 (listaId -> idCall popIO .)
 
 
 state 196
+
+    (60) listaId -> idCall COMMA . popIO insertOpRead listaId
+    (62) popIO -> .
+
+    ID              reduce using rule 62 (popIO -> .)
+
+    popIO                          shift and go to state 221
+
+state 197
 
     (63) escritura -> WRITE LPAREN exp lextra RPAREN .
 
     SCOLON          reduce using rule 63 (escritura -> WRITE LPAREN exp lextra RPAREN .)
 
 
-state 197
+state 198
 
     (65) lextra -> COMMA exp . lextra
     (65) lextra -> . COMMA exp lextra
@@ -3137,13 +3140,13 @@ state 197
     (67) lextra -> . empty
     (104) empty -> .
 
-    COMMA           shift and go to state 169
+    COMMA           shift and go to state 168
     RPAREN          reduce using rule 104 (empty -> .)
 
-    lextra                         shift and go to state 221
-    empty                          shift and go to state 170
+    lextra                         shift and go to state 222
+    empty                          shift and go to state 169
 
-state 198
+state 199
 
     (66) lextra -> COMMA LETRERO . lextra
     (65) lextra -> . COMMA exp lextra
@@ -3151,49 +3154,49 @@ state 198
     (67) lextra -> . empty
     (104) empty -> .
 
-    COMMA           shift and go to state 169
+    COMMA           shift and go to state 168
     RPAREN          reduce using rule 104 (empty -> .)
 
-    lextra                         shift and go to state 222
-    empty                          shift and go to state 170
+    lextra                         shift and go to state 223
+    empty                          shift and go to state 169
 
-state 199
+state 200
 
     (64) escritura -> WRITE LPAREN LETRERO lextra RPAREN .
 
     SCOLON          reduce using rule 64 (escritura -> WRITE LPAREN LETRERO lextra RPAREN .)
 
 
-state 200
+state 201
 
     (68) condicion -> IF LPAREN exp RPAREN THEN . LBRACE listaEstatutos RBRACE
     (69) condicion -> IF LPAREN exp RPAREN THEN . LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
-
-    LBRACE          shift and go to state 223
-
-
-state 201
-
-    (70) cond_w -> WHILE LPAREN exp RPAREN DO . LBRACE listaEstatutos RBRACE
 
     LBRACE          shift and go to state 224
 
 
 state 202
 
-    (71) cond_f -> FOR asignacion TO exp DO . LBRACE listaEstatutos RBRACE
+    (70) cond_w -> WHILE LPAREN exp RPAREN DO . LBRACE listaEstatutos RBRACE
 
     LBRACE          shift and go to state 225
 
 
 state 203
 
+    (71) cond_f -> FOR asignacion TO exp DO . LBRACE listaEstatutos RBRACE
+
+    LBRACE          shift and go to state 226
+
+
+state 204
+
     (36) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE definFunc .
 
     MAIN            reduce using rule 36 (definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE definFunc .)
 
 
-state 204
+state 205
 
     (24) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE . listaEstatutos RBRACE declarMethods
     (39) listaEstatutos -> . estatutos listaEstatutos
@@ -3207,11 +3210,11 @@ state 204
     (47) estatutos -> . cond_w
     (48) estatutos -> . cond_f
     (104) empty -> .
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (49) asignacion -> . idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
-    (59) returnf -> . RETURN LPAREN exp RPAREN
-    (60) lectura -> . READ LPAREN listaId RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (49) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
+    (57) returnf -> . RETURN LPAREN exp RPAREN
+    (58) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (63) escritura -> . WRITE LPAREN exp lextra RPAREN
     (64) escritura -> . WRITE LPAREN LETRERO lextra RPAREN
     (68) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
@@ -3232,7 +3235,7 @@ state 204
     WHILE           shift and go to state 91
     FOR             shift and go to state 92
 
-    listaEstatutos                 shift and go to state 226
+    listaEstatutos                 shift and go to state 227
     estatutos                      shift and go to state 76
     empty                          shift and go to state 77
     llamada                        shift and go to state 78
@@ -3245,84 +3248,84 @@ state 204
     cond_f                         shift and go to state 85
     idCall                         shift and go to state 86
 
-state 205
-
-    (53) llamada -> ID DOT ID LPAREN enviaParam RPAREN .
-
-    SCOLON          reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    MULT            reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    DIV             reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    PLUS            reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    MINUS           reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    LT              reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    GT              reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    LTE             reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    GTE             reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    EQUALS          reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    NEQUALS         reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    AND             reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    OR              reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    COMMA           reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    RPAREN          reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    RBRACK          reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    TO              reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-    DO              reduce using rule 53 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
-
-
 state 206
 
-    (89) f -> LPAREN addFF exp RPAREN . rmFF
-    (103) rmFF -> .
+    (51) llamada -> ID DOT ID LPAREN enviaParam RPAREN .
 
-    MULT            reduce using rule 103 (rmFF -> .)
-    DIV             reduce using rule 103 (rmFF -> .)
-    PLUS            reduce using rule 103 (rmFF -> .)
-    MINUS           reduce using rule 103 (rmFF -> .)
-    LT              reduce using rule 103 (rmFF -> .)
-    GT              reduce using rule 103 (rmFF -> .)
-    LTE             reduce using rule 103 (rmFF -> .)
-    GTE             reduce using rule 103 (rmFF -> .)
-    EQUALS          reduce using rule 103 (rmFF -> .)
-    NEQUALS         reduce using rule 103 (rmFF -> .)
-    AND             reduce using rule 103 (rmFF -> .)
-    OR              reduce using rule 103 (rmFF -> .)
-    COMMA           reduce using rule 103 (rmFF -> .)
-    RPAREN          reduce using rule 103 (rmFF -> .)
-    RBRACK          reduce using rule 103 (rmFF -> .)
-    SCOLON          reduce using rule 103 (rmFF -> .)
-    TO              reduce using rule 103 (rmFF -> .)
-    DO              reduce using rule 103 (rmFF -> .)
+    SCOLON          reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    MULT            reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    DIV             reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    PLUS            reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    MINUS           reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    LT              reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    GT              reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    LTE             reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    GTE             reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    EQUALS          reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    NEQUALS         reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    AND             reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    OR              reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    COMMA           reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    RPAREN          reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    RBRACK          reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    TO              reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
+    DO              reduce using rule 51 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
 
-    rmFF                           shift and go to state 227
 
 state 207
 
-    (73) exp -> texp step7 OR step2 . exp
+    (89) f -> LPAREN addFF exp RPAREN . rmFF
+    (102) rmFF -> .
+
+    MULT            reduce using rule 102 (rmFF -> .)
+    DIV             reduce using rule 102 (rmFF -> .)
+    PLUS            reduce using rule 102 (rmFF -> .)
+    MINUS           reduce using rule 102 (rmFF -> .)
+    LT              reduce using rule 102 (rmFF -> .)
+    GT              reduce using rule 102 (rmFF -> .)
+    LTE             reduce using rule 102 (rmFF -> .)
+    GTE             reduce using rule 102 (rmFF -> .)
+    EQUALS          reduce using rule 102 (rmFF -> .)
+    NEQUALS         reduce using rule 102 (rmFF -> .)
+    AND             reduce using rule 102 (rmFF -> .)
+    OR              reduce using rule 102 (rmFF -> .)
+    COMMA           reduce using rule 102 (rmFF -> .)
+    RPAREN          reduce using rule 102 (rmFF -> .)
+    RBRACK          reduce using rule 102 (rmFF -> .)
+    SCOLON          reduce using rule 102 (rmFF -> .)
+    TO              reduce using rule 102 (rmFF -> .)
+    DO              reduce using rule 102 (rmFF -> .)
+
+    rmFF                           shift and go to state 228
+
+state 208
+
+    (73) exp -> texp step7 OR pushPoper . exp
     (72) exp -> . texp step7
-    (73) exp -> . texp step7 OR step2 exp
+    (73) exp -> . texp step7 OR pushPoper exp
     (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
+    (75) texp -> . gexp step6 AND pushPoper texp
     (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3335,53 +3338,8 @@ state 207
     ID              shift and go to state 74
 
     texp                           shift and go to state 127
-    exp                            shift and go to state 228
+    exp                            shift and go to state 229
     gexp                           shift and go to state 128
-    mexp                           shift and go to state 129
-    t                              shift and go to state 130
-    f                              shift and go to state 131
-    llamada                        shift and go to state 135
-    idCall                         shift and go to state 136
-
-state 208
-
-    (75) texp -> gexp step6 AND step2 . texp
-    (74) texp -> . gexp step6
-    (75) texp -> . gexp step6 AND step2 texp
-    (76) gexp -> . mexp step5
-    (77) gexp -> . mexp step5 LT step2 mexp
-    (78) gexp -> . mexp step5 GT step2 mexp
-    (79) gexp -> . mexp step5 LTE step2 mexp
-    (80) gexp -> . mexp step5 GTE step2 mexp
-    (81) gexp -> . mexp step5 EQUALS step2 mexp
-    (82) gexp -> . mexp step5 NEQUALS step2 mexp
-    (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
-    (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
-    (89) f -> . LPAREN addFF exp RPAREN rmFF
-    (90) f -> . CTE_I step1
-    (91) f -> . CTE_F step1
-    (92) f -> . CTE_C step1
-    (93) f -> . llamada
-    (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (16) idCall -> . ID
-    (17) idCall -> . ID DOT ID
-    (18) idCall -> . ID LBRACK exp RBRACK
-    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
-
-    LPAREN          shift and go to state 122
-    CTE_I           shift and go to state 132
-    CTE_F           shift and go to state 133
-    CTE_C           shift and go to state 134
-    ID              shift and go to state 74
-
-    gexp                           shift and go to state 128
-    texp                           shift and go to state 229
     mexp                           shift and go to state 129
     t                              shift and go to state 130
     f                              shift and go to state 131
@@ -3390,21 +3348,30 @@ state 208
 
 state 209
 
-    (77) gexp -> mexp step5 LT step2 . mexp
+    (75) texp -> gexp step6 AND pushPoper . texp
+    (74) texp -> . gexp step6
+    (75) texp -> . gexp step6 AND pushPoper texp
+    (76) gexp -> . mexp step5
+    (77) gexp -> . mexp step5 LT pushPoper mexp
+    (78) gexp -> . mexp step5 GT pushPoper mexp
+    (79) gexp -> . mexp step5 LTE pushPoper mexp
+    (80) gexp -> . mexp step5 GTE pushPoper mexp
+    (81) gexp -> . mexp step5 EQUALS pushPoper mexp
+    (82) gexp -> . mexp step5 NEQUALS pushPoper mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3416,7 +3383,9 @@ state 209
     CTE_C           shift and go to state 134
     ID              shift and go to state 74
 
-    mexp                           shift and go to state 230
+    gexp                           shift and go to state 128
+    texp                           shift and go to state 230
+    mexp                           shift and go to state 129
     t                              shift and go to state 130
     f                              shift and go to state 131
     llamada                        shift and go to state 135
@@ -3424,21 +3393,21 @@ state 209
 
 state 210
 
-    (78) gexp -> mexp step5 GT step2 . mexp
+    (77) gexp -> mexp step5 LT pushPoper . mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3458,21 +3427,21 @@ state 210
 
 state 211
 
-    (79) gexp -> mexp step5 LTE step2 . mexp
+    (78) gexp -> mexp step5 GT pushPoper . mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3492,21 +3461,21 @@ state 211
 
 state 212
 
-    (80) gexp -> mexp step5 GTE step2 . mexp
+    (79) gexp -> mexp step5 LTE pushPoper . mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3526,21 +3495,21 @@ state 212
 
 state 213
 
-    (81) gexp -> mexp step5 EQUALS step2 . mexp
+    (80) gexp -> mexp step5 GTE pushPoper . mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3560,21 +3529,21 @@ state 213
 
 state 214
 
-    (82) gexp -> mexp step5 NEQUALS step2 . mexp
+    (81) gexp -> mexp step5 EQUALS pushPoper . mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3594,21 +3563,21 @@ state 214
 
 state 215
 
-    (84) mexp -> t step4 PLUS step2 . mexp
+    (82) gexp -> mexp step5 NEQUALS pushPoper . mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3620,29 +3589,29 @@ state 215
     CTE_C           shift and go to state 134
     ID              shift and go to state 74
 
-    t                              shift and go to state 130
     mexp                           shift and go to state 236
+    t                              shift and go to state 130
     f                              shift and go to state 131
     llamada                        shift and go to state 135
     idCall                         shift and go to state 136
 
 state 216
 
-    (85) mexp -> t step4 MINUS step2 . mexp
+    (84) mexp -> t step4 PLUS pushPoper . mexp
     (83) mexp -> . t step4
-    (84) mexp -> . t step4 PLUS step2 mexp
-    (85) mexp -> . t step4 MINUS step2 mexp
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3662,18 +3631,21 @@ state 216
 
 state 217
 
-    (87) t -> f step3 MULT step2 . t
+    (85) mexp -> t step4 MINUS pushPoper . mexp
+    (83) mexp -> . t step4
+    (84) mexp -> . t step4 PLUS pushPoper mexp
+    (85) mexp -> . t step4 MINUS pushPoper mexp
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3685,25 +3657,26 @@ state 217
     CTE_C           shift and go to state 134
     ID              shift and go to state 74
 
+    t                              shift and go to state 130
+    mexp                           shift and go to state 238
     f                              shift and go to state 131
-    t                              shift and go to state 238
     llamada                        shift and go to state 135
     idCall                         shift and go to state 136
 
 state 218
 
-    (88) t -> f step3 DIV step2 . t
+    (87) t -> f step3 MULT pushPoper . t
     (86) t -> . f step3
-    (87) t -> . f step3 MULT step2 t
-    (88) t -> . f step3 DIV step2 t
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
     (89) f -> . LPAREN addFF exp RPAREN rmFF
     (90) f -> . CTE_I step1
     (91) f -> . CTE_F step1
     (92) f -> . CTE_C step1
     (93) f -> . llamada
     (94) f -> . idCall
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
     (16) idCall -> . ID
     (17) idCall -> . ID DOT ID
     (18) idCall -> . ID LBRACK exp RBRACK
@@ -3722,34 +3695,65 @@ state 218
 
 state 219
 
-    (19) idCall -> ID LBRACK exp RBRACK LBRACK exp . RBRACK
+    (88) t -> f step3 DIV pushPoper . t
+    (86) t -> . f step3
+    (87) t -> . f step3 MULT pushPoper t
+    (88) t -> . f step3 DIV pushPoper t
+    (89) f -> . LPAREN addFF exp RPAREN rmFF
+    (90) f -> . CTE_I step1
+    (91) f -> . CTE_F step1
+    (92) f -> . CTE_C step1
+    (93) f -> . llamada
+    (94) f -> . idCall
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (16) idCall -> . ID
+    (17) idCall -> . ID DOT ID
+    (18) idCall -> . ID LBRACK exp RBRACK
+    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
 
-    RBRACK          shift and go to state 240
+    LPAREN          shift and go to state 122
+    CTE_I           shift and go to state 132
+    CTE_F           shift and go to state 133
+    CTE_C           shift and go to state 134
+    ID              shift and go to state 74
 
+    f                              shift and go to state 131
+    t                              shift and go to state 240
+    llamada                        shift and go to state 135
+    idCall                         shift and go to state 136
 
 state 220
 
-    (49) asignacion -> idCall ASIGNA asignStep1 exp pruebaPrint asignStep2 .
+    (19) idCall -> ID LBRACK exp RBRACK LBRACK exp . RBRACK
 
-    SCOLON          reduce using rule 49 (asignacion -> idCall ASIGNA asignStep1 exp pruebaPrint asignStep2 .)
-    TO              reduce using rule 49 (asignacion -> idCall ASIGNA asignStep1 exp pruebaPrint asignStep2 .)
+    RBRACK          shift and go to state 241
 
 
 state 221
+
+    (60) listaId -> idCall COMMA popIO . insertOpRead listaId
+    (61) insertOpRead -> .
+
+    ID              reduce using rule 61 (insertOpRead -> .)
+
+    insertOpRead                   shift and go to state 242
+
+state 222
 
     (65) lextra -> COMMA exp lextra .
 
     RPAREN          reduce using rule 65 (lextra -> COMMA exp lextra .)
 
 
-state 222
+state 223
 
     (66) lextra -> COMMA LETRERO lextra .
 
     RPAREN          reduce using rule 66 (lextra -> COMMA LETRERO lextra .)
 
 
-state 223
+state 224
 
     (68) condicion -> IF LPAREN exp RPAREN THEN LBRACE . listaEstatutos RBRACE
     (69) condicion -> IF LPAREN exp RPAREN THEN LBRACE . listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
@@ -3764,11 +3768,11 @@ state 223
     (47) estatutos -> . cond_w
     (48) estatutos -> . cond_f
     (104) empty -> .
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (49) asignacion -> . idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
-    (59) returnf -> . RETURN LPAREN exp RPAREN
-    (60) lectura -> . READ LPAREN listaId RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (49) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
+    (57) returnf -> . RETURN LPAREN exp RPAREN
+    (58) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (63) escritura -> . WRITE LPAREN exp lextra RPAREN
     (64) escritura -> . WRITE LPAREN LETRERO lextra RPAREN
     (68) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
@@ -3789,59 +3793,7 @@ state 223
     WHILE           shift and go to state 91
     FOR             shift and go to state 92
 
-    listaEstatutos                 shift and go to state 241
-    estatutos                      shift and go to state 76
-    empty                          shift and go to state 77
-    llamada                        shift and go to state 78
-    asignacion                     shift and go to state 79
-    returnf                        shift and go to state 80
-    lectura                        shift and go to state 81
-    escritura                      shift and go to state 82
-    condicion                      shift and go to state 83
-    cond_w                         shift and go to state 84
-    cond_f                         shift and go to state 85
-    idCall                         shift and go to state 86
-
-state 224
-
-    (70) cond_w -> WHILE LPAREN exp RPAREN DO LBRACE . listaEstatutos RBRACE
-    (39) listaEstatutos -> . estatutos listaEstatutos
-    (40) listaEstatutos -> . empty
-    (41) estatutos -> . llamada SCOLON
-    (42) estatutos -> . asignacion SCOLON
-    (43) estatutos -> . returnf SCOLON
-    (44) estatutos -> . lectura SCOLON
-    (45) estatutos -> . escritura SCOLON
-    (46) estatutos -> . condicion
-    (47) estatutos -> . cond_w
-    (48) estatutos -> . cond_f
-    (104) empty -> .
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (49) asignacion -> . idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
-    (59) returnf -> . RETURN LPAREN exp RPAREN
-    (60) lectura -> . READ LPAREN listaId RPAREN
-    (63) escritura -> . WRITE LPAREN exp lextra RPAREN
-    (64) escritura -> . WRITE LPAREN LETRERO lextra RPAREN
-    (68) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
-    (69) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
-    (70) cond_w -> . WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos RBRACE
-    (71) cond_f -> . FOR asignacion TO exp DO LBRACE listaEstatutos RBRACE
-    (16) idCall -> . ID
-    (17) idCall -> . ID DOT ID
-    (18) idCall -> . ID LBRACK exp RBRACK
-    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
-
-    RBRACE          reduce using rule 104 (empty -> .)
-    ID              shift and go to state 74
-    RETURN          shift and go to state 87
-    READ            shift and go to state 88
-    WRITE           shift and go to state 89
-    IF              shift and go to state 90
-    WHILE           shift and go to state 91
-    FOR             shift and go to state 92
-
-    listaEstatutos                 shift and go to state 242
+    listaEstatutos                 shift and go to state 243
     estatutos                      shift and go to state 76
     empty                          shift and go to state 77
     llamada                        shift and go to state 78
@@ -3856,6 +3808,58 @@ state 224
 
 state 225
 
+    (70) cond_w -> WHILE LPAREN exp RPAREN DO LBRACE . listaEstatutos RBRACE
+    (39) listaEstatutos -> . estatutos listaEstatutos
+    (40) listaEstatutos -> . empty
+    (41) estatutos -> . llamada SCOLON
+    (42) estatutos -> . asignacion SCOLON
+    (43) estatutos -> . returnf SCOLON
+    (44) estatutos -> . lectura SCOLON
+    (45) estatutos -> . escritura SCOLON
+    (46) estatutos -> . condicion
+    (47) estatutos -> . cond_w
+    (48) estatutos -> . cond_f
+    (104) empty -> .
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (49) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
+    (57) returnf -> . RETURN LPAREN exp RPAREN
+    (58) lectura -> . READ pushPoper LPAREN listaId RPAREN
+    (63) escritura -> . WRITE LPAREN exp lextra RPAREN
+    (64) escritura -> . WRITE LPAREN LETRERO lextra RPAREN
+    (68) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
+    (69) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
+    (70) cond_w -> . WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos RBRACE
+    (71) cond_f -> . FOR asignacion TO exp DO LBRACE listaEstatutos RBRACE
+    (16) idCall -> . ID
+    (17) idCall -> . ID DOT ID
+    (18) idCall -> . ID LBRACK exp RBRACK
+    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
+
+    RBRACE          reduce using rule 104 (empty -> .)
+    ID              shift and go to state 74
+    RETURN          shift and go to state 87
+    READ            shift and go to state 88
+    WRITE           shift and go to state 89
+    IF              shift and go to state 90
+    WHILE           shift and go to state 91
+    FOR             shift and go to state 92
+
+    listaEstatutos                 shift and go to state 244
+    estatutos                      shift and go to state 76
+    empty                          shift and go to state 77
+    llamada                        shift and go to state 78
+    asignacion                     shift and go to state 79
+    returnf                        shift and go to state 80
+    lectura                        shift and go to state 81
+    escritura                      shift and go to state 82
+    condicion                      shift and go to state 83
+    cond_w                         shift and go to state 84
+    cond_f                         shift and go to state 85
+    idCall                         shift and go to state 86
+
+state 226
+
     (71) cond_f -> FOR asignacion TO exp DO LBRACE . listaEstatutos RBRACE
     (39) listaEstatutos -> . estatutos listaEstatutos
     (40) listaEstatutos -> . empty
@@ -3868,11 +3872,11 @@ state 225
     (47) estatutos -> . cond_w
     (48) estatutos -> . cond_f
     (104) empty -> .
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (49) asignacion -> . idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
-    (59) returnf -> . RETURN LPAREN exp RPAREN
-    (60) lectura -> . READ LPAREN listaId RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (49) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
+    (57) returnf -> . RETURN LPAREN exp RPAREN
+    (58) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (63) escritura -> . WRITE LPAREN exp lextra RPAREN
     (64) escritura -> . WRITE LPAREN LETRERO lextra RPAREN
     (68) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
@@ -3894,7 +3898,7 @@ state 225
     FOR             shift and go to state 92
 
     asignacion                     shift and go to state 79
-    listaEstatutos                 shift and go to state 243
+    listaEstatutos                 shift and go to state 245
     estatutos                      shift and go to state 76
     empty                          shift and go to state 77
     llamada                        shift and go to state 78
@@ -3906,14 +3910,14 @@ state 225
     cond_f                         shift and go to state 85
     idCall                         shift and go to state 86
 
-state 226
+state 227
 
     (24) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos . RBRACE declarMethods
 
-    RBRACE          shift and go to state 244
+    RBRACE          shift and go to state 246
 
 
-state 227
+state 228
 
     (89) f -> LPAREN addFF exp RPAREN rmFF .
 
@@ -3937,200 +3941,200 @@ state 227
     DO              reduce using rule 89 (f -> LPAREN addFF exp RPAREN rmFF .)
 
 
-state 228
-
-    (73) exp -> texp step7 OR step2 exp .
-
-    COMMA           reduce using rule 73 (exp -> texp step7 OR step2 exp .)
-    RPAREN          reduce using rule 73 (exp -> texp step7 OR step2 exp .)
-    RBRACK          reduce using rule 73 (exp -> texp step7 OR step2 exp .)
-    SCOLON          reduce using rule 73 (exp -> texp step7 OR step2 exp .)
-    TO              reduce using rule 73 (exp -> texp step7 OR step2 exp .)
-    DO              reduce using rule 73 (exp -> texp step7 OR step2 exp .)
-
-
 state 229
 
-    (75) texp -> gexp step6 AND step2 texp .
+    (73) exp -> texp step7 OR pushPoper exp .
 
-    OR              reduce using rule 75 (texp -> gexp step6 AND step2 texp .)
-    COMMA           reduce using rule 75 (texp -> gexp step6 AND step2 texp .)
-    RPAREN          reduce using rule 75 (texp -> gexp step6 AND step2 texp .)
-    RBRACK          reduce using rule 75 (texp -> gexp step6 AND step2 texp .)
-    SCOLON          reduce using rule 75 (texp -> gexp step6 AND step2 texp .)
-    TO              reduce using rule 75 (texp -> gexp step6 AND step2 texp .)
-    DO              reduce using rule 75 (texp -> gexp step6 AND step2 texp .)
+    COMMA           reduce using rule 73 (exp -> texp step7 OR pushPoper exp .)
+    RPAREN          reduce using rule 73 (exp -> texp step7 OR pushPoper exp .)
+    RBRACK          reduce using rule 73 (exp -> texp step7 OR pushPoper exp .)
+    SCOLON          reduce using rule 73 (exp -> texp step7 OR pushPoper exp .)
+    TO              reduce using rule 73 (exp -> texp step7 OR pushPoper exp .)
+    DO              reduce using rule 73 (exp -> texp step7 OR pushPoper exp .)
 
 
 state 230
 
-    (77) gexp -> mexp step5 LT step2 mexp .
+    (75) texp -> gexp step6 AND pushPoper texp .
 
-    AND             reduce using rule 77 (gexp -> mexp step5 LT step2 mexp .)
-    OR              reduce using rule 77 (gexp -> mexp step5 LT step2 mexp .)
-    COMMA           reduce using rule 77 (gexp -> mexp step5 LT step2 mexp .)
-    RPAREN          reduce using rule 77 (gexp -> mexp step5 LT step2 mexp .)
-    RBRACK          reduce using rule 77 (gexp -> mexp step5 LT step2 mexp .)
-    SCOLON          reduce using rule 77 (gexp -> mexp step5 LT step2 mexp .)
-    TO              reduce using rule 77 (gexp -> mexp step5 LT step2 mexp .)
-    DO              reduce using rule 77 (gexp -> mexp step5 LT step2 mexp .)
+    OR              reduce using rule 75 (texp -> gexp step6 AND pushPoper texp .)
+    COMMA           reduce using rule 75 (texp -> gexp step6 AND pushPoper texp .)
+    RPAREN          reduce using rule 75 (texp -> gexp step6 AND pushPoper texp .)
+    RBRACK          reduce using rule 75 (texp -> gexp step6 AND pushPoper texp .)
+    SCOLON          reduce using rule 75 (texp -> gexp step6 AND pushPoper texp .)
+    TO              reduce using rule 75 (texp -> gexp step6 AND pushPoper texp .)
+    DO              reduce using rule 75 (texp -> gexp step6 AND pushPoper texp .)
 
 
 state 231
 
-    (78) gexp -> mexp step5 GT step2 mexp .
+    (77) gexp -> mexp step5 LT pushPoper mexp .
 
-    AND             reduce using rule 78 (gexp -> mexp step5 GT step2 mexp .)
-    OR              reduce using rule 78 (gexp -> mexp step5 GT step2 mexp .)
-    COMMA           reduce using rule 78 (gexp -> mexp step5 GT step2 mexp .)
-    RPAREN          reduce using rule 78 (gexp -> mexp step5 GT step2 mexp .)
-    RBRACK          reduce using rule 78 (gexp -> mexp step5 GT step2 mexp .)
-    SCOLON          reduce using rule 78 (gexp -> mexp step5 GT step2 mexp .)
-    TO              reduce using rule 78 (gexp -> mexp step5 GT step2 mexp .)
-    DO              reduce using rule 78 (gexp -> mexp step5 GT step2 mexp .)
+    AND             reduce using rule 77 (gexp -> mexp step5 LT pushPoper mexp .)
+    OR              reduce using rule 77 (gexp -> mexp step5 LT pushPoper mexp .)
+    COMMA           reduce using rule 77 (gexp -> mexp step5 LT pushPoper mexp .)
+    RPAREN          reduce using rule 77 (gexp -> mexp step5 LT pushPoper mexp .)
+    RBRACK          reduce using rule 77 (gexp -> mexp step5 LT pushPoper mexp .)
+    SCOLON          reduce using rule 77 (gexp -> mexp step5 LT pushPoper mexp .)
+    TO              reduce using rule 77 (gexp -> mexp step5 LT pushPoper mexp .)
+    DO              reduce using rule 77 (gexp -> mexp step5 LT pushPoper mexp .)
 
 
 state 232
 
-    (79) gexp -> mexp step5 LTE step2 mexp .
+    (78) gexp -> mexp step5 GT pushPoper mexp .
 
-    AND             reduce using rule 79 (gexp -> mexp step5 LTE step2 mexp .)
-    OR              reduce using rule 79 (gexp -> mexp step5 LTE step2 mexp .)
-    COMMA           reduce using rule 79 (gexp -> mexp step5 LTE step2 mexp .)
-    RPAREN          reduce using rule 79 (gexp -> mexp step5 LTE step2 mexp .)
-    RBRACK          reduce using rule 79 (gexp -> mexp step5 LTE step2 mexp .)
-    SCOLON          reduce using rule 79 (gexp -> mexp step5 LTE step2 mexp .)
-    TO              reduce using rule 79 (gexp -> mexp step5 LTE step2 mexp .)
-    DO              reduce using rule 79 (gexp -> mexp step5 LTE step2 mexp .)
+    AND             reduce using rule 78 (gexp -> mexp step5 GT pushPoper mexp .)
+    OR              reduce using rule 78 (gexp -> mexp step5 GT pushPoper mexp .)
+    COMMA           reduce using rule 78 (gexp -> mexp step5 GT pushPoper mexp .)
+    RPAREN          reduce using rule 78 (gexp -> mexp step5 GT pushPoper mexp .)
+    RBRACK          reduce using rule 78 (gexp -> mexp step5 GT pushPoper mexp .)
+    SCOLON          reduce using rule 78 (gexp -> mexp step5 GT pushPoper mexp .)
+    TO              reduce using rule 78 (gexp -> mexp step5 GT pushPoper mexp .)
+    DO              reduce using rule 78 (gexp -> mexp step5 GT pushPoper mexp .)
 
 
 state 233
 
-    (80) gexp -> mexp step5 GTE step2 mexp .
+    (79) gexp -> mexp step5 LTE pushPoper mexp .
 
-    AND             reduce using rule 80 (gexp -> mexp step5 GTE step2 mexp .)
-    OR              reduce using rule 80 (gexp -> mexp step5 GTE step2 mexp .)
-    COMMA           reduce using rule 80 (gexp -> mexp step5 GTE step2 mexp .)
-    RPAREN          reduce using rule 80 (gexp -> mexp step5 GTE step2 mexp .)
-    RBRACK          reduce using rule 80 (gexp -> mexp step5 GTE step2 mexp .)
-    SCOLON          reduce using rule 80 (gexp -> mexp step5 GTE step2 mexp .)
-    TO              reduce using rule 80 (gexp -> mexp step5 GTE step2 mexp .)
-    DO              reduce using rule 80 (gexp -> mexp step5 GTE step2 mexp .)
+    AND             reduce using rule 79 (gexp -> mexp step5 LTE pushPoper mexp .)
+    OR              reduce using rule 79 (gexp -> mexp step5 LTE pushPoper mexp .)
+    COMMA           reduce using rule 79 (gexp -> mexp step5 LTE pushPoper mexp .)
+    RPAREN          reduce using rule 79 (gexp -> mexp step5 LTE pushPoper mexp .)
+    RBRACK          reduce using rule 79 (gexp -> mexp step5 LTE pushPoper mexp .)
+    SCOLON          reduce using rule 79 (gexp -> mexp step5 LTE pushPoper mexp .)
+    TO              reduce using rule 79 (gexp -> mexp step5 LTE pushPoper mexp .)
+    DO              reduce using rule 79 (gexp -> mexp step5 LTE pushPoper mexp .)
 
 
 state 234
 
-    (81) gexp -> mexp step5 EQUALS step2 mexp .
+    (80) gexp -> mexp step5 GTE pushPoper mexp .
 
-    AND             reduce using rule 81 (gexp -> mexp step5 EQUALS step2 mexp .)
-    OR              reduce using rule 81 (gexp -> mexp step5 EQUALS step2 mexp .)
-    COMMA           reduce using rule 81 (gexp -> mexp step5 EQUALS step2 mexp .)
-    RPAREN          reduce using rule 81 (gexp -> mexp step5 EQUALS step2 mexp .)
-    RBRACK          reduce using rule 81 (gexp -> mexp step5 EQUALS step2 mexp .)
-    SCOLON          reduce using rule 81 (gexp -> mexp step5 EQUALS step2 mexp .)
-    TO              reduce using rule 81 (gexp -> mexp step5 EQUALS step2 mexp .)
-    DO              reduce using rule 81 (gexp -> mexp step5 EQUALS step2 mexp .)
+    AND             reduce using rule 80 (gexp -> mexp step5 GTE pushPoper mexp .)
+    OR              reduce using rule 80 (gexp -> mexp step5 GTE pushPoper mexp .)
+    COMMA           reduce using rule 80 (gexp -> mexp step5 GTE pushPoper mexp .)
+    RPAREN          reduce using rule 80 (gexp -> mexp step5 GTE pushPoper mexp .)
+    RBRACK          reduce using rule 80 (gexp -> mexp step5 GTE pushPoper mexp .)
+    SCOLON          reduce using rule 80 (gexp -> mexp step5 GTE pushPoper mexp .)
+    TO              reduce using rule 80 (gexp -> mexp step5 GTE pushPoper mexp .)
+    DO              reduce using rule 80 (gexp -> mexp step5 GTE pushPoper mexp .)
 
 
 state 235
 
-    (82) gexp -> mexp step5 NEQUALS step2 mexp .
+    (81) gexp -> mexp step5 EQUALS pushPoper mexp .
 
-    AND             reduce using rule 82 (gexp -> mexp step5 NEQUALS step2 mexp .)
-    OR              reduce using rule 82 (gexp -> mexp step5 NEQUALS step2 mexp .)
-    COMMA           reduce using rule 82 (gexp -> mexp step5 NEQUALS step2 mexp .)
-    RPAREN          reduce using rule 82 (gexp -> mexp step5 NEQUALS step2 mexp .)
-    RBRACK          reduce using rule 82 (gexp -> mexp step5 NEQUALS step2 mexp .)
-    SCOLON          reduce using rule 82 (gexp -> mexp step5 NEQUALS step2 mexp .)
-    TO              reduce using rule 82 (gexp -> mexp step5 NEQUALS step2 mexp .)
-    DO              reduce using rule 82 (gexp -> mexp step5 NEQUALS step2 mexp .)
+    AND             reduce using rule 81 (gexp -> mexp step5 EQUALS pushPoper mexp .)
+    OR              reduce using rule 81 (gexp -> mexp step5 EQUALS pushPoper mexp .)
+    COMMA           reduce using rule 81 (gexp -> mexp step5 EQUALS pushPoper mexp .)
+    RPAREN          reduce using rule 81 (gexp -> mexp step5 EQUALS pushPoper mexp .)
+    RBRACK          reduce using rule 81 (gexp -> mexp step5 EQUALS pushPoper mexp .)
+    SCOLON          reduce using rule 81 (gexp -> mexp step5 EQUALS pushPoper mexp .)
+    TO              reduce using rule 81 (gexp -> mexp step5 EQUALS pushPoper mexp .)
+    DO              reduce using rule 81 (gexp -> mexp step5 EQUALS pushPoper mexp .)
 
 
 state 236
 
-    (84) mexp -> t step4 PLUS step2 mexp .
+    (82) gexp -> mexp step5 NEQUALS pushPoper mexp .
 
-    LT              reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    GT              reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    LTE             reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    GTE             reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    EQUALS          reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    NEQUALS         reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    AND             reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    OR              reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    COMMA           reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    RPAREN          reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    RBRACK          reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    SCOLON          reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    TO              reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
-    DO              reduce using rule 84 (mexp -> t step4 PLUS step2 mexp .)
+    AND             reduce using rule 82 (gexp -> mexp step5 NEQUALS pushPoper mexp .)
+    OR              reduce using rule 82 (gexp -> mexp step5 NEQUALS pushPoper mexp .)
+    COMMA           reduce using rule 82 (gexp -> mexp step5 NEQUALS pushPoper mexp .)
+    RPAREN          reduce using rule 82 (gexp -> mexp step5 NEQUALS pushPoper mexp .)
+    RBRACK          reduce using rule 82 (gexp -> mexp step5 NEQUALS pushPoper mexp .)
+    SCOLON          reduce using rule 82 (gexp -> mexp step5 NEQUALS pushPoper mexp .)
+    TO              reduce using rule 82 (gexp -> mexp step5 NEQUALS pushPoper mexp .)
+    DO              reduce using rule 82 (gexp -> mexp step5 NEQUALS pushPoper mexp .)
 
 
 state 237
 
-    (85) mexp -> t step4 MINUS step2 mexp .
+    (84) mexp -> t step4 PLUS pushPoper mexp .
 
-    LT              reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    GT              reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    LTE             reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    GTE             reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    EQUALS          reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    NEQUALS         reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    AND             reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    OR              reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    COMMA           reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    RPAREN          reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    RBRACK          reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    SCOLON          reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    TO              reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
-    DO              reduce using rule 85 (mexp -> t step4 MINUS step2 mexp .)
+    LT              reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    GT              reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    LTE             reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    GTE             reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    EQUALS          reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    NEQUALS         reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    AND             reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    OR              reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    COMMA           reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    RPAREN          reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    RBRACK          reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    SCOLON          reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    TO              reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
+    DO              reduce using rule 84 (mexp -> t step4 PLUS pushPoper mexp .)
 
 
 state 238
 
-    (87) t -> f step3 MULT step2 t .
+    (85) mexp -> t step4 MINUS pushPoper mexp .
 
-    PLUS            reduce using rule 87 (t -> f step3 MULT step2 t .)
-    MINUS           reduce using rule 87 (t -> f step3 MULT step2 t .)
-    LT              reduce using rule 87 (t -> f step3 MULT step2 t .)
-    GT              reduce using rule 87 (t -> f step3 MULT step2 t .)
-    LTE             reduce using rule 87 (t -> f step3 MULT step2 t .)
-    GTE             reduce using rule 87 (t -> f step3 MULT step2 t .)
-    EQUALS          reduce using rule 87 (t -> f step3 MULT step2 t .)
-    NEQUALS         reduce using rule 87 (t -> f step3 MULT step2 t .)
-    AND             reduce using rule 87 (t -> f step3 MULT step2 t .)
-    OR              reduce using rule 87 (t -> f step3 MULT step2 t .)
-    COMMA           reduce using rule 87 (t -> f step3 MULT step2 t .)
-    RPAREN          reduce using rule 87 (t -> f step3 MULT step2 t .)
-    RBRACK          reduce using rule 87 (t -> f step3 MULT step2 t .)
-    SCOLON          reduce using rule 87 (t -> f step3 MULT step2 t .)
-    TO              reduce using rule 87 (t -> f step3 MULT step2 t .)
-    DO              reduce using rule 87 (t -> f step3 MULT step2 t .)
+    LT              reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    GT              reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    LTE             reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    GTE             reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    EQUALS          reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    NEQUALS         reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    AND             reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    OR              reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    COMMA           reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    RPAREN          reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    RBRACK          reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    SCOLON          reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    TO              reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
+    DO              reduce using rule 85 (mexp -> t step4 MINUS pushPoper mexp .)
 
 
 state 239
 
-    (88) t -> f step3 DIV step2 t .
+    (87) t -> f step3 MULT pushPoper t .
 
-    PLUS            reduce using rule 88 (t -> f step3 DIV step2 t .)
-    MINUS           reduce using rule 88 (t -> f step3 DIV step2 t .)
-    LT              reduce using rule 88 (t -> f step3 DIV step2 t .)
-    GT              reduce using rule 88 (t -> f step3 DIV step2 t .)
-    LTE             reduce using rule 88 (t -> f step3 DIV step2 t .)
-    GTE             reduce using rule 88 (t -> f step3 DIV step2 t .)
-    EQUALS          reduce using rule 88 (t -> f step3 DIV step2 t .)
-    NEQUALS         reduce using rule 88 (t -> f step3 DIV step2 t .)
-    AND             reduce using rule 88 (t -> f step3 DIV step2 t .)
-    OR              reduce using rule 88 (t -> f step3 DIV step2 t .)
-    COMMA           reduce using rule 88 (t -> f step3 DIV step2 t .)
-    RPAREN          reduce using rule 88 (t -> f step3 DIV step2 t .)
-    RBRACK          reduce using rule 88 (t -> f step3 DIV step2 t .)
-    SCOLON          reduce using rule 88 (t -> f step3 DIV step2 t .)
-    TO              reduce using rule 88 (t -> f step3 DIV step2 t .)
-    DO              reduce using rule 88 (t -> f step3 DIV step2 t .)
+    PLUS            reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    MINUS           reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    LT              reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    GT              reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    LTE             reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    GTE             reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    EQUALS          reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    NEQUALS         reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    AND             reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    OR              reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    COMMA           reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    RPAREN          reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    RBRACK          reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    SCOLON          reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    TO              reduce using rule 87 (t -> f step3 MULT pushPoper t .)
+    DO              reduce using rule 87 (t -> f step3 MULT pushPoper t .)
 
 
 state 240
+
+    (88) t -> f step3 DIV pushPoper t .
+
+    PLUS            reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    MINUS           reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    LT              reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    GT              reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    LTE             reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    GTE             reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    EQUALS          reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    NEQUALS         reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    AND             reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    OR              reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    COMMA           reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    RPAREN          reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    RBRACK          reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    SCOLON          reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    TO              reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+    DO              reduce using rule 88 (t -> f step3 DIV pushPoper t .)
+
+
+state 241
 
     (19) idCall -> ID LBRACK exp RBRACK LBRACK exp RBRACK .
 
@@ -4155,29 +4159,44 @@ state 240
     DO              reduce using rule 19 (idCall -> ID LBRACK exp RBRACK LBRACK exp RBRACK .)
 
 
-state 241
+state 242
+
+    (60) listaId -> idCall COMMA popIO insertOpRead . listaId
+    (59) listaId -> . idCall popIO
+    (60) listaId -> . idCall COMMA popIO insertOpRead listaId
+    (16) idCall -> . ID
+    (17) idCall -> . ID DOT ID
+    (18) idCall -> . ID LBRACK exp RBRACK
+    (19) idCall -> . ID LBRACK exp RBRACK LBRACK exp RBRACK
+
+    ID              shift and go to state 117
+
+    idCall                         shift and go to state 166
+    listaId                        shift and go to state 247
+
+state 243
 
     (68) condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos . RBRACE
     (69) condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos . RBRACE ELSE LBRACE listaEstatutos RBRACE
 
-    RBRACE          shift and go to state 245
-
-
-state 242
-
-    (70) cond_w -> WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos . RBRACE
-
-    RBRACE          shift and go to state 246
-
-
-state 243
-
-    (71) cond_f -> FOR asignacion TO exp DO LBRACE listaEstatutos . RBRACE
-
-    RBRACE          shift and go to state 247
+    RBRACE          shift and go to state 248
 
 
 state 244
+
+    (70) cond_w -> WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos . RBRACE
+
+    RBRACE          shift and go to state 249
+
+
+state 245
+
+    (71) cond_f -> FOR asignacion TO exp DO LBRACE listaEstatutos . RBRACE
+
+    RBRACE          shift and go to state 250
+
+
+state 246
 
     (24) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE . declarMethods
     (24) declarMethods -> . tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
@@ -4195,10 +4214,17 @@ state 244
     RBRACE          reduce using rule 104 (empty -> .)
 
     tipoMethod                     shift and go to state 63
-    declarMethods                  shift and go to state 248
+    declarMethods                  shift and go to state 251
     empty                          shift and go to state 64
 
-state 245
+state 247
+
+    (60) listaId -> idCall COMMA popIO insertOpRead listaId .
+
+    RPAREN          reduce using rule 60 (listaId -> idCall COMMA popIO insertOpRead listaId .)
+
+
+state 248
 
     (68) condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE .
     (69) condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE . ELSE LBRACE listaEstatutos RBRACE
@@ -4211,10 +4237,10 @@ state 245
     WHILE           reduce using rule 68 (condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE .)
     FOR             reduce using rule 68 (condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE .)
     RBRACE          reduce using rule 68 (condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE .)
-    ELSE            shift and go to state 249
+    ELSE            shift and go to state 252
 
 
-state 246
+state 249
 
     (70) cond_w -> WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos RBRACE .
 
@@ -4228,7 +4254,7 @@ state 246
     RBRACE          reduce using rule 70 (cond_w -> WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos RBRACE .)
 
 
-state 247
+state 250
 
     (71) cond_f -> FOR asignacion TO exp DO LBRACE listaEstatutos RBRACE .
 
@@ -4242,21 +4268,21 @@ state 247
     RBRACE          reduce using rule 71 (cond_f -> FOR asignacion TO exp DO LBRACE listaEstatutos RBRACE .)
 
 
-state 248
+state 251
 
     (24) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods .
 
     RBRACE          reduce using rule 24 (declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods .)
 
 
-state 249
+state 252
 
     (69) condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE . LBRACE listaEstatutos RBRACE
 
-    LBRACE          shift and go to state 250
+    LBRACE          shift and go to state 253
 
 
-state 250
+state 253
 
     (69) condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE . listaEstatutos RBRACE
     (39) listaEstatutos -> . estatutos listaEstatutos
@@ -4270,11 +4296,11 @@ state 250
     (47) estatutos -> . cond_w
     (48) estatutos -> . cond_f
     (104) empty -> .
-    (53) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (54) llamada -> . ID LPAREN enviaParam RPAREN
-    (49) asignacion -> . idCall ASIGNA asignStep1 exp pruebaPrint asignStep2
-    (59) returnf -> . RETURN LPAREN exp RPAREN
-    (60) lectura -> . READ LPAREN listaId RPAREN
+    (51) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (52) llamada -> . ID LPAREN enviaParam RPAREN
+    (49) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
+    (57) returnf -> . RETURN LPAREN exp RPAREN
+    (58) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (63) escritura -> . WRITE LPAREN exp lextra RPAREN
     (64) escritura -> . WRITE LPAREN LETRERO lextra RPAREN
     (68) condicion -> . IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
@@ -4295,7 +4321,7 @@ state 250
     WHILE           shift and go to state 91
     FOR             shift and go to state 92
 
-    listaEstatutos                 shift and go to state 251
+    listaEstatutos                 shift and go to state 254
     estatutos                      shift and go to state 76
     empty                          shift and go to state 77
     llamada                        shift and go to state 78
@@ -4308,14 +4334,14 @@ state 250
     cond_f                         shift and go to state 85
     idCall                         shift and go to state 86
 
-state 251
+state 254
 
     (69) condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos . RBRACE
 
-    RBRACE          shift and go to state 252
+    RBRACE          shift and go to state 255
 
 
-state 252
+state 255
 
     (69) condicion -> IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE .
 

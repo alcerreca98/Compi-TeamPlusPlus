@@ -72,6 +72,23 @@ def popFF():
    """
   Poper.pop()
 
+#Imprime toda la lista de cuadruplos
+def imprimirCuadruplos():
+  """ Imprime toda la lista de cuadruplos """
+  tam = len(Quad)
+  for x in range(tam):
+    Quad[x].printCuad()
+
+#Imprime toda la lista de Operandos
+def imprimirPilaO():
+  """ Imprime toda la lista de Operandos """
+  tam = len(PilaO)
+  #print(len(PilaO))
+  for x in range(0,tam):
+    print("PilaO en [", x,"]", PilaO[x])
+
+#######################GENERACION DE CUADRUPLOS######################
+
 #insertar cuadruplos de multiplicacion division con chequeo semantico
 def expStep3():
   """ insertar cuadruplos de multiplicacion division con chequeo semantico """
@@ -236,17 +253,14 @@ def asignaStep2():
         sys.exit()
   return False
 
-#Imprime toda la lista de cuadruplos
-def imprimirCuadruplos():
-  """ Imprime toda la lista de cuadruplos """
-  tam = len(Quad)
-  for x in range(tam):
-    Quad[x].printCuad()
+def popIO():
+  size = len(Poper)
+  if size > 0:
+    if Poper[size-1] == 'read':
+      tempR = PilaO.pop()
+      Ptypes.pop()
+      operator = Poper.pop()
+      quadInsert(operator, None, None, tempR)
+      return True
+  return False
 
-#Imprime toda la lista de Operandos
-def imprimirPilaO():
-  """ Imprime toda la lista de Operandos """
-  tam = len(PilaO)
-  #print(len(PilaO))
-  for x in range(0,tam):
-    print("PilaO en [", x,"]", PilaO[x])
