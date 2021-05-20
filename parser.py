@@ -93,7 +93,8 @@ def p_idCall(p):
     if(table.checkIfExists(p[1])):
         cuad.pushPilaO(p[1])
         #print(p[1])
-        if(table.dirFuncs[table.programa].searchIfExists(p[1]) == False):
+        condicion = table.dirFuncs[table.programa].searchIfExists(p[1])
+        if(condicion == False):
         #chequeo existe en locales
             var = table.dirFuncs[table.auxFunc].searchIfExists(p[1])
         else:
@@ -194,6 +195,7 @@ def p_asignStep1(p):
     asignStep1  :
     '''
     cuad.pushPoper(p[-1])
+    #cuad.imprimirPilaO()
 
 def p_asignStep2(p):
     '''

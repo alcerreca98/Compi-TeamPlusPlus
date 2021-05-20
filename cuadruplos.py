@@ -5,7 +5,7 @@
 import sys
 import estructuras as estructura
 import cuboSemantico as oracle
-import modif_tables as tabla
+
 
 #stacks
 Poper = []
@@ -79,12 +79,9 @@ def expStep3():
           quadInsert(operator, tempL, tempR, Resultado)
           print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
-          #imprimirPilaO()
           Ptypes.append(result_type)
           #Prueba Resultado
           Resultado = Resultado + 1
-          imprimirPilaO()
-          print("\n")
           return True
         else:
           print("Error: typemismatch,*,/")
@@ -108,12 +105,8 @@ def expStep4():
           quadInsert(operator, tempL, tempR, Resultado)
           print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
-          #imprimirPilaO()
           Ptypes.append(result_type)
-          #Prueba Resultado
           Resultado = Resultado + 1
-          imprimirPilaO()
-          print("\n")
           return True
         else:
           print("Error: typemismatch,+,-")
@@ -151,6 +144,7 @@ def expStep6():
   if size > 0:
     if Poper[size -1] != '(':
       if Poper[size-1] == '&&' :
+        print("ENTRE A 6")
         tempR = PilaO.pop()
         rType = Ptypes.pop()
         tempL = PilaO.pop()
@@ -175,6 +169,7 @@ def expStep7():
   if size > 0:
     if Poper[size -1] != '(':
       if Poper[size-1] == '||' :
+        print("ENTRE A 7")
         tempR = PilaO.pop()
         rType = Ptypes.pop()
         tempL = PilaO.pop()
@@ -194,12 +189,12 @@ def expStep7():
   return False
 
 def asignaStep2():
-  global Resultado
+  #global Resultado
   size = len(Poper)
   if size > 0:
     if Poper[size-1] == '=' :
-      imprimirPilaO()
-      tempR = PilaO.pop(0)
+      #imprimirPilaO()
+      tempR = PilaO.pop()
       #print("Mi Right operands es: ",tempR)
       rType = Ptypes.pop()
       tempL = PilaO.pop()
@@ -207,10 +202,11 @@ def asignaStep2():
       operator = Poper.pop()
       if lType == rType:
         quadInsert(operator, tempR, None, tempL)
-        PilaO.append(tempL)
-        Ptypes.append(lType)
+        print(tempL, operator, tempR)
+        #PilaO.append(tempL)
+        #Ptypes.append(lType)
         #Prueba Resultado
-        Resultado = Resultado + 1
+        #Resultado = Resultado + 1
         return True
       else:
         print("Error: typemismatch em asignacion =")
