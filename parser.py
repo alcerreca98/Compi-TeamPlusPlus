@@ -102,7 +102,7 @@ def p_idCall(p):
         else:
             var = table.dirFuncs[table.programa].searchIfExists(p[1])
         cuad.pushType(var.getType())
-    cuad.imprimirPilaO()
+    #cuad.imprimirPilaO()
 
 #tipo de variables
 def p_tipo(p):
@@ -186,7 +186,7 @@ def p_estatutos(p):
                 | returnf SCOLON
                 | lectura SCOLON
                 | escritura SCOLON
-                | condicion
+                | condicion 
                 | cond_w
                 | cond_f
     '''
@@ -294,9 +294,29 @@ def p_letreroPush(p):
 # ------------------------------------------------------------
 def p_condicion(p):
     '''
-    condicion   : IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE
-                | IF LPAREN exp RPAREN THEN LBRACE listaEstatutos RBRACE ELSE LBRACE listaEstatutos RBRACE
+    condicion   : IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
+                | IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
     '''
+    cuad.fillGOTO()
+
+def p_cond1(p):
+    '''
+    cond1  :
+    '''
+    temp = cuad.Gotof_IF()
+    if temp:
+        cuad.contQuad = cuad.contQuad + 1
+
+#cond2 llena el fillgoto al final del estatuto condicion
+
+def p_cond3(p):
+    '''
+    cond3  :
+    '''
+    temp = cuad.Goto_IF()
+    if temp:
+        cuad.contQuad = cuad.contQuad + 1
+
 # ------------------------------------------------------------
 # Ciclo While
 # ------------------------------------------------------------
@@ -328,12 +348,12 @@ def p_texp(p):
 def p_gexp(p):
     '''
     gexp    : mexp step5
-            | mexp step5 LT pushPoper mexp
-            | mexp step5 GT pushPoper mexp
-            | mexp step5 LTE pushPoper mexp
-            | mexp step5 GTE pushPoper mexp
-            | mexp step5 EQUALS pushPoper mexp
-            | mexp step5 NEQUALS pushPoper mexp
+            | mexp step5 LT pushPoper gexp
+            | mexp step5 GT pushPoper gexp
+            | mexp step5 LTE pushPoper gexp
+            | mexp step5 GTE pushPoper gexp
+            | mexp step5 EQUALS pushPoper gexp
+            | mexp step5 NEQUALS pushPoper gexp
     '''
 def p_mexp(p):
     '''

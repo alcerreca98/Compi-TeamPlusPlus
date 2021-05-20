@@ -150,15 +150,18 @@ def expStep5():
   global Resultado
   size = len(Poper)
   if size > 0:
+    print("La gfa de oli ",size)
     if Poper[size -1] != '(':
+      print("La gfa de fede ",Poper[size-1])
       if Poper[size-1] == '>' or Poper[size-1] == '<' or Poper[size-1] == '>=' or Poper[size-1] == '<=' or Poper[size-1] == '==' or Poper[size-1] == '!=':
-        #print("ENTRE A 5")
+        print("ENTRE A 5")
         tempR = PilaO.pop()
         rType = Ptypes.pop()
         tempL = PilaO.pop()
         lType = Ptypes.pop()
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
+        print(result_type)
         if result_type != 'error':
           quadInsert(operator, tempL, tempR, Resultado)
           PilaO.append(Resultado)
@@ -237,7 +240,7 @@ def asignaStep2():
       #print("Mi Right operands es: ",tempR)
       rType = Ptypes.pop()
       tempL = PilaO.pop()
-      print("Mi Izq operands es: ",tempL)
+      #print("Mi Izq operands es: ",tempL)
       lType = Ptypes.pop()
       operator = Poper.pop()
       if lType == rType:
@@ -274,3 +277,25 @@ def popReturn():
       quadInsert(operator, None, None, tempR)
       return True
   return False
+
+def Gotof_IF():
+  exp_type = Ptypes.pop()
+  print(exp_type)
+  if exp_type != 'boolean':
+    print('Error: type mismatch, IF')
+    sys.exit()
+  else:
+    cond = PilaO.pop()
+    quadInsert('GotoF', cond, None, None)
+    Psaltos.append(contQuad-1)
+    return True
+  
+def fillGOTO():
+  end = Psaltos.pop()
+  Quad[end].result = contQuad
+
+def Goto_IF():
+  quadInsert('Goto', None, None, None)
+  falso = Psaltos.pop()
+  Psaltos.append(contQuad-1)
+  Quad[falso].result = contQuad
