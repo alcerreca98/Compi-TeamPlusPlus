@@ -56,7 +56,6 @@ def pushType(type):
 #Insertar operacion en el stack de operadores
 def pushPoper(action):
   Poper.append(action)
-  #print(action)
 
 #Sacar fondo falso
 def popFF():
@@ -79,12 +78,9 @@ def expStep3():
           quadInsert(operator, tempL, tempR, Resultado)
           print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
-          #imprimirPilaO()
           Ptypes.append(result_type)
           #Prueba Resultado
           Resultado = Resultado + 1
-          imprimirPilaO()
-          print("\n")
           return True
         else:
           print("Error: typemismatch,*,/")
@@ -108,12 +104,9 @@ def expStep4():
           quadInsert(operator, tempL, tempR, Resultado)
           print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
-          #imprimirPilaO()
           Ptypes.append(result_type)
           #Prueba Resultado
           Resultado = Resultado + 1
-          imprimirPilaO()
-          print("\n")
           return True
         else:
           print("Error: typemismatch,+,-")
@@ -198,17 +191,17 @@ def asignaStep2():
   size = len(Poper)
   if size > 0:
     if Poper[size-1] == '=' :
-      imprimirPilaO()
-      tempR = PilaO.pop(0)
-      #print("Mi Right operands es: ",tempR)
+      tempR = PilaO.pop()
+      print("Mi Right operands es: ",tempR)
       rType = Ptypes.pop()
       tempL = PilaO.pop()
+      print("Mi Izq operands es: ",tempL)
       lType = Ptypes.pop()
       operator = Poper.pop()
       if lType == rType:
         quadInsert(operator, tempR, None, tempL)
-        PilaO.append(tempL)
-        Ptypes.append(lType)
+        #PilaO.append(tempL)
+        #Ptypes.append(lType)
         #Prueba Resultado
         Resultado = Resultado + 1
         return True
@@ -216,7 +209,6 @@ def asignaStep2():
         print("Error: typemismatch em asignacion =")
         sys.exit()
   return False
-
 
 
 
@@ -228,5 +220,6 @@ def imprimirCuadruplos():
 
 def imprimirPilaO():
   tam = len(PilaO)
-  for x in range(tam):
+  #print(len(PilaO))
+  for x in range(0,tam):
     print("PilaO en [", x,"]", PilaO[x])
