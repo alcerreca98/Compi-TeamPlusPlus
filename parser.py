@@ -102,7 +102,6 @@ def p_idCall(p):
         else:
             var = table.dirFuncs[table.programa].searchIfExists(p[1])
         cuad.pushType(var.getType())
-    cuad.imprimirPilaO()
 
 #tipo de variables
 def p_tipo(p):
