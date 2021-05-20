@@ -231,8 +231,15 @@ def p_paramReferencia(p):
 # ------------------------------------------------------------
 def p_returnf(p):
     '''
-    returnf   : RETURN LPAREN exp RPAREN 
+    returnf   : RETURN pushPoper LPAREN exp RPAREN popReturn
     '''
+def p_popReturn(p):
+    '''
+    popReturn   : 
+    '''
+    temp = cuad.popReturn()
+    if temp:
+        cuad.contQuad = cuad.contQuad + 1 
 # ------------------------------------------------------------
 # Lectura
 # ------------------------------------------------------------

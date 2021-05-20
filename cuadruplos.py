@@ -264,3 +264,13 @@ def popIO():
       return True
   return False
 
+def popReturn():
+  size = len(Poper)
+  if size > 0:
+    if Poper[size-1] == 'return':
+      tempR = PilaO.pop()
+      Ptypes.pop()
+      operator = Poper.pop()
+      quadInsert(operator, None, None, tempR)
+      return True
+  return False
