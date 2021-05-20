@@ -1,0 +1,31 @@
+program Team_pp;
+
+var int: i, j, p;
+
+float func fact(int: n)
+var int : z;{
+	j = n+(p-z*2+j);
+	read(j,n);
+	return(j);
+}
+
+void func pelos(int : y, int : z)
+var int : x;{
+	x = y;
+	if(x>y) then {
+		x = x + 1;
+	}
+}
+
+main()
+var int : loquesea ;{
+    j= p*2;
+		read(j,p[2]);
+		write("C Quack Quack", j);
+		if(j < p) then{
+			j = p*2;
+		}else{
+			p = j*2;
+		}
+
+}
