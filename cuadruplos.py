@@ -295,4 +295,5 @@ def Goto_IF():
   falso = Psaltos.pop()
   print("GotoIF falso",falso)
   Psaltos.append(contQuad-1)
-  Quad[falso].result = contQuad-1
+  Quad[falso].result = contQuad
+  return True

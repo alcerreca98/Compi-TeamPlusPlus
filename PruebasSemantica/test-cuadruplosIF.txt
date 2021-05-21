@@ -7,12 +7,21 @@ var int : z;{
 	j = n+(p-z*2+j);
 	read(j,n);
 	return(j);
+	if(j < p) then{
+		if(z>=n) then{
+			j = p*2;
+		}else{
+			p = j*2;
+		}
+	}else{
+		p = j*2;
+	}
 }
 
 void func pelos(int : y, int : z)
 var int : x;{
 	x = y;
-	if(x>y) then {
+	if(x!=y) then {
 		x = x + 1;
 	}
 }
