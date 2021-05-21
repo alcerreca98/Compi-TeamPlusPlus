@@ -93,10 +93,10 @@ t_QUOTE = r'\"'
 # Operadores Logicos y de Comparacion
 t_EQUALS = r'=='
 t_NEQUALS = r'!='
-t_GT = r'\>'
-t_LT = r'\<'
 t_GTE = r'>='
 t_LTE = r'<='
+t_GT = r'\>'
+t_LT = r'\<'
 t_AND = r'&&'
 t_OR = r'\|\|'
 
