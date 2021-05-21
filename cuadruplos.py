@@ -243,8 +243,8 @@ def asignaStep2():
       if lType == rType:
         quadInsert(operator, tempR, None, tempL)
         print(tempL, operator, tempR)
-        #PilaO.append(tempL)
-        #Ptypes.append(lType)
+        PilaO.append(tempL)
+        Ptypes.append(lType)
         #Prueba Resultado
         #Resultado = Resultado + 1
         return True
@@ -315,3 +315,20 @@ def stepWhile3():
   quadInsert('Goto', None, None, end)
   Quad[falso].result = contQuad
   return True
+
+def stepFor1():
+  global Resultado
+  tempR = PilaO.pop()
+  rType = Ptypes.pop()
+  tempL = PilaO.pop()
+  lType = Ptypes.pop()
+  result_type = oraculo['<'][lType][rType]
+  if result_type != 'error':
+    quadInsert('<', tempL, tempR, Resultado)
+    PilaO.append(Resultado)
+    Ptypes.append(result_type)
+    return True
+  else:
+    print("Error: type mismatch, For")
+    sys.exit()
+  

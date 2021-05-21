@@ -27,6 +27,7 @@ def p_prueba(p):
     '''
     table.dirPrint()
     cuad.imprimirCuadruplos()
+    cuad.imprimirPilaO()
 
 #Introduce el nombre del programa en la tabla de funciones
 def p_initProg(p):
@@ -322,12 +323,12 @@ def p_cond3(p):
 # ------------------------------------------------------------
 def p_cond_w(p):
     '''
-    cond_w : WHILE step1while LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3while
+    cond_w : WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
     '''
 
-def p_step1while(p):
+def p_step1While(p):
     '''
-    step1while :
+    step1While :
     '''
     cuad.Psaltos.append(cuad.contQuad-1)
 
@@ -339,9 +340,9 @@ def p_step2While(p):
     if temp:
         cuad.contQuad = cuad.contQuad + 1
 
-def p_step3while(p):
+def p_step3While(p):
     '''
-    step3while :
+    step3While :
     '''
     temp = cuad.stepWhile3()
     if temp:
@@ -353,8 +354,15 @@ def p_step3while(p):
 #idCall despues del for? debe ser definido 
 def p_cond_f(p):
     '''
-    cond_f : FOR asignacion TO exp DO LBRACE listaEstatutos RBRACE
+    cond_f : FOR asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While
     '''
+def p_step1For(p):
+    '''
+    step1For : 
+    '''
+    temp = cuad.stepFor1()
+    if temp:
+        cuad.contQuad = cuad.contQuad + 1
 # ------------------------------------------------------------
 # Expresiones
 # ------------------------------------------------------------
