@@ -36,7 +36,6 @@ var int : loquesea ;{
 		}else{
 			p = j*2;
 		}
-
 }
 
 //JAIME SE LA LLENA DE ANDORGA
