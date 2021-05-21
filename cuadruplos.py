@@ -297,3 +297,21 @@ def Goto_IF():
   Psaltos.append(contQuad-1)
   Quad[falso].result = contQuad
   return True
+
+def stepWhile2():
+  exp_type = Ptypes.pop()
+  if exp_type != 'boolean':
+    print('Error: type mismatch, While')
+    sys.exit()
+  else:
+    cond = PilaO.pop()
+    quadInsert('GotoF', cond, None, None)
+    Psaltos.append(contQuad-1)
+    return True
+
+def stepWhile3():
+  falso = Psaltos.pop()
+  end = Psaltos.pop()
+  quadInsert('Goto', None, None, end)
+  Quad[falso].result = contQuad
+  return True

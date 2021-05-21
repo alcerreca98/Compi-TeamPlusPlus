@@ -322,8 +322,31 @@ def p_cond3(p):
 # ------------------------------------------------------------
 def p_cond_w(p):
     '''
-    cond_w : WHILE LPAREN exp RPAREN DO LBRACE listaEstatutos RBRACE
+    cond_w : WHILE step1while LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3while
     '''
+
+def p_step1while(p):
+    '''
+    step1while :
+    '''
+    cuad.Psaltos.append(cuad.contQuad-1)
+
+def p_step2While(p):
+    '''
+    step2While :
+    '''
+    temp = cuad.stepWhile2()
+    if temp:
+        cuad.contQuad = cuad.contQuad + 1
+
+def p_step3while(p):
+    '''
+    step3while :
+    '''
+    temp = cuad.stepWhile3()
+    if temp:
+        cuad.contQuad = cuad.contQuad + 1
+
 # ------------------------------------------------------------
 # Ciclo For
 # ------------------------------------------------------------
