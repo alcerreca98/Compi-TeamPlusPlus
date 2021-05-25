@@ -178,7 +178,24 @@ def p_setDI(p):
     '''
     setDI :
     '''
+    temp = table.dirFuncs[table.auxFunc].dir_var
+    for id in temp:
+        var = temp.get(id)
+        tipo = var.getType()
+        if tipo == 'int':
+            table.li = table.li +1
+        elif tipo == 'float':
+            table.lf = table.lf +1
+        elif tipo == 'char':
+            table.lc = table.lc +1
+        else:
+            print("No deberia entrar aqui ERR")
+    #llena el cuadruplo inicial de la funcion
     table.dirFuncs[table.auxFunc].fillDI(cuad.contQuad-1)
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
+    table.dirFuncs[table.auxFunc].tam.append(int(table.li))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lf))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lc))
 
 
 def p_endF(p):
@@ -187,6 +204,15 @@ def p_endF(p):
     '''
     cuad.quadInsert('ENDFunc', None, None, None)
     cuad.contQuad = cuad.contQuad + 1
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lti))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltf))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltc))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltb))
+
+    table.dirFuncs[table.auxFunc].printSize()
+    table.clearVarSize()
+
 # ------------------------------------------------------------
 # Estatutos
 # ------------------------------------------------------------

@@ -23,7 +23,7 @@ class funcion(object):
         self.dir_var = {}
         self.params = []
         self.di = 0
-        self.tam = None
+        self.tam = []
     #Print de todos los atributos en la instancia de Funcion seleccionada
     def printFuncion(self):
         """ Print de todos los atributos en la instancia de Funcion seleccionada """
@@ -59,6 +59,11 @@ class funcion(object):
         for var in self.dir_var:
             self.dir_var[var].printVariable()
     
+    def printSize(self):
+        print(self.tam)
+        #tam = len(self.tam)
+        #for i in range(tam):
+        #    print(self.tam[i])
     #Busca si hay dobles declaracones de variable e imprime error si existen
     def repeatedVariables(self, id):
         """ Busca si hay dobles declaracones e imprime error si existen """
