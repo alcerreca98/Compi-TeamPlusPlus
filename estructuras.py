@@ -22,7 +22,8 @@ class funcion(object):
         self.type = type
         self.dir_var = {}
         self.params = []
-    
+        self.di = 0
+        self.tam = None
     #Print de todos los atributos en la instancia de Funcion seleccionada
     def printFuncion(self):
         """ Print de todos los atributos en la instancia de Funcion seleccionada """
@@ -38,20 +39,19 @@ class funcion(object):
         """ Crea una instancia de variable y la agrega al directorio de variables de la funcion """
         self.dir_var[id] = variable(id, type)
     
-    #Agrega el nombre del parametro a la lista de parametros
-    def addParam(self, id):
-        """ Agrega el nombre del parametro a la lista de parametros """
-        self.params.append(id)
+    #Agrega el tipo del parametro a la lista de parametros
+    def addParam(self, type):
+        """ Agrega el tipo del parametro a la lista de parametros """
+        self.params.append(type)
     
     #Busca los objetos variable segun los id's en la lista de parametros de la funcion y los imprime
     def printParams(self):
         """ Busca los objetos variable segun los id's en la lista de parametros de la funcion
          e imprime todos los atributos de cada variable"""
         tam = len(self.params)
-        print("Params :")
+        print("Parameters types in order:")
         for p in range(tam) :
-            var = self.dir_var.get(self.params[p])
-            var.printVariable()
+            print(self.params[p])
 
     #Imprime todos los atributos de cada uno de los objetos variable en la tabla de variables locales
     def printVarTable(self):

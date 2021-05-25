@@ -46,10 +46,10 @@ def repeatedFunctions(id):
     #        sys.exit()
     #return False
 
-#agrega el nombre de la variable a la lista de Parametros de la funcion
-def ingresarParams(id):
-    """ agrega el nombre de la variable a la lista de Parametros de la funcion """
-    dirFuncs[auxFunc].addParam(id)
+#agrega el tipo de la variable a la lista de Parametros de la funcion
+def ingresarParams(type):
+    """ agrega el tipo de la variable a la lista de Parametros de la funcion """
+    dirFuncs[auxFunc].addParam(type)
 
 #Busca si la variable estaba previamente declarada ya sea en contexto global o local
 def checkIfExists(id):

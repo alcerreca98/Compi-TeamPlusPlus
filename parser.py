@@ -145,7 +145,7 @@ def p_param(p):
     param : tipo COLON ID
     '''
     table.ingresarVariables(p[3], table.tipo)
-    table.ingresarParams(p[3])
+    table.ingresarParams(table.tipo)
 
 # ------------------------------------------------------------
 # Declaración de Variables
@@ -258,6 +258,7 @@ def p_insertOpRead(p):
     insertOpRead : 
     '''
     cuad.pushPoper("read")
+
 def p_popIO(p):
     '''
     popIO : 
