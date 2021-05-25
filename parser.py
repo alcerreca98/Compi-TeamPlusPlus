@@ -27,7 +27,7 @@ def p_prueba(p):
     '''
     table.dirPrint()
     cuad.imprimirCuadruplos()
-    cuad.imprimirPilaO()
+    #cuad.imprimirPilaO()
 
 #Introduce el nombre del programa en la tabla de funciones
 def p_initProg(p):

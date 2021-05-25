@@ -106,7 +106,7 @@ def expStep3():
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
           quadInsert(operator, tempL, tempR, Resultado)
-          print(tempL, operator, tempR, Resultado)
+          #print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
           #Prueba Resultado
@@ -134,7 +134,7 @@ def expStep4():
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
           quadInsert(operator, tempL, tempR, Resultado)
-          print(tempL, operator, tempR, Resultado)
+          #print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
           Resultado = Resultado + 1
@@ -158,7 +158,7 @@ def expStep5():
         lType = Ptypes.pop()
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
-        print(result_type)
+        #print(result_type)
         if result_type != 'error':
           quadInsert(operator, tempL, tempR, Resultado)
           PilaO.append(Resultado)
@@ -242,7 +242,7 @@ def asignaStep2():
       operator = Poper.pop()
       if lType == rType:
         quadInsert(operator, tempR, None, tempL)
-        print(tempL, operator, tempR)
+        #print(tempL, operator, tempR)
         PilaO.append(tempL)
         Ptypes.append(lType)
         #Prueba Resultado
@@ -277,7 +277,7 @@ def popReturn():
 
 def Gotof_IF():
   exp_type = Ptypes.pop()
-  print(exp_type)
+  #print(exp_type)
   if exp_type != 'boolean':
     print('Error: type mismatch, IF')
     sys.exit()
