@@ -28,6 +28,8 @@ class funcion(object):
     def printFuncion(self):
         """ Print de todos los atributos en la instancia de Funcion seleccionada """
         print("\nid =", self.id, " tipo =", self.type, "cuad inicial =", self.di)
+        print("Contadores de Tamaño li, lf, lc, lti, ltf, ltc, ltb")
+        print(self.tam)
 
     #getter de la tabla de variables de la función
     def getVarTable(self):

@@ -19,13 +19,14 @@ from estructuras import *
 # ------------------------------------------------------------
 def p_program(p):
     '''
-    program : PROGRAM ID initProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE prueba
+    program : PROGRAM ID initProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
     '''
 def p_prueba(p):
     '''
     prueba : 
     '''
     table.dirPrint()
+    print("\n")
     cuad.imprimirCuadruplos()
     #cuad.imprimirPilaO()
 
@@ -49,6 +50,44 @@ def p_auxMain(p):
     table.dirFuncs[table.auxFunc].fillDI(cuad.contQuad-1)
     cuad.Quad[0].result = cuad.contQuad-1
     #Regresar valor de salto de Main
+
+def p_endProg(p):
+    '''
+    endProg : 
+    '''
+    temp = table.dirFuncs[table.auxFunc].dir_var
+    for id in temp:
+        var = temp.get(id)
+        tipo = var.getType()
+        if tipo == 'int':
+            table.li = table.li +1
+        elif tipo == 'float':
+            table.lf = table.lf +1
+        elif tipo == 'char':
+            table.lc = table.lc +1
+        else:
+            print("No deberia entrar aqui ERR")
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
+    table.dirFuncs[table.auxFunc].tam.append(int(table.li))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lf))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lc))
+
+    #Borrar Tabla de Variables Locales
+    table.dirFuncs[table.auxFunc].dir_var.clear()
+
+    #Insertar cuadruplo de fin de funcion
+    cuad.quadInsert('ENDProgram', None, None, None)
+    cuad.contQuad = cuad.contQuad + 1
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lti))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltf))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltc))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltb))
+
+    #table.dirFuncs[table.auxFunc].printSize()
+    #Reinicio contadores
+    table.clearVarSize()
+
 
 # ------------------------------------------------------------
 # Declaracion de Clases
@@ -202,6 +241,10 @@ def p_endF(p):
     '''
     endF :
     '''
+    #Borrar Tabla de Variables Locales
+    table.dirFuncs[table.auxFunc].dir_var.clear()
+
+    #Insertar cuadruplo de fin de funcion
     cuad.quadInsert('ENDFunc', None, None, None)
     cuad.contQuad = cuad.contQuad + 1
     #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
@@ -210,8 +253,10 @@ def p_endF(p):
     table.dirFuncs[table.auxFunc].tam.append(int(table.ltc))
     table.dirFuncs[table.auxFunc].tam.append(int(table.ltb))
 
-    table.dirFuncs[table.auxFunc].printSize()
+    #table.dirFuncs[table.auxFunc].printSize()
+    #Reinicio contadores
     table.clearVarSize()
+    
 
 # ------------------------------------------------------------
 # Estatutos
