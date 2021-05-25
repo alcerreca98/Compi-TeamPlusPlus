@@ -46,6 +46,8 @@ def p_auxMain(p):
     '''
     table.ingresarTabla("Main", None)
     table.auxFunc = "Main"
+    table.dirFuncs[table.auxFunc].fillDI(cuad.contQuad-1)
+    cuad.Quad[0].result = cuad.contQuad-1
     #Regresar valor de salto de Main
 
 # ------------------------------------------------------------
@@ -160,7 +162,7 @@ def p_declarVar(p):
 # ------------------------------------------------------------
 def p_definFunc(p):
     '''
-    definFunc : tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar LBRACE listaEstatutos RBRACE definFunc
+    definFunc : tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
               | empty
     '''
 
@@ -171,6 +173,20 @@ def p_auxFuncion(p):
     '''
     table.auxFunc = p[-1]
     table.ingresarTabla(table.auxFunc, table.tipoMeth)
+
+def p_setDI(p):
+    '''
+    setDI :
+    '''
+    table.dirFuncs[table.auxFunc].fillDI(cuad.contQuad-1)
+
+
+def p_endF(p):
+    '''
+    endF :
+    '''
+    cuad.quadInsert('ENDFunc', None, None, None)
+    cuad.contQuad = cuad.contQuad + 1
 # ------------------------------------------------------------
 # Estatutos
 # ------------------------------------------------------------

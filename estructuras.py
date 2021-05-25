@@ -27,7 +27,7 @@ class funcion(object):
     #Print de todos los atributos en la instancia de Funcion seleccionada
     def printFuncion(self):
         """ Print de todos los atributos en la instancia de Funcion seleccionada """
-        print("\nid =", self.id, " tipo =", self.type)
+        print("\nid =", self.id, " tipo =", self.type, "cuad inicial =", self.di)
 
     #getter de la tabla de variables de la función
     def getVarTable(self):
@@ -77,6 +77,9 @@ class funcion(object):
     def searchIfExists(self, id):
         """ Busca si al momento de llamar la variable ya este previamente declarada """
         return self.dir_var.get(id, False)
+    
+    def fillDI(self, di):
+        self.di = di
 
 #Estructura de Variables
 class variable(object):

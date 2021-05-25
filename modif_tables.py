@@ -23,7 +23,7 @@ def ingresarTabla(id, type):
         dirFuncs[id] = funcion(id, type)
     
 #Crear e insertar en tabla de variables con chequeo semantico de declaracion doble
-def ingresarVariables(id,type):
+def ingresarVariables(id, type):
     """ Crear e insertar en tabla de variables con chequeo semantico de declaracion doble """
     #chequeo contra globales
     if(dirFuncs[programa].repeatedVariables(id) == False):
