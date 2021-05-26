@@ -11,19 +11,19 @@ gtI = 8000
 gtF = 10000
 gtC = 12000
 gtB = 14000
-#Constantes
-gcI = 16000
-gcF = 18000
-gcC = 20000
-gcS = 22000
-gcB = 24000
-
 #Direcciones Locales
-lI = 26000
-lF = 28000
-lC = 30000
+lI = 16000
+lF = 18000
+lC = 20000
 #Temporales Locales
-ltI = 32000
-ltF = 34000
-ltC = 36000
-ltB = 38000
+ltI = 22000
+ltF = 24000
+ltC = 26000
+ltB = 28000
+#Constantes
+gcI = 30000
+gcF = 32000
+gcC = 34000
+gcS = 36000
+gcB = 38000
+
