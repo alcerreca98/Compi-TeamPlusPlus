@@ -19,13 +19,14 @@ from estructuras import *
 # ------------------------------------------------------------
 def p_program(p):
     '''
-    program : PROGRAM ID initProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE prueba
+    program : PROGRAM ID initProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
     '''
 def p_prueba(p):
     '''
     prueba : 
     '''
     table.dirPrint()
+    print("\n")
     cuad.imprimirCuadruplos()
     #cuad.imprimirPilaO()
 
@@ -49,6 +50,44 @@ def p_auxMain(p):
     table.dirFuncs[table.auxFunc].fillDI(cuad.contQuad-1)
     cuad.Quad[0].result = cuad.contQuad-1
     #Regresar valor de salto de Main
+
+def p_endProg(p):
+    '''
+    endProg : 
+    '''
+    temp = table.dirFuncs[table.auxFunc].dir_var
+    for id in temp:
+        var = temp.get(id)
+        tipo = var.getType()
+        if tipo == 'int':
+            table.li = table.li +1
+        elif tipo == 'float':
+            table.lf = table.lf +1
+        elif tipo == 'char':
+            table.lc = table.lc +1
+        else:
+            print("No deberia entrar aqui ERR")
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
+    table.dirFuncs[table.auxFunc].tam.append(int(table.li))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lf))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lc))
+
+    #Borrar Tabla de Variables Locales
+    table.dirFuncs[table.auxFunc].dir_var.clear()
+
+    #Insertar cuadruplo de fin de funcion
+    cuad.quadInsert('ENDProgram', None, None, None)
+    cuad.contQuad = cuad.contQuad + 1
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lti))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltf))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltc))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltb))
+
+    #table.dirFuncs[table.auxFunc].printSize()
+    #Reinicio contadores
+    table.clearVarSize()
+
 
 # ------------------------------------------------------------
 # Declaracion de Clases
@@ -178,15 +217,47 @@ def p_setDI(p):
     '''
     setDI :
     '''
+    temp = table.dirFuncs[table.auxFunc].dir_var
+    for id in temp:
+        var = temp.get(id)
+        tipo = var.getType()
+        if tipo == 'int':
+            table.li = table.li +1
+        elif tipo == 'float':
+            table.lf = table.lf +1
+        elif tipo == 'char':
+            table.lc = table.lc +1
+        else:
+            print("No deberia entrar aqui ERR")
+    #llena el cuadruplo inicial de la funcion
     table.dirFuncs[table.auxFunc].fillDI(cuad.contQuad-1)
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
+    table.dirFuncs[table.auxFunc].tam.append(int(table.li))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lf))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lc))
 
 
 def p_endF(p):
     '''
     endF :
     '''
+    #Borrar Tabla de Variables Locales
+    table.dirFuncs[table.auxFunc].dir_var.clear()
+
+    #Insertar cuadruplo de fin de funcion
     cuad.quadInsert('ENDFunc', None, None, None)
     cuad.contQuad = cuad.contQuad + 1
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
+    table.dirFuncs[table.auxFunc].tam.append(int(table.lti))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltf))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltc))
+    table.dirFuncs[table.auxFunc].tam.append(int(table.ltb))
+
+    #table.dirFuncs[table.auxFunc].printSize()
+    #Reinicio contadores
+    table.clearVarSize()
+    
+
 # ------------------------------------------------------------
 # Estatutos
 # ------------------------------------------------------------
@@ -231,7 +302,7 @@ def p_asignStep2(p):
 def p_llamada(p):
     '''
     llamada   : ID DOT ID LPAREN enviaParam RPAREN
-              | ID LPAREN enviaParam RPAREN 
+              | ID verExist LPAREN enviaParam coherenceGo RPAREN 
     '''
 def p_enviaParam(p):
     '''
@@ -240,9 +311,67 @@ def p_enviaParam(p):
     '''
 def p_paramReferencia(p):
     '''
-    paramReferencia : exp
-                    | exp COMMA paramReferencia
+    paramReferencia : exp paramType
+                    | exp paramType COMMA paramCount paramReferencia
     '''
+def p_verExist(p):
+    '''
+    verExist :
+    '''
+    exist = table.dirFuncs.get(p[-1], False)
+    if(exist == False):
+        print("Error : la funcion \"", p[-1] ,"\" no esta previamente declarada")
+        sys.exit()
+    
+    cuad.quadInsert('ERA', None, None, p[-1])
+    cuad.contQuad = cuad.contQuad + 1
+    cuad.paramK = 1
+    cuad.pointerParam = p[-1]
+
+def p_paramType(p):
+    '''
+    paramType :
+    '''
+    arg = cuad.PilaO.pop()
+    arg_type = cuad.Ptypes.pop()
+    params = table.dirFuncs[cuad.pointerParam].params
+    tam = len(params)
+    if(cuad.paramK > tam):
+        print("Error: mas parametros de los esperados")
+        sys.exit()
+    tipo = table.dirFuncs[cuad.pointerParam].params[cuad.paramK-1]
+    num = "Par"+str(cuad.paramK)
+    if(arg_type == tipo):
+        cuad.quadInsert('PARAM', arg, None , num)
+        cuad.contQuad = cuad.contQuad + 1
+    else:
+        print("type mismatch de parametros en llamada", cuad.pointerParam)
+        sys.exit()
+
+def p_paramCount(p):
+    '''
+    paramCount :
+    '''
+    cuad.paramK = cuad.paramK+1
+
+def p_coherenceGo(p):
+    '''
+    coherenceGo :
+    '''
+    params = table.dirFuncs[cuad.pointerParam].params
+    tam = len(params)
+    if(cuad.paramK < tam):
+        print("Error: faltaron parametros")
+        sys.exit()
+    cuad.quadInsert('GOSUB', None, None , cuad.pointerParam)
+    cuad.contQuad = cuad.contQuad + 1
+    #Parche Guadalupano
+    tipoRet = table.dirFuncs[cuad.pointerParam].type
+    if(tipoRet != 'void'):
+        Guadalupano = cuad.getAvail(tipoRet)
+        cuad.quadInsert('=', cuad.pointerParam, None , Guadalupano)
+        cuad.contQuad = cuad.contQuad + 1
+
 # ------------------------------------------------------------
 # Return
 # ------------------------------------------------------------

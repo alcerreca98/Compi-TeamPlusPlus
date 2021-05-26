@@ -89,4 +89,17 @@
 <p>
     Cambio a Estructuras, Se genera un archivo de modificacion de tablas para ayudar con el manejo de funciones para directorio de funciones y tablas de variables. Se empiezan a hacer los puntos neuralgicos pertinentes a directorio de funciones y tabla de variables y queda "funcional" menos el aspecto de que no logramos manejar los dicionarios de manera dinamica nisiquiera con la funcion copy, cuando modificamos el original cambia la referencia a todo y cuando queremos limpiar la tabla de variables para reciclar, se borran todas. La estructura ya esta funcionando comprobado, nuevo test "test-tablaVariables-declarVar
 </p>
+<h3>
+    Entrega 7
+</h3>
+<p>
+    Directotio de Funciones y Tabla de Variables en implementación final definitiva, se termina Semantica Basica de Expresiones, ya se tenía el cubo pero no estaba implementado en puntos neuralgicos. Se termina generacion de cuadruplos pasa expresiones, estautos secuenciales de todo menos llamada de funciones, se termina generacion de cuadruplos pasa ciclos. Todo con sus tests de funcionalidad y semantica
+</p>
+<h3>
+    Entrega 8
+</h3>
+<p>
+    Terminamos la generación de cuadruplos para código de funciones e implementacion de parche guadalupano. Junto con su set de tests para funcionalidad y semántica.
+</p>
+
 

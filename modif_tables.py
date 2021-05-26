@@ -14,6 +14,31 @@ auxFunc = ""
 tipoMeth = None
 dictPrueba = {}
 
+#Contadores
+li = 0
+lf = 0
+lc = 0
+lti = 0
+ltf = 0
+ltc = 0
+ltb = 0
+
+def clearVarSize():
+    global li
+    global lf
+    global lc
+    global lti
+    global ltf
+    global ltc
+    global ltb
+    li = 0
+    lf = 0
+    lc = 0
+    lti = 0
+    ltf = 0
+    ltc = 0
+    ltb = 0
+
 #Insertar datos a tabla de funciones
 def ingresarTabla(id, type):
     """ Insertar datos a tabla de funciones """

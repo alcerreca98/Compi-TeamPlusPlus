@@ -5,6 +5,7 @@
 import sys
 import estructuras as estructura
 import cuboSemantico as oracle
+import modif_tables as table
 
 #stacks
 Poper = []
@@ -13,6 +14,8 @@ Ptypes = []
 PilaO = []
 avail = []
 Quad = []
+paramK = 0
+pointerParam = ""
 
 #Variables globales
 contQuad = 1
@@ -87,6 +90,22 @@ def imprimirPilaO():
   for x in range(0,tam):
     print("PilaO en [", x,"]", PilaO[x])
 
+def getAvail(tipo):
+  if tipo == 'int':
+    table.lti = table.lti +1
+    return table.lti +1000
+  elif tipo == 'float':
+    table.ltf = table.ltf +1
+    return table.ltf +2000
+  elif tipo == 'char':
+    table.ltc = table.ltc +1
+    return table.ltc +3000
+  elif tipo == 'boolean':
+    table.ltb = table.ltb +1
+    return table.ltb +4000
+  else:
+    print("No deberia entrar aqui ERR")
+
 #######################GENERACION DE CUADRUPLOS######################
 
 #insertar cuadruplos de multiplicacion division con chequeo semantico
@@ -105,6 +124,8 @@ def expStep3():
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
+          #get avail
+          Resultado = getAvail(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           #print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
@@ -133,6 +154,7 @@ def expStep4():
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
+          Resultado = getAvail(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           #print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
@@ -160,6 +182,7 @@ def expStep5():
         result_type = oraculo[operator][lType][rType]
         #print(result_type)
         if result_type != 'error':
+          Resultado = getAvail(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
@@ -187,6 +210,7 @@ def expStep6():
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
+          Resultado = getAvail(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
@@ -214,6 +238,7 @@ def expStep7():
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
+          Resultado = getAvail(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
