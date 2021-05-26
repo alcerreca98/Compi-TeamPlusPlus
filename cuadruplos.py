@@ -14,7 +14,8 @@ Ptypes = []
 PilaO = []
 avail = []
 Quad = []
-TempTypes = []
+paramK = 0
+pointerParam = ""
 
 #Variables globales
 contQuad = 1
@@ -123,7 +124,6 @@ def expStep3():
         operator = Poper.pop()
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
-          TempTypes.append(result_type)
           #get avail
           Resultado = getAvail(result_type)
           quadInsert(operator, tempL, tempR, Resultado)

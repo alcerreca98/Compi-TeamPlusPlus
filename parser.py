@@ -302,7 +302,7 @@ def p_asignStep2(p):
 def p_llamada(p):
     '''
     llamada   : ID DOT ID LPAREN enviaParam RPAREN
-              | ID LPAREN enviaParam RPAREN 
+              | ID verExist LPAREN enviaParam coherenceGo RPAREN 
     '''
 def p_enviaParam(p):
     '''
@@ -311,9 +311,67 @@ def p_enviaParam(p):
     '''
 def p_paramReferencia(p):
     '''
-    paramReferencia : exp
-                    | exp COMMA paramReferencia
+    paramReferencia : exp paramType
+                    | exp paramType COMMA paramCount paramReferencia
     '''
+def p_verExist(p):
+    '''
+    verExist :
+    '''
+    exist = table.dirFuncs.get(p[-1], False)
+    if(exist == False):
+        print("Error : la funcion \"", p[-1] ,"\" no esta previamente declarada")
+        sys.exit()
+    
+    cuad.quadInsert('ERA', None, None, p[-1])
+    cuad.contQuad = cuad.contQuad + 1
+    cuad.paramK = 1
+    cuad.pointerParam = p[-1]
+
+def p_paramType(p):
+    '''
+    paramType :
+    '''
+    arg = cuad.PilaO.pop()
+    arg_type = cuad.Ptypes.pop()
+    params = table.dirFuncs[cuad.pointerParam].params
+    tam = len(params)
+    if(cuad.paramK > tam):
+        print("Error: mas parametros de los esperados")
+        sys.exit()
+    tipo = table.dirFuncs[cuad.pointerParam].params[cuad.paramK-1]
+    num = "Par"+str(cuad.paramK)
+    if(arg_type == tipo):
+        cuad.quadInsert('PARAM', arg, None , num)
+        cuad.contQuad = cuad.contQuad + 1
+    else:
+        print("type mismatch de parametros en llamada", cuad.pointerParam)
+        sys.exit()
+
+def p_paramCount(p):
+    '''
+    paramCount :
+    '''
+    cuad.paramK = cuad.paramK+1
+
+def p_coherenceGo(p):
+    '''
+    coherenceGo :
+    '''
+    params = table.dirFuncs[cuad.pointerParam].params
+    tam = len(params)
+    if(cuad.paramK < tam):
+        print("Error: faltaron parametros")
+        sys.exit()
+    cuad.quadInsert('GOSUB', None, None , cuad.pointerParam)
+    cuad.contQuad = cuad.contQuad + 1
+    #Parche Guadalupano
+    tipoRet = table.dirFuncs[cuad.pointerParam].type
+    if(tipoRet != 'void'):
+        Guadalupano = cuad.getAvail(tipoRet)
+        cuad.quadInsert('=', cuad.pointerParam, None , Guadalupano)
+        cuad.contQuad = cuad.contQuad + 1
+
 # ------------------------------------------------------------
 # Return
 # ------------------------------------------------------------
