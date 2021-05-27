@@ -22,6 +22,11 @@ lti = 0
 ltf = 0
 ltc = 0
 ltb = 0
+gi = 0
+gf = 0
+gc = 0
+
+
 
 def clearVarSize():
     global li

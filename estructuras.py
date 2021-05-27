@@ -94,11 +94,13 @@ class variable(object):
     def __init__(self, id, type):
         self.id = id
         self.type = type
+        self.dir = None
+        self.dim = []
 
     #Print de todos los atributos en la instancia de Variable seleccionada
     def printVariable(self):
         """ Print de todos los atributos en la instancia de Variable seleccionada """
-        print("id =",self.id," tipo =",self.type)
+        print("id =",self.id," tipo =",self.type," dir =", self.dir, " dim =", self.dim)
 
     def getType(self):
         return self.type

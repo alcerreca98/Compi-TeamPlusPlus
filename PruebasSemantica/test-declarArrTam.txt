@@ -1,0 +1,38 @@
+program Team_pp;
+
+var int: i, j[1], p[10][15], o;
+
+float func fact(int: n, float : m)
+var int :b, z[1];
+var float : y;
+var char : c, ch;{
+	y = n+(p-y*2+j);
+    if(y > m) then{
+        y = -2.5;
+    }
+    ch = c;
+	read(c);
+	return(j);
+}
+
+void func pelos(int : y, int : z)
+var int : x, arr[1][2];{
+	x = y;
+}
+
+main()
+var int : loquesea ;
+var float : x,y;{
+    j= p*2;
+	read(j,p[2]);
+	write("C Quack Quack", j);
+	for loquesea = 0 to 10+j do{
+		j = j + 1;
+		for loquesea = 0 to 10+j do{
+			j = j + 1;
+		}
+	}
+    pelos(loquesea, j);
+	fact(loquesea,y);
+
+}

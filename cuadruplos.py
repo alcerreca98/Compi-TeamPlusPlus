@@ -6,6 +6,7 @@ import sys
 import estructuras as estructura
 import cuboSemantico as oracle
 import modif_tables as table
+import memoriaVirtual as mem
 
 #stacks
 Poper = []
@@ -93,18 +94,60 @@ def imprimirPilaO():
 def getAvail(tipo):
   if tipo == 'int':
     table.lti = table.lti +1
-    return table.lti +1000
+    return table.lti + mem.ltI
   elif tipo == 'float':
     table.ltf = table.ltf +1
-    return table.ltf +2000
+    return table.ltf + mem.ltF
   elif tipo == 'char':
     table.ltc = table.ltc +1
-    return table.ltc +3000
+    return table.ltc + mem.ltC
   elif tipo == 'boolean':
     table.ltb = table.ltb +1
-    return table.ltb +4000
+    return table.ltb + mem.ltB
   else:
     print("No deberia entrar aqui ERR")
+
+def getAvailLocal(tipo):
+  if tipo == 'int':
+    table.li = table.li +1
+    return table.li + mem.lI
+  elif tipo == 'float':
+    table.lf = table.lf +1
+    return table.lf + mem.lF
+  elif tipo == 'char':
+    table.lc = table.lc +1
+    return table.lc + mem.lC
+  else:
+    print("No deberia entrar aqui ERR")
+
+def getAvailGlobal(tipo):
+  if tipo == 'int':
+    table.gi = table.gi +1
+    return table.gi + mem.gI
+  elif tipo == 'float':
+    table.gf = table.gf +1
+    return table.gf + mem.gF
+  elif tipo == 'char':
+    table.gc = table.gc +1
+    return table.gc + mem.gC
+  else:
+    print("No deberia entrar aqui ERR")
+
+def setSaltoLocal(salto,tipo):
+  if tipo == 'int':
+    table.li = table.li + salto
+  elif tipo == 'float':
+    table.lf = table.lf + salto
+  elif tipo == 'char':
+    table.lc = table.lc + salto
+  
+def setSaltoGlobal(salto,tipo):
+  if tipo == 'int':
+    table.gi = table.gi + salto
+  elif tipo == 'float':
+    table.gf = table.gf + salto
+  elif tipo == 'char':
+    table.gc = table.gc + salto
 
 #######################GENERACION DE CUADRUPLOS######################
 
@@ -349,6 +392,7 @@ def stepFor1():
   lType = Ptypes.pop()
   result_type = oraculo['<'][lType][rType]
   if result_type != 'error':
+    Resultado = getAvail(result_type)
     quadInsert('<', tempL, tempR, Resultado)
     PilaO.append(Resultado)
     Ptypes.append(result_type)
