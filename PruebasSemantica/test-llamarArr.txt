@@ -1,6 +1,6 @@
 program Team_pp;
 
-var int: i, j[1], p[10][15], o;
+var int: i, j[1], p[10,15], o;
 
 float func fact(int: n, float : m)
 var int :b, z[10];
@@ -8,8 +8,8 @@ var float : y;
 var char : c, ch;{
 	y = n+(p-y*2+j);
 	b = j[1];
-	b = p[5][3];
-	n = p[1+2][5];
+	b = p[5,3];
+	n = p[1-2,5];
     if(y > m) then{
         y = -2.5;
     }
@@ -19,7 +19,7 @@ var char : c, ch;{
 }
 
 void func pelos(int : y, int : z)
-var int : x, arr[1][2];{
+var int : x, arr[1,2];{
 	x = y;
 }
 

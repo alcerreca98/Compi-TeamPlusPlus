@@ -126,7 +126,7 @@ def p_idDeclare(p):
     '''
     idDeclare : ID auxDeclare auxDeclare2
               | ID auxDeclare LBRACK CTE_I RBRACK auxCTE
-              | ID auxDeclare LBRACK CTE_I RBRACK LBRACK CTE_I auxCTE2 RBRACK
+              | ID auxDeclare LBRACK CTE_I COMMA CTE_I auxCTE2 RBRACK
     '''
 def p_auxDeclare(p):
     '''
@@ -168,17 +168,17 @@ def p_auxCTE2(p):
     '''
     auxCTE2 :
     '''
-    if(p[-4] > 0 and p[-1] > 0) :
-        table.dirFuncs[table.auxFunc].dir_var[p[-7]].dim.append(p[-4])
-        table.dirFuncs[table.auxFunc].dir_var[p[-7]].dim.append(p[-1])
-        auxSalto = p[-4] * p[-1] -1
+    if(p[-3] > 0 and p[-1] > 0) :
+        table.dirFuncs[table.auxFunc].dir_var[p[-6]].dim.append(p[-3])
+        table.dirFuncs[table.auxFunc].dir_var[p[-6]].dim.append(p[-1])
+        auxSalto = p[-3] * p[-1] -1
         if table.auxFunc == table.programa:
             temp = cuad.getAvailGlobal(table.tipo)
-            table.dirFuncs[table.auxFunc].dir_var[p[-7]].dir = temp
+            table.dirFuncs[table.auxFunc].dir_var[p[-6]].dir = temp
             cuad.setSaltoGlobal(auxSalto, table.tipo)
         else:
             temp = cuad.getAvailLocal(table.tipo)
-            table.dirFuncs[table.auxFunc].dir_var[p[-7]].dir = temp
+            table.dirFuncs[table.auxFunc].dir_var[p[-6]].dir = temp
             cuad.setSaltoLocal(auxSalto, table.tipo)
     else:
         print("Error: Valor de dimensión inválido, debe ser mayor a 0")
@@ -189,8 +189,8 @@ def p_idCall(p):
     '''
     idCall : ID idCallaux
            | ID idCallaux DOT ID
-           | ID idCallaux LBRACK addFF exp idCallaux2 RBRACK rmFF 
-           | ID idCallaux LBRACK addFF exp idCallaux2 RBRACK rmFF LBRACK addFF exp idCallaux3 RBRACK rmFF
+           | ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4
+           | ID idCallaux LBRACK addFF exp idCallaux2  rmFF COMMA addFF exp idCallaux3 RBRACK rmFF
     '''
 def p_idCallaux(p):
     '''
@@ -224,13 +224,28 @@ def p_idCallaux3(p):
     '''
     idCallaux3 : 
     '''
-    condicion = table.dirFuncs[table.programa].searchIfExists(p[-11])
+    condicion = table.dirFuncs[table.programa].searchIfExists(p[-10])
     if(condicion == False):
         limInf = 0
-        limSup = table.dirFuncs[table.auxFunc].dir_var[p[-11]].dim[1]
+        limSup = table.dirFuncs[table.auxFunc].dir_var[p[-10]].dim[1]
     else:
         limInf = 0
-        limSup = table.dirFuncs[table.programa].dir_var[p[-11]].dim[1]
+        limSup = table.dirFuncs[table.programa].dir_var[p[-10]].dim[1]
+    resultExp = cuad.PilaO[-1]
+    cuad.quadInsert("ver", resultExp, limInf, limSup)
+    cuad.contQuad = cuad.contQuad + 1
+
+def p_idCallaux4(p):
+    '''
+    idCallaux4 : 
+    '''
+    condicion = table.dirFuncs[table.programa].searchIfExists(p[-7])
+    if(condicion == False):
+        limInf = 0
+        limSup = table.dirFuncs[table.auxFunc].dir_var[p[-7]].dim[0]
+    else:
+        limInf = 0
+        limSup = table.dirFuncs[table.programa].dir_var[p[-7]].dim[0]
     resultExp = cuad.PilaO[-1]
     cuad.quadInsert("ver", resultExp, limInf, limSup)
     cuad.contQuad = cuad.contQuad + 1
