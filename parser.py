@@ -42,6 +42,7 @@ def p_initProg(p):
     table.auxFunc = p[-1]
     cuad.quadInsert('Goto', None, None, None)
     cuad.contQuad = cuad.contQuad+1
+    table.addCte(0)
 
 def p_auxMain(p):
     '''
@@ -61,19 +62,10 @@ def p_endProg(p):
     for id in temp:
         var = temp.get(id)
         tipo = var.getType()
-        if tipo == 'int':
-            table.li = table.li +1
-        elif tipo == 'float':
-            table.lf = table.lf +1
-        elif tipo == 'char':
-            table.lc = table.lc +1
-        else:
-            print("No deberia entrar aqui ERR")
-    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
-    table.dirFuncs[table.auxFunc].tam.append(int(table.li))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.lf))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.lc))
+        table.contadorERAlocal(tipo)
 
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
+    table.ingresaERAifcLocal()
     #Borrar Tabla de Variables Locales
     table.dirFuncs[table.auxFunc].dir_var.clear()
 
@@ -81,10 +73,7 @@ def p_endProg(p):
     cuad.quadInsert('ENDProgram', None, None, None)
     cuad.contQuad = cuad.contQuad + 1
     #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
-    table.dirFuncs[table.auxFunc].tam.append(int(table.lti))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.ltf))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.ltc))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.ltb))
+    table.ingresaERAifcLocalTemporal()
 
     #table.dirFuncs[table.auxFunc].printSize()
     #Reinicio contadores
@@ -125,8 +114,8 @@ def p_listaIdDeclare(p):
 def p_idDeclare(p):
     '''
     idDeclare : ID auxDeclare auxDeclare2
-              | ID auxDeclare LBRACK CTE_I RBRACK auxCTE
-              | ID auxDeclare LBRACK CTE_I COMMA CTE_I auxCTE2 RBRACK
+              | ID auxDeclare LBRACK CTE_I addCteTable RBRACK auxCTE 
+              | ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
     '''
 def p_auxDeclare(p):
     '''
@@ -149,16 +138,19 @@ def p_auxCTE(p):
     '''
     auxCTE :
     '''
-    if(p[-2] > 0) :
-        table.dirFuncs[table.auxFunc].dir_var[p[-5]].dim.append(p[-2])
+    if(p[-3] > 0) :
+        table.dirFuncs[table.auxFunc].dir_var[p[-6]].dim.append(p[-3])
         if table.auxFunc == table.programa:
             temp = cuad.getAvailGlobal(table.tipo)
-            table.dirFuncs[table.auxFunc].dir_var[p[-5]].dir = temp
-            cuad.setSaltoGlobal(p[-2]-1, table.tipo)
+            table.dirFuncs[table.auxFunc].dir_var[p[-6]].dir = temp
+            table.addCte(temp)
+            cuad.setSaltoGlobal(p[-3]-1, table.tipo)
         else:
             temp = cuad.getAvailLocal(table.tipo)
-            table.dirFuncs[table.auxFunc].dir_var[p[-5]].dir = temp
-            cuad.setSaltoLocal(p[-2]-1, table.tipo)
+            table.dirFuncs[table.auxFunc].dir_var[p[-6]].dir = temp
+            table.addCte(temp)
+            cuad.setSaltoLocal(p[-3]-1, table.tipo)
+            table.saltoERAlocal(p[-3]-1, table.tipo)
 
     else:
         print("Error: Valor de dimensión inválido, debe ser mayor a 0")
@@ -168,18 +160,21 @@ def p_auxCTE2(p):
     '''
     auxCTE2 :
     '''
-    if(p[-3] > 0 and p[-1] > 0) :
-        table.dirFuncs[table.auxFunc].dir_var[p[-6]].dim.append(p[-3])
-        table.dirFuncs[table.auxFunc].dir_var[p[-6]].dim.append(p[-1])
-        auxSalto = p[-3] * p[-1] -1
+    if(p[-5] > 0 and p[-2] > 0) :
+        table.dirFuncs[table.auxFunc].dir_var[p[-8]].dim.append(p[-5])
+        table.dirFuncs[table.auxFunc].dir_var[p[-8]].dim.append(p[-2])
+        auxSalto = p[-5] * p[-2] -1
         if table.auxFunc == table.programa:
             temp = cuad.getAvailGlobal(table.tipo)
-            table.dirFuncs[table.auxFunc].dir_var[p[-6]].dir = temp
+            table.dirFuncs[table.auxFunc].dir_var[p[-8]].dir = temp
+            table.addCte(temp)
             cuad.setSaltoGlobal(auxSalto, table.tipo)
         else:
             temp = cuad.getAvailLocal(table.tipo)
-            table.dirFuncs[table.auxFunc].dir_var[p[-6]].dir = temp
+            table.dirFuncs[table.auxFunc].dir_var[p[-8]].dir = temp
+            table.addCte(temp)
             cuad.setSaltoLocal(auxSalto, table.tipo)
+            table.saltoERAlocal(auxSalto, table.tipo)
     else:
         print("Error: Valor de dimensión inválido, debe ser mayor a 0")
         sys.exit()
@@ -197,12 +192,13 @@ def p_idCallaux(p):
     idCallaux : 
     '''
     if(table.checkIfExists(p[-1])):
-        cuad.pushPilaO(p[-1])
         condicion = table.dirFuncs[table.programa].searchIfExists(p[-1])
         if(condicion == False):
             var = table.dirFuncs[table.auxFunc].searchIfExists(p[-1])
         else:
             var = table.dirFuncs[table.programa].searchIfExists(p[-1])
+        #cuad.pushPilaO(p[-1])
+        cuad.pushPilaO(var.dir)
         cuad.pushType(var.getType())
 
 def p_idCallaux2(p):
@@ -292,6 +288,8 @@ def p_param(p):
     '''
     table.ingresarVariables(p[3], table.tipo)
     table.ingresarParams(table.tipo)
+    temp = cuad.getAvailLocal(table.tipo)
+    table.dirFuncs[table.auxFunc].dir_var[p[3]].dir = temp
 
 # ------------------------------------------------------------
 # Declaración de Variables
@@ -326,20 +324,12 @@ def p_setDI(p):
     for id in temp:
         var = temp.get(id)
         tipo = var.getType()
-        if tipo == 'int':
-            table.li = table.li +1
-        elif tipo == 'float':
-            table.lf = table.lf +1
-        elif tipo == 'char':
-            table.lc = table.lc +1
-        else:
-            print("No deberia entrar aqui ERR")
+        table.contadorERAlocal(tipo)
+
     #llena el cuadruplo inicial de la funcion
     table.dirFuncs[table.auxFunc].fillDI(cuad.contQuad-1)
     #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
-    table.dirFuncs[table.auxFunc].tam.append(int(table.li))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.lf))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.lc))
+    table.ingresaERAifcLocal()
 
 
 def p_endF(p):
@@ -353,10 +343,7 @@ def p_endF(p):
     cuad.quadInsert('ENDFunc', None, None, None)
     cuad.contQuad = cuad.contQuad + 1
     #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
-    table.dirFuncs[table.auxFunc].tam.append(int(table.lti))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.ltf))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.ltc))
-    table.dirFuncs[table.auxFunc].tam.append(int(table.ltb))
+    table.ingresaERAifcLocalTemporal()
 
     #table.dirFuncs[table.auxFunc].printSize()
     #Reinicio contadores
@@ -474,6 +461,7 @@ def p_coherenceGo(p):
     tipoRet = table.dirFuncs[cuad.pointerParam].type
     if(tipoRet != 'void'):
         Guadalupano = cuad.getAvail(tipoRet)
+        table.contadorERAlocalTemporal(tipoRet)
         cuad.quadInsert('=', cuad.pointerParam, None , Guadalupano)
         cuad.contQuad = cuad.contQuad + 1
 
@@ -654,20 +642,26 @@ def p_t(p):
 def p_f(p):
     '''
     f   : LPAREN addFF exp RPAREN rmFF
-        | CTE_I step1
-        | CTE_F step1
-        | CTE_C step1
+        | CTE_I addCteTable step1
+        | CTE_F addCteTable step1
+        | CTE_C addCteTable step1
         | llamada
         | idCall
     '''
+def p_addCteTable(p):
+    '''
+    addCteTable   : 
+    '''
+    table.addCte(p[-1])
 
 
 def p_step1(p):
     '''
     step1   : 
     '''
-    cuad.pushPilaO(p[-1])
-    cuad.pushType(cuad.getType(p[-1]))
+    #cuad.pushPilaO(p[-2])
+    cuad.pushPilaO(table.dictCte[p[-2]])
+    cuad.pushType(cuad.getType(p[-2]))
 
 #Step2 es pushPoper()
 

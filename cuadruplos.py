@@ -169,6 +169,7 @@ def expStep3():
         if result_type != 'error':
           #get avail
           Resultado = getAvail(result_type)
+          table.contadorERAlocalTemporal(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           #print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
@@ -198,6 +199,7 @@ def expStep4():
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
           Resultado = getAvail(result_type)
+          table.contadorERAlocalTemporal(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           #print(tempL, operator, tempR, Resultado)
           PilaO.append(Resultado)
@@ -226,6 +228,7 @@ def expStep5():
         #print(result_type)
         if result_type != 'error':
           Resultado = getAvail(result_type)
+          table.contadorERAlocalTemporal(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
@@ -254,6 +257,7 @@ def expStep6():
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
           Resultado = getAvail(result_type)
+          table.contadorERAlocalTemporal(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
@@ -282,6 +286,7 @@ def expStep7():
         result_type = oraculo[operator][lType][rType]
         if result_type != 'error':
           Resultado = getAvail(result_type)
+          table.contadorERAlocalTemporal(result_type)
           quadInsert(operator, tempL, tempR, Resultado)
           PilaO.append(Resultado)
           Ptypes.append(result_type)
@@ -393,6 +398,7 @@ def stepFor1():
   result_type = oraculo['<'][lType][rType]
   if result_type != 'error':
     Resultado = getAvail(result_type)
+    table.contadorERAlocalTemporal(result_type)
     quadInsert('<', tempL, tempR, Resultado)
     PilaO.append(Resultado)
     Ptypes.append(result_type)

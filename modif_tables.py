@@ -4,6 +4,7 @@
 # ------------------------------------------------------------
 import sys
 from estructuras import *
+import memoriaVirtual as mem
 
 #Diccionario de funciones
 dirFuncs = {}
@@ -13,8 +14,18 @@ tipo = None
 auxFunc = ""
 tipoMeth = None
 dictPrueba = {}
+dictCte = {}
 
-#Contadores
+#contadores ERA
+ERAli = 0
+ERAlf = 0
+ERAlc = 0
+ERAlti = 0
+ERAltf = 0
+ERAltc = 0
+ERAltb = 0
+
+#Contadores direcciones
 li = 0
 lf = 0
 lc = 0
@@ -25,6 +36,8 @@ ltb = 0
 gi = 0
 gf = 0
 gc = 0
+cte = 0
+pointer = 0
 
 
 
@@ -36,6 +49,13 @@ def clearVarSize():
     global ltf
     global ltc
     global ltb
+    global ERAli
+    global ERAlf
+    global ERAlc
+    global ERAlti
+    global ERAltf
+    global ERAltc
+    global ERAltb
     li = 0
     lf = 0
     lc = 0
@@ -43,6 +63,13 @@ def clearVarSize():
     ltf = 0
     ltc = 0
     ltb = 0
+    ERAli = 0
+    ERAlf = 0
+    ERAlc = 0
+    ERAlti = 0
+    ERAltf = 0
+    ERAltc = 0
+    ERAltb = 0
 
 #Insertar datos a tabla de funciones
 def ingresarTabla(id, type):
@@ -94,6 +121,75 @@ def checkIfExists(id):
     return True
         #se comprueba que existe y se hace lo demás.
 
+def addCte(cte_key):
+    global cte
+    temp = dictCte.get(cte_key,False)
+    if(temp == False):
+        dir_num = cte + mem.baseCte
+        dictCte[cte_key] = dir_num
+        cte = cte + 1
+
+def contadorERAlocal(type):
+    global ERAli
+    global ERAlf
+    global ERAlc
+
+    if type == 'int':
+        ERAli = ERAli +1
+    elif type == 'float':
+        ERAlf = ERAlf +1
+    elif type == 'char':
+        ERAlc = ERAlc +1
+    else:
+        print("No deberia entrar aqui ERR")
+
+def saltoERAlocal(salto,type):
+    global ERAli
+    global ERAlf
+    global ERAlc
+
+    if type == 'int':
+        ERAli = ERAli + salto
+    elif type == 'float':
+        ERAlf = ERAlf + salto
+    elif type == 'char':
+        ERAlc = ERAlc + salto
+
+def contadorERAlocalTemporal(type):
+    global ERAlti
+    global ERAltf
+    global ERAltc
+    global ERAltb
+
+    if type == 'int':
+        ERAlti = ERAlti +1
+    elif type == 'float':
+        ERAltf = ERAltf +1
+    elif type == 'char':
+        ERAltc = ERAltc +1
+    elif type == 'boolean':
+        ERAltb = ERAltb +1
+    else:
+        print("No deberia entrar aqui ERR")
+        print(type)
+
+def ingresaERAifcLocal():
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
+    dirFuncs[auxFunc].tam.append(int(ERAli))
+    dirFuncs[auxFunc].tam.append(int(ERAlf))
+    dirFuncs[auxFunc].tam.append(int(ERAlc))
+
+def ingresaERAifcLocalTemporal():
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
+    dirFuncs[auxFunc].tam.append(int(ERAlti))
+    dirFuncs[auxFunc].tam.append(int(ERAltf))
+    dirFuncs[auxFunc].tam.append(int(ERAltc))
+    dirFuncs[auxFunc].tam.append(int(ERAltb))
+
+def printCteTable():
+    x = dictCte.items()
+    print(x)
+
 #Imprime el directorio de funciones con sus respectivas tablas de variables y especificando parametros
 def dirPrint():
     """ Imprime el directorio de funciones con sus respectivas tablas de variables y especificando parametros """
@@ -101,5 +197,6 @@ def dirPrint():
       dirFuncs[key].printFuncion()
       dirFuncs[key].printVarTable()
       dirFuncs[key].printParams()
+    printCteTable()
 
 

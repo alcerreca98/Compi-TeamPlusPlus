@@ -132,7 +132,22 @@ class cuadruplo(object):
     #Print de todos los atributos en la instancia de Cuadruplo seleccionada
     def printCuad(self):
         """ Print de todos los atributos en la instancia de Cuadruplo seleccionada """
-        print(self.cont,"\t",self.action,"\t",self.opIzq,"\t",self.opDer,"\t",self.result)
+        if self.opIzq == None:
+            opeIzq = ''
+        else:
+            opeIzq = self.opIzq
+        
+        if self.opDer == None:
+            opeDer = ''
+        else:
+            opeDer = self.opDer
+        
+        if self.result == None:
+            resultados = ''
+        else:
+            resultados = self.result
+        #print(self.cont,"\t",self.action,"\t",self.opIzq,"\t",self.opDer,"\t",self.result)
+        print('{:<4d} {:10s} {:10s} {:10s} {:10s}'.format(self.cont,self.action,str(opeIzq),str(opeDer),str(resultados)))
 
 
 
