@@ -21,9 +21,13 @@ ltF = 24000
 ltC = 26000
 ltB = 28000
 #Constantes
-gcI = 30000
-gcF = 32000
-gcC = 34000
-gcS = 36000
-gcB = 38000
+baseCte = 30000
+basePointer = 32000
+#gcI = 30000
+#gcF = 32000
+#gcC = 34000
+#gcS = 36000
+#gcB = 38000
+
+
 

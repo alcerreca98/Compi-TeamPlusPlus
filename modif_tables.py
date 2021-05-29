@@ -4,6 +4,7 @@
 # ------------------------------------------------------------
 import sys
 from estructuras import *
+import memoriaVirtual as mem
 
 #Diccionario de funciones
 dirFuncs = {}
@@ -13,6 +14,7 @@ tipo = None
 auxFunc = ""
 tipoMeth = None
 dictPrueba = {}
+dictCte = {}
 
 #Contadores
 li = 0
@@ -25,6 +27,8 @@ ltb = 0
 gi = 0
 gf = 0
 gc = 0
+cte = 0
+pointer = 0
 
 
 
@@ -94,6 +98,21 @@ def checkIfExists(id):
     return True
         #se comprueba que existe y se hace lo demás.
 
+def addCte(cte_key):
+    global cte
+    temp = dictCte.get(cte_key,False)
+    if(temp == False):
+        dir_num = cte + mem.baseCte
+        dictCte[cte_key] = dir_num
+        cte = cte + 1
+
+def printCteTable():
+#    for x in dictCte:
+#        print(dictCte[x], '\n')
+    x = dictCte.items()
+    print(x)
+
+
 #Imprime el directorio de funciones con sus respectivas tablas de variables y especificando parametros
 def dirPrint():
     """ Imprime el directorio de funciones con sus respectivas tablas de variables y especificando parametros """
@@ -101,5 +120,6 @@ def dirPrint():
       dirFuncs[key].printFuncion()
       dirFuncs[key].printVarTable()
       dirFuncs[key].printParams()
+    printCteTable()
 
 

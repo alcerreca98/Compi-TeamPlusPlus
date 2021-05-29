@@ -125,17 +125,12 @@ def t_error(t):
 
 #'(?:\d+(?:\.\d*)?|\.\d+)'
 def t_CTE_F(t):
-    r'[+-]?\d+\.\d+'
+    r'\d+\.\d+'
     t.value = float(t.value)
     return t
 
-#def t_CTE_I(t):
-#    r'\d+'
-#    t.value = int(t.value)
-#    return t
-
 def t_CTE_I(t):
-    r'[-]?[0-9][0-9]*'
+    r'\d+'
     t.value = int(t.value)
     return t
 
