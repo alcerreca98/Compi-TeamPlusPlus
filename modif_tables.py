@@ -26,13 +26,13 @@ ERAltc = 0
 ERAltb = 0
 
 #Contadores direcciones
-li = 0
-lf = 0
-lc = 0
-lti = 0
-ltf = 0
-ltc = 0
-ltb = 0
+li = -1
+lf = -1
+lc = -1
+lti = -1
+ltf = -1
+ltc = -1
+ltb = -1
 gi = 0
 gf = 0
 gc = 0
@@ -56,13 +56,13 @@ def clearVarSize():
     global ERAltf
     global ERAltc
     global ERAltb
-    li = 0
-    lf = 0
-    lc = 0
-    lti = 0
-    ltf = 0
-    ltc = 0
-    ltb = 0
+    li = -1
+    lf = -1
+    lc = -1
+    lti = -1
+    ltf = -1
+    ltc = -1
+    ltb = -1
     ERAli = 0
     ERAlf = 0
     ERAlc = 0

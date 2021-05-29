@@ -207,11 +207,11 @@ def p_idCallaux2(p):
     '''
     condicion = table.dirFuncs[table.programa].searchIfExists(p[-5])
     if(condicion == False):
-        limInf = 0
-        limSup = table.dirFuncs[table.auxFunc].dir_var[p[-5]].dim[0]
+        limInf = table.dictCte[0]
+        limSup = table.dictCte[table.dirFuncs[table.auxFunc].dir_var[p[-5]].dim[0]]
     else:
-        limInf = 0
-        limSup = table.dirFuncs[table.programa].dir_var[p[-5]].dim[0]
+        limInf = table.dictCte[0]
+        limSup = table.dictCte[table.dirFuncs[table.programa].dir_var[p[-5]].dim[0]]
     resultExp = cuad.PilaO[-1]
     cuad.quadInsert("ver", resultExp, limInf, limSup)
     cuad.contQuad = cuad.contQuad + 1
@@ -222,11 +222,11 @@ def p_idCallaux3(p):
     '''
     condicion = table.dirFuncs[table.programa].searchIfExists(p[-10])
     if(condicion == False):
-        limInf = 0
-        limSup = table.dirFuncs[table.auxFunc].dir_var[p[-10]].dim[1]
+        limInf = table.dictCte[0]
+        limSup = table.dictCte[table.dirFuncs[table.auxFunc].dir_var[p[-10]].dim[1]]
     else:
-        limInf = 0
-        limSup = table.dirFuncs[table.programa].dir_var[p[-10]].dim[1]
+        limInf = table.dictCte[0]
+        limSup = table.dictCte[table.dirFuncs[table.programa].dir_var[p[-10]].dim[1]]
     resultExp = cuad.PilaO[-1]
     cuad.quadInsert("ver", resultExp, limInf, limSup)
     cuad.contQuad = cuad.contQuad + 1
@@ -237,11 +237,11 @@ def p_idCallaux4(p):
     '''
     condicion = table.dirFuncs[table.programa].searchIfExists(p[-7])
     if(condicion == False):
-        limInf = 0
-        limSup = table.dirFuncs[table.auxFunc].dir_var[p[-7]].dim[0]
+        limInf = table.dictCte[0]
+        limSup = table.dictCte[table.dirFuncs[table.auxFunc].dir_var[p[-7]].dim[0]]
     else:
-        limInf = 0
-        limSup = table.dirFuncs[table.programa].dir_var[p[-7]].dim[0]
+        limInf = table.dictCte[0]
+        limSup = table.dictCte[table.dirFuncs[table.programa].dir_var[p[-7]].dim[0]]
     resultExp = cuad.PilaO[-1]
     cuad.quadInsert("ver", resultExp, limInf, limSup)
     cuad.contQuad = cuad.contQuad + 1
@@ -315,6 +315,10 @@ def p_auxFuncion(p):
     '''
     table.auxFunc = p[-1]
     table.ingresarTabla(table.auxFunc, table.tipoMeth)
+    if(table.tipoMeth!='void'):
+        table.dirFuncs[table.programa].addVar(table.auxFunc, table.tipoMeth)
+        temp = cuad.getAvailGlobal(table.tipoMeth)
+        table.dirFuncs[table.programa].dir_var[table.auxFunc].dir = temp
 
 def p_setDI(p):
     '''
