@@ -23,6 +23,7 @@ contQuad = 1
 oraculo = oracle.SemanticCube().cube
 Resultado = 1000
 
+#Genera un quadruplo y lo inserta en la lista de cuadruplos
 def quadInsert(action, dirIzq, dirDer, Resultado):
   """Genera un quadruplo y lo inserta en la lista de cuadruplos"""
   temp = estructura.cuadruplo(contQuad-1, action, dirIzq, dirDer, Resultado)
@@ -91,7 +92,13 @@ def imprimirPilaO():
   for x in range(0,tam):
     print("PilaO en [", x,"]", PilaO[x])
 
+#! ------------------------------------------------------------
+#! SET Y GET DE DIRECCIONES DE MEMORIA 
+#! ------------------------------------------------------------
+#incrementa en 1 el contador de direcciones y le suma su direccion base segun el tipo
+#esto regresa la siguiente dirección local temporal libre
 def getAvail(tipo):
+  """ regresa la siguiente direccion de memoria temporal libre segun el tipo"""
   if tipo == 'int':
     table.lti = table.lti +1
     return table.lti + mem.ltI
@@ -107,7 +114,9 @@ def getAvail(tipo):
   else:
     print("No deberia entrar aqui ERR")
 
+#regresa la siguiente direccion de memoria local NO temporal libre.
 def getAvailLocal(tipo):
+  """ regresa la siguiente direccion de memoria local NO temporal libre """
   if tipo == 'int':
     table.li = table.li +1
     return table.li + mem.lI
@@ -120,7 +129,9 @@ def getAvailLocal(tipo):
   else:
     print("No deberia entrar aqui ERR")
 
+#regresa la siguiente dirección de memoria global libre
 def getAvailGlobal(tipo):
+  """ regresa la siguiente dirección de memoria global libre """
   if tipo == 'int':
     table.gi = table.gi +1
     return table.gi + mem.gI
@@ -133,15 +144,19 @@ def getAvailGlobal(tipo):
   else:
     print("No deberia entrar aqui ERR")
 
+#incrementa el contador de memoria local por tipo, segun el tamaño de un arreglo o matriz
 def setSaltoLocal(salto,tipo):
+  """ incrementa el contador de memoria local por tipo, segun el tamaño de un arreglo o matriz """
   if tipo == 'int':
     table.li = table.li + salto
   elif tipo == 'float':
     table.lf = table.lf + salto
   elif tipo == 'char':
     table.lc = table.lc + salto
-  
+
+#incrementa el contador de memoria global por tipo, segun el tamaño de un arreglo o matriz
 def setSaltoGlobal(salto,tipo):
+  """ incrementa el contador de memoria global por tipo, segun el tamaño de un arreglo o matriz """
   if tipo == 'int':
     table.gi = table.gi + salto
   elif tipo == 'float':
@@ -149,8 +164,11 @@ def setSaltoGlobal(salto,tipo):
   elif tipo == 'char':
     table.gc = table.gc + salto
 
-#######################GENERACION DE CUADRUPLOS######################
+#! -------------------------------------------------------------------
+#######################!GENERACION DE CUADRUPLOS######################
+#! -------------------------------------------------------------------
 
+#TODO: Expresiones
 #insertar cuadruplos de multiplicacion division con chequeo semantico
 def expStep3():
   """ insertar cuadruplos de multiplicacion division con chequeo semantico """
@@ -298,6 +316,7 @@ def expStep7():
           sys.exit()
   return False
 
+#TODO: cuadruplos ASIGNACION
 #insertar cuadruplos de ASIGNACION con chequeo semantico
 def asignaStep2():
   """ insertar cuadruplos de asignacion con chequeo semantico """
@@ -326,7 +345,10 @@ def asignaStep2():
         sys.exit()
   return False
 
+#TODO: cuadruplos READ / WRITE
+#insertar cuadruplos de read/write
 def popIO():
+  """ insertar cuadruplos de read/write """
   size = len(Poper)
   if size > 0:
     if Poper[size-1] == 'read' or Poper[size-1] == 'write':
@@ -337,7 +359,10 @@ def popIO():
       return True
   return False
 
+#TODO: cuadruplos RETURN
+#insertar cuadruplos de return
 def popReturn():
+  """ insertar cuadruplos de return """
   size = len(Poper)
   if size > 0:
     if Poper[size-1] == 'return':
@@ -348,6 +373,7 @@ def popReturn():
       return True
   return False
 
+#TODO: puntos neuralgicos CONDICION IF
 def Gotof_IF():
   exp_type = Ptypes.pop()
   #print(exp_type)
@@ -371,6 +397,8 @@ def Goto_IF():
   Quad[falso].result = contQuad
   return True
 
+#TODO: puntos neuralgicos CICLO WHILE
+#Reusa un punto del if
 def stepWhile2():
   exp_type = Ptypes.pop()
   if exp_type != 'boolean':
@@ -389,6 +417,8 @@ def stepWhile3():
   Quad[falso].result = contQuad
   return True
 
+#TODO: puntos neuralgicos CICLO FOR
+#Reusa los puntos del while
 def stepFor1():
   global Resultado
   tempR = PilaO.pop()
@@ -407,3 +437,4 @@ def stepFor1():
     print("Error: type mismatch, For")
     sys.exit()
   
+#? CUADRUPLOS DE LLAMADA DE FUNCION Y ARREGLOS ESTAN EN EL PARSER!

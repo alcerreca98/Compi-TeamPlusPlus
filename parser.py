@@ -6,7 +6,7 @@
 import ply.yacc as yacc
 import logging
 import sys
-from lexer import file, entrada, path, tokens
+from lexer import entrada, tokens
 import modif_tables as table
 import memoriaVirtual as mem
 import cuadruplos as cuad
@@ -16,21 +16,13 @@ from estructuras import *
 #No defini starting symbol, pero segun documentacion
 #la primera regla gramatical definida toma como default el strating simbol
 
-# ------------------------------------------------------------
-# Programa, para la estructura general
-# ------------------------------------------------------------
+#! ------------------------------------------------------------
+#! Programa, para la estructura general
+#! ------------------------------------------------------------
 def p_program(p):
     '''
     program : PROGRAM ID initProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
     '''
-def p_prueba(p):
-    '''
-    prueba : 
-    '''
-    table.dirPrint()
-    print("\n")
-    cuad.imprimirCuadruplos()
-    #cuad.imprimirPilaO()
 
 #Introduce el nombre del programa en la tabla de funciones
 def p_initProg(p):
@@ -44,6 +36,9 @@ def p_initProg(p):
     cuad.contQuad = cuad.contQuad+1
     table.addCte(0)
 
+#* Como Main no entra como funcion Normal, tenemos que manualmente
+#* Agregarlo al directorio de funciones, al contexto, llenarle su cuadruplo inicial
+#* y hacer el FILL del cuad 0, para que sepa hacer el salto a Main
 def p_auxMain(p):
     '''
     auxMain :
@@ -54,6 +49,9 @@ def p_auxMain(p):
     cuad.Quad[0].result = cuad.contQuad-1
     #Regresar valor de salto de Main
 
+# TODO: Cuadruplos ENDProgram
+#* Como Main no entra como funcion Normal, tenemos que manualmente
+#* agregar sus contadores de ERA a su tamaño y borrar su tabla de variables locales
 def p_endProg(p):
     '''
     endProg : 
@@ -66,23 +64,21 @@ def p_endProg(p):
 
     #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
     table.ingresaERAifcLocal()
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
+    table.ingresaERAifcLocalTemporal()
     #Borrar Tabla de Variables Locales
     table.dirFuncs[table.auxFunc].dir_var.clear()
 
     #Insertar cuadruplo de fin de funcion
     cuad.quadInsert('ENDProgram', None, None, None)
     cuad.contQuad = cuad.contQuad + 1
-    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
-    table.ingresaERAifcLocalTemporal()
-
-    #table.dirFuncs[table.auxFunc].printSize()
+    
     #Reinicio contadores
     table.clearVarSize()
 
-
-# ------------------------------------------------------------
-# Declaracion de Clases
-# ------------------------------------------------------------
+#! ------------------------------------------------------------
+#! Declaracion de Clases
+#! ------------------------------------------------------------
 def p_declarClases(p):
     '''
     declarClases : CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
@@ -103,6 +99,9 @@ def p_declarAttributes(p):
                      | empty
     '''
 
+#! ------------------------------------------------------------
+#! Declaracion de Variables, Arreglos, Matrices
+#! ------------------------------------------------------------
 #iterador de idDeclare separado por comma
 def p_listaIdDeclare(p):
     '''
@@ -117,6 +116,8 @@ def p_idDeclare(p):
               | ID auxDeclare LBRACK CTE_I addCteTable RBRACK auxCTE 
               | ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
     '''
+
+#*con chequeos semanticos de doble declaracion
 def p_auxDeclare(p):
     '''
     auxDeclare :
@@ -133,7 +134,9 @@ def p_auxDeclare2(p):
     else:
         temp = cuad.getAvailLocal(table.tipo)
         table.dirFuncs[table.auxFunc].dir_var[p[-2]].dir = temp
-        
+
+#* con chequeo semanticos para arreglos y matrices
+#* dimensiones deben de ser mayores a 0 
 def p_auxCTE(p):
     '''
     auxCTE :
@@ -151,7 +154,6 @@ def p_auxCTE(p):
             table.addCte(temp)
             cuad.setSaltoLocal(p[-3]-1, table.tipo)
             table.saltoERAlocal(p[-3]-1, table.tipo)
-
     else:
         print("Error: Valor de dimensión inválido, debe ser mayor a 0")
         sys.exit()
@@ -179,6 +181,9 @@ def p_auxCTE2(p):
         print("Error: Valor de dimensión inválido, debe ser mayor a 0")
         sys.exit()
 
+#! ------------------------------------------------------------
+#! Llamada de Variables, Arreglos, Matrices, Atributos de clase
+#! ------------------------------------------------------------
 #sintaxis para indexación o llamada de variables
 def p_idCall(p):
     '''
@@ -187,6 +192,7 @@ def p_idCall(p):
            | ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4
            | ID idCallaux LBRACK addFF exp idCallaux2  rmFF COMMA addFF exp idCallaux3 RBRACK rmFF
     '''
+    
 def p_idCallaux(p):
     '''
     idCallaux : 
@@ -201,6 +207,7 @@ def p_idCallaux(p):
         cuad.pushPilaO(var.dir)
         cuad.pushType(var.getType())
 
+# TODO: Cuadruplos VER de arreglos y matrices
 def p_idCallaux2(p):
     '''
     idCallaux2 : 
@@ -213,7 +220,7 @@ def p_idCallaux2(p):
         limInf = table.dictCte[0]
         limSup = table.dictCte[table.dirFuncs[table.programa].dir_var[p[-5]].dim[0]]
     resultExp = cuad.PilaO[-1]
-    cuad.quadInsert("ver", resultExp, limInf, limSup)
+    cuad.quadInsert("VER", resultExp, limInf, limSup)
     cuad.contQuad = cuad.contQuad + 1
 
 def p_idCallaux3(p):
@@ -228,7 +235,7 @@ def p_idCallaux3(p):
         limInf = table.dictCte[0]
         limSup = table.dictCte[table.dirFuncs[table.programa].dir_var[p[-10]].dim[1]]
     resultExp = cuad.PilaO[-1]
-    cuad.quadInsert("ver", resultExp, limInf, limSup)
+    cuad.quadInsert("VER", resultExp, limInf, limSup)
     cuad.contQuad = cuad.contQuad + 1
 
 def p_idCallaux4(p):
@@ -243,9 +250,12 @@ def p_idCallaux4(p):
         limInf = table.dictCte[0]
         limSup = table.dictCte[table.dirFuncs[table.programa].dir_var[p[-7]].dim[0]]
     resultExp = cuad.PilaO[-1]
-    cuad.quadInsert("ver", resultExp, limInf, limSup)
+    cuad.quadInsert("VER", resultExp, limInf, limSup)
     cuad.contQuad = cuad.contQuad + 1
 
+#! ------------------------------------------------------------
+#! Tipos de Variables, vs tipos de Retorno de Funcion/Metodo
+#! ------------------------------------------------------------
 #tipo de variables
 def p_tipo(p):
     '''
@@ -255,13 +265,6 @@ def p_tipo(p):
          | CHAR
     '''
     table.tipo = p[1]
-
-# Metodos de la clase, opcionales
-def p_declarMethods(p):
-    '''
-    declarMethods : tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
-                  | empty
-    '''
 
 #tipo de metodos y funciones
 def p_tipoMethod(p):
@@ -273,6 +276,19 @@ def p_tipoMethod(p):
     '''
     table.tipoMeth = p[1]
 
+#! ------------------------------------------------------------
+#! Declaración de Métodos de Clase
+#! ------------------------------------------------------------
+# Metodos de la clase, opcionales
+def p_declarMethods(p):
+    '''
+    declarMethods : tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
+                  | empty
+    '''
+
+#! ------------------------------------------------------------
+#! Declaración de Parametros
+#! ------------------------------------------------------------
 #Para parametros, en declaracion de metodos o funciones, arreglos y matrices van con exp o con CTE_I
 def p_listaParam(p):
     '''
@@ -291,17 +307,18 @@ def p_param(p):
     temp = cuad.getAvailLocal(table.tipo)
     table.dirFuncs[table.auxFunc].dir_var[p[3]].dir = temp
 
-# ------------------------------------------------------------
-# Declaración de Variables
-# ------------------------------------------------------------
+#! ------------------------------------------------------------
+#! Declaración de Variables
+#! ------------------------------------------------------------
 def p_declarVar(p):
     '''
     declarVar : VAR tipo COLON listaIdDeclare SCOLON declarVar
               | empty
     '''
-# ------------------------------------------------------------
-# Definicion de Funciones
-# ------------------------------------------------------------
+
+#! ------------------------------------------------------------
+#! Definicion de Funciones
+#! ------------------------------------------------------------
 def p_definFunc(p):
     '''
     definFunc : tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
@@ -320,6 +337,7 @@ def p_auxFuncion(p):
         temp = cuad.getAvailGlobal(table.tipoMeth)
         table.dirFuncs[table.programa].dir_var[table.auxFunc].dir = temp
 
+#guarda el cuadruplo inicial de la funcion
 def p_setDI(p):
     '''
     setDI :
@@ -335,7 +353,7 @@ def p_setDI(p):
     #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
     table.ingresaERAifcLocal()
 
-
+# TODO: Cuadruplos ENDFunc
 def p_endF(p):
     '''
     endF :
@@ -352,16 +370,16 @@ def p_endF(p):
     #table.dirFuncs[table.auxFunc].printSize()
     #Reinicio contadores
     table.clearVarSize()
-    
 
-# ------------------------------------------------------------
-# Estatutos
-# ------------------------------------------------------------
+#! ------------------------------------------------------------
+#! Estatutos
+#! ------------------------------------------------------------
 def p_listaEstatutos(p):
     '''
     listaEstatutos : estatutos listaEstatutos
                    | empty
     '''
+
 def p_estatutos(p):
     '''
     estatutos   : llamada SCOLON
@@ -373,15 +391,16 @@ def p_estatutos(p):
                 | cond_w
                 | cond_f
     '''
-# ------------------------------------------------------------
-# asignacion de valores a variables.
-# ------------------------------------------------------------
+
+#! ------------------------------------------------------------
+#! Asignaicon
+#! ------------------------------------------------------------
 def p_asignacion(p):
     '''
     asignacion  : idCall ASIGNA pushPoper exp asignStep2 
     '''
 
-#asignStep1 es pushPoper()
+#* asignStep1 es pushPoper()
 
 def p_asignStep2(p):
     '''
@@ -390,26 +409,29 @@ def p_asignStep2(p):
     if (cuad.asignaStep2() == True):
         cuad.contQuad = cuad.contQuad + 1
 
-     
-
-# ------------------------------------------------------------
-# Llamada de funciones, para clases y normales.
-# ------------------------------------------------------------
+#! ------------------------------------------------------------
+#! Llamada de Funciones
+#! ------------------------------------------------------------
 def p_llamada(p):
     '''
     llamada   : ID DOT ID LPAREN enviaParam RPAREN
               | ID verExist LPAREN enviaParam coherenceGo RPAREN 
     '''
+
 def p_enviaParam(p):
     '''
     enviaParam  : paramReferencia
                 | empty
     '''
+
 def p_paramReferencia(p):
     '''
     paramReferencia : exp paramType
                     | exp paramType COMMA paramCount paramReferencia
     '''
+
+# TODO: Cuadruplos ERA
+#* con chequeo semantico de que la funcion este previamente declarada
 def p_verExist(p):
     '''
     verExist :
@@ -424,6 +446,8 @@ def p_verExist(p):
     cuad.paramK = 1
     cuad.pointerParam = p[-1]
 
+# TODO: Cuadrupos PARAM
+#* con chequeo semantico en numero de parametros y sus tipos
 def p_paramType(p):
     '''
     paramType :
@@ -450,6 +474,7 @@ def p_paramCount(p):
     '''
     cuad.paramK = cuad.paramK+1
 
+# TODO: Cuadrupos GOSUB
 def p_coherenceGo(p):
     '''
     coherenceGo :
@@ -469,13 +494,14 @@ def p_coherenceGo(p):
         cuad.quadInsert('=', cuad.pointerParam, None , Guadalupano)
         cuad.contQuad = cuad.contQuad + 1
 
-# ------------------------------------------------------------
-# Return
-# ------------------------------------------------------------
+#! ------------------------------------------------------------
+#! Return
+#! ------------------------------------------------------------
 def p_returnf(p):
     '''
     returnf   : RETURN pushPoper LPAREN exp RPAREN popReturn
     '''
+
 def p_popReturn(p):
     '''
     popReturn   : 
@@ -483,22 +509,26 @@ def p_popReturn(p):
     temp = cuad.popReturn()
     if temp:
         cuad.contQuad = cuad.contQuad + 1 
-# ------------------------------------------------------------
-# Lectura
-# ------------------------------------------------------------
+
+#! ------------------------------------------------------------
+#! Read
+#! ------------------------------------------------------------
 def p_lectura(p):
     '''
     lectura   : READ pushPoper LPAREN listaId RPAREN
     '''
+
 def p_listaId(p):
     '''
     listaId : idCall popIO
             | idCall COMMA popIO insertOpRead listaId
     '''
+
 def p_insertOpRead(p):
     '''
     insertOpRead : 
     '''
+
     cuad.pushPoper("read")
 
 def p_popIO(p):
@@ -508,34 +538,39 @@ def p_popIO(p):
     temp = cuad.popIO()
     if temp == True:
         cuad.contQuad = cuad.contQuad +1
-# ------------------------------------------------------------
-# Escritura
-# ------------------------------------------------------------
+
+#! ------------------------------------------------------------
+#! Write
+#! ------------------------------------------------------------
 def p_escritura(p):
     '''
     escritura   : WRITE pushPoper LPAREN exp popIO lextra RPAREN
                 | WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
     '''
+
 def p_lextra(p):
     '''
     lextra  : COMMA insertOpWrite exp popIO lextra
             | COMMA insertOpWrite LETRERO letreroPush popIO lextra
             | empty
     '''
+
 def p_insertOpWrite(p):
     '''
     insertOpWrite  :
     '''
     cuad.pushPoper('write')
+
 #Prueba de letrero
 def p_letreroPush(p):
     '''
     letreroPush  :
     '''
     cuad.pushPilaO(cuad.Resultado)
-# ------------------------------------------------------------
-# Condicion, If, If Else
-# ------------------------------------------------------------
+
+#! ------------------------------------------------------------
+#! Condicion, If, If Else
+#! ------------------------------------------------------------
 def p_condicion(p):
     '''
     condicion   : IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
@@ -551,7 +586,7 @@ def p_cond1(p):
     if temp:
         cuad.contQuad = cuad.contQuad + 1
 
-#cond2 llena el fillgoto al final del estatuto condicion
+#* cond2 llena el fillgoto al final del estatuto condicion
 
 def p_cond3(p):
     '''
@@ -561,9 +596,9 @@ def p_cond3(p):
     if temp:
         cuad.contQuad = cuad.contQuad + 1
 
-# ------------------------------------------------------------
-# Ciclo While
-# ------------------------------------------------------------
+#! ------------------------------------------------------------
+#! Ciclo While
+#! ------------------------------------------------------------
 def p_cond_w(p):
     '''
     cond_w : WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
@@ -591,14 +626,14 @@ def p_step3While(p):
     if temp:
         cuad.contQuad = cuad.contQuad + 1
 
-# ------------------------------------------------------------
-# Ciclo For
-# ------------------------------------------------------------
-#idCall despues del for? debe ser definido 
+#!! ------------------------------------------------------------
+#! Ciclo For
+#!! ------------------------------------------------------------
 def p_cond_f(p):
     '''
     cond_f : FOR asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While
     '''
+
 def p_step1For(p):
     '''
     step1For : 
@@ -606,19 +641,21 @@ def p_step1For(p):
     temp = cuad.stepFor1()
     if temp:
         cuad.contQuad = cuad.contQuad + 1
-# ------------------------------------------------------------
-# Expresiones
-# ------------------------------------------------------------
+#! ------------------------------------------------------------
+#! Expresiones
+#! ------------------------------------------------------------
 def p_exp(p):
     '''
     exp     : texp step7
             | texp step7 OR pushPoper exp
     '''
+
 def p_texp(p):
     '''
     texp    : gexp step6
             | gexp step6 AND pushPoper texp
     '''
+
 def p_gexp(p):
     '''
     gexp    : mexp step5
@@ -629,19 +666,20 @@ def p_gexp(p):
             | mexp step5 EQUALS pushPoper gexp
             | mexp step5 NEQUALS pushPoper gexp
     '''
+
 def p_mexp(p):
     '''
     mexp    : t step4
             | t step4 PLUS pushPoper mexp
             | t step4 MINUS pushPoper mexp
     '''
+
 def p_t(p):
     '''
     t   : f step3
         | f step3 MULT pushPoper t
         | f step3 DIV pushPoper t
     '''
-
 
 def p_f(p):
     '''
@@ -652,12 +690,13 @@ def p_f(p):
         | llamada
         | idCall
     '''
+
+#* f en expresiones se ayuda de addCteTable y step1 para agregar cte's a tabla de cte
 def p_addCteTable(p):
     '''
     addCteTable   : 
     '''
     table.addCte(p[-1])
-
 
 def p_step1(p):
     '''
@@ -667,7 +706,7 @@ def p_step1(p):
     cuad.pushPilaO(table.dictCte[p[-2]])
     cuad.pushType(cuad.getType(p[-2]))
 
-#Step2 es pushPoper()
+#*Step2 es pushPoper()
 
 def p_step3(p):
     '''
@@ -709,14 +748,14 @@ def p_step7(p):
     if temp:
         cuad.contQuad = cuad.contQuad +1
 
-# Meter fondo falso
+#* Meter fondo falso
 def p_addFF(p):
     '''
     addFF :
     '''
     cuad.pushPoper(p[-1])
 
-# Remover fondo falso
+#* Remover fondo falso
 def p_rmFF(p):
     '''
     rmFF :
@@ -728,19 +767,37 @@ def p_pushPoper(p):
     pushPoper :
     '''
     cuad.pushPoper(p[-1])
-# ------------------------------------------------------------
-# Regla Empty
-# ------------------------------------------------------------
+
+#! ------------------------------------------------------------
+#! Regla Empty
+#! ------------------------------------------------------------
 def p_empty(p):
     '''
     empty :
     '''
     pass
-# ------------------------------------------------------------
-# Error
-# ------------------------------------------------------------
+
+#! ------------------------------------------------------------
+#! Error
+#! ------------------------------------------------------------
 def p_error(p):
     print("Error de Sintaxis", p, p.lineno)
+
+#! ------------------------------------------------------------
+#! Pruebas (llamadas a prints para verificar funcionamiento)
+#! ------------------------------------------------------------
+def p_prueba(p):
+    '''
+    prueba : 
+    '''
+    table.dirPrint()
+    print("\n")
+    cuad.imprimirCuadruplos()
+    #cuad.imprimirPilaO()
+
+#? ------------------------------------------------------------
+#? EJECUTAR PARSER
+#? ------------------------------------------------------------
 
 # Parser
 parser = yacc.yacc()

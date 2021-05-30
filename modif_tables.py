@@ -33,15 +33,16 @@ lti = -1
 ltf = -1
 ltc = -1
 ltb = -1
-gi = 0
-gf = 0
-gc = 0
+gi = -1
+gf = -1
+gc = -1
 cte = 0
 pointer = 0
 
 
-
+#limpia todos los contadores locales, tanto de temporales como los ERA. para reiniciarlos por función
 def clearVarSize():
+    """ #limpia todos los contadores locales, tanto de temporales como los ERA. para reiniciarlos por función """
     global li
     global lf
     global lc
@@ -73,7 +74,7 @@ def clearVarSize():
 
 #Insertar datos a tabla de funciones
 def ingresarTabla(id, type):
-    """ Insertar datos a tabla de funciones """
+    """ Insertar datos a tabla de funciones, params = id y tipo"""
     #chequeo dobles funciones
     if(repeatedFunctions(id) == False):
         #ingresa la funcion a directorio de Funciones si no se repite
@@ -121,6 +122,10 @@ def checkIfExists(id):
     return True
         #se comprueba que existe y se hace lo demás.
 
+#! ------------------------------------------------------------
+#! MANEJO Dict (Tabla) DE CONSTANTES
+#! ------------------------------------------------------------
+#agrega una constante a la tabla de constantes con el chequeo semantico de duplicados
 def addCte(cte_key):
     global cte
     temp = dictCte.get(cte_key,False)
@@ -129,7 +134,12 @@ def addCte(cte_key):
         dictCte[cte_key] = dir_num
         cte = cte + 1
 
+#!------------------------------------------------------------
+#! SET DE CONTADORES PARA TAMAÑO "ERA"
+#! ------------------------------------------------------------
+#define el tipo e incrementa en 1 el contadorERA de variables locales NO temporales
 def contadorERAlocal(type):
+    """ #define el tipo e incrementa en 1 el contadorERA de variables locales NO temporales """
     global ERAli
     global ERAlf
     global ERAlc
@@ -143,7 +153,9 @@ def contadorERAlocal(type):
     else:
         print("No deberia entrar aqui ERR")
 
+#incrementa el contadorERA pertinente segun el salto definido por el tamaño de arreglos y matrices
 def saltoERAlocal(salto,type):
+    """ incrementa el contadorERA pertinente segun el salto definido por el tamaño de arreglos y matrices """
     global ERAli
     global ERAlf
     global ERAlc
@@ -155,7 +167,9 @@ def saltoERAlocal(salto,type):
     elif type == 'char':
         ERAlc = ERAlc + salto
 
+#define el tipo e incrementa en 1 el contadorERA de variables locales temporales
 def contadorERAlocalTemporal(type):
+    """ define el tipo e incrementa en 1 el contadorERA de variables locales temporales """
     global ERAlti
     global ERAltf
     global ERAltc
@@ -173,20 +187,30 @@ def contadorERAlocalTemporal(type):
         print("No deberia entrar aqui ERR")
         print(type)
 
+#ingresa al atributo de tamaño de cada funcion, su tamaño para las integer, float y char locales NO temporales
 def ingresaERAifcLocal():
+    """ ingresa al atributo de tamaño de cada funcion, su tamaño para las integer, float y char locales NO temporales """
     #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
     dirFuncs[auxFunc].tam.append(int(ERAli))
     dirFuncs[auxFunc].tam.append(int(ERAlf))
     dirFuncs[auxFunc].tam.append(int(ERAlc))
 
+#ingresa al atributo de tamaño de cada funcion, su tamaño para las integer, float, char y boolean locales temporales
 def ingresaERAifcLocalTemporal():
+    """ ingresa al atributo de tamaño de cada funcion, su tamaño para las integer, float, char y boolean locales temporales """
     #Agrega a el tamaño de la funcion, los espacios necesarios de int, float, char y boolean temporales necesarios
     dirFuncs[auxFunc].tam.append(int(ERAlti))
     dirFuncs[auxFunc].tam.append(int(ERAltf))
     dirFuncs[auxFunc].tam.append(int(ERAltc))
     dirFuncs[auxFunc].tam.append(int(ERAltb))
 
+
+#! ------------------------------------------------------------
+#! Prints
+#! ------------------------------------------------------------
+#print de la tabla de constantes
 def printCteTable():
+    """ print de la tabla de constantes """
     x = dictCte.items()
     print(x)
 
