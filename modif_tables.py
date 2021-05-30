@@ -37,7 +37,7 @@ gi = -1
 gf = -1
 gc = -1
 cte = 0
-pointer = 0
+accessPointer = 0
 
 
 #limpia todos los contadores locales, tanto de temporales como los ERA. para reiniciarlos por función

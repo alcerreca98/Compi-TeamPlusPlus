@@ -187,10 +187,10 @@ def p_auxCTE2(p):
 #sintaxis para indexación o llamada de variables
 def p_idCall(p):
     '''
-    idCall : ID idCallaux
+    idCall : ID idCallaux checkDim
            | ID idCallaux DOT ID
-           | ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4
-           | ID idCallaux LBRACK addFF exp idCallaux2  rmFF COMMA addFF exp idCallaux3 RBRACK rmFF
+           | ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
+           | ID idCallaux LBRACK addFF exp idCallaux2  rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
     '''
     
 def p_idCallaux(p):
@@ -231,12 +231,41 @@ def p_idCallaux3(p):
     if(condicion == False):
         limInf = table.dictCte[0]
         limSup = table.dictCte[table.dirFuncs[table.auxFunc].dir_var[p[-10]].dim[1]]
+        dim1 = table.dictCte[table.dirFuncs[table.auxFunc].dir_var[p[-10]].dim[0]]
+        dirBase = table.dirFuncs[table.auxFunc].dir_var[p[-10]].dir
     else:
         limInf = table.dictCte[0]
         limSup = table.dictCte[table.dirFuncs[table.programa].dir_var[p[-10]].dim[1]]
-    resultExp = cuad.PilaO[-1]
-    cuad.quadInsert("VER", resultExp, limInf, limSup)
-    cuad.contQuad = cuad.contQuad + 1
+        dim1 = table.dictCte[table.dirFuncs[table.programa].dir_var[p[-10]].dim[0]]
+        dirBase = table.dirFuncs[table.programa].dir_var[p[-10]].dir
+    resultExp2 = cuad.PilaO.pop()
+    result_type2 = cuad.Ptypes.pop()
+    resultExp1 = cuad.PilaO.pop()
+    result_type = cuad.Ptypes.pop()
+    if (result_type2 == 'int' and result_type == 'int'):
+        acceso = table.accessPointer + mem.basePointer
+        table.accessPointer = table.accessPointer +1
+        cuad.quadInsert("VER", resultExp2, limInf, limSup)
+        cuad.contQuad = cuad.contQuad + 1
+        #desplazamiento = resultExp2*dim1+resultExp1
+        temp = cuad.getAvail('int')
+        cuad.quadInsert('*',resultExp2, dim1, temp)
+        cuad.contQuad = cuad.contQuad + 1
+        temp2 = cuad.getAvail('int')
+        cuad.quadInsert('+',temp, resultExp1, temp2)
+        cuad.contQuad = cuad.contQuad + 1
+        cuad.quadInsert('+',temp2, dirBase, acceso)
+        cuad.contQuad = cuad.contQuad + 1
+
+        cuad.PilaO.pop()
+        cuad.Ptypes.pop()
+
+        cuad.pushPilaO(acceso)
+        cuad.pushType(result_type)
+
+    else:
+        print("Error : No se puede accesar a un arreglo/Matriz en indice diferente a integer")
+        sys.exit()
 
 def p_idCallaux4(p):
     '''
@@ -246,13 +275,80 @@ def p_idCallaux4(p):
     if(condicion == False):
         limInf = table.dictCte[0]
         limSup = table.dictCte[table.dirFuncs[table.auxFunc].dir_var[p[-7]].dim[0]]
+        dirBase = table.dirFuncs[table.auxFunc].dir_var[p[-7]].dir
     else:
         limInf = table.dictCte[0]
         limSup = table.dictCte[table.dirFuncs[table.programa].dir_var[p[-7]].dim[0]]
-    resultExp = cuad.PilaO[-1]
-    cuad.quadInsert("VER", resultExp, limInf, limSup)
-    cuad.contQuad = cuad.contQuad + 1
+        dirBase = table.dirFuncs[table.programa].dir_var[p[-7]].dir
+    resultExp = cuad.PilaO.pop()
+    result_type = cuad.Ptypes.pop()
+    #resultExp = cuad.PilaO[-1]
+    #result_type = cuad.Ptypes[-1]
+    if result_type == 'int':
+        acceso = table.accessPointer + mem.basePointer
+        table.accessPointer = table.accessPointer +1
+        cuad.quadInsert("VER", resultExp, limInf, limSup)
+        cuad.contQuad = cuad.contQuad + 1
+        desplazamiento = resultExp
+        cuad.quadInsert('+',desplazamiento, dirBase, acceso)
+        cuad.contQuad = cuad.contQuad + 1
 
+        cuad.PilaO.pop()
+        cuad.Ptypes.pop()
+
+        cuad.pushPilaO(acceso)
+        cuad.pushType(result_type)
+    else:
+        print("Error : No se puede accesar a un arreglo/Matriz en indice diferente a integer")
+        sys.exit()
+
+def p_checkDim(p):
+    '''
+    checkDim : 
+    '''
+    condicion = table.dirFuncs[table.programa].searchIfExists(p[-2])
+    if(condicion == False):
+        dim = len(table.dirFuncs[table.auxFunc].dir_var[p[-2]].dim)
+    else:
+        dim = len(table.dirFuncs[table.programa].dir_var[p[-2]].dim)
+    
+    if dim > 0 :
+        print("ERROR: en la funcion \"", table.auxFunc, "\" var: ",p[-2], " debe ser dimensionada")
+        sys.exit()
+
+def p_checkDim1(p):
+    '''
+    checkDim1 : 
+    '''
+    condicion = table.dirFuncs[table.programa].searchIfExists(p[-8])
+    if(condicion == False):
+        dim = len(table.dirFuncs[table.auxFunc].dir_var[p[-8]].dim)
+    else:
+        dim = len(table.dirFuncs[table.programa].dir_var[p[-8]].dim)
+    
+    if dim == 0 :
+        print("ERROR: en la funcion \"", table.auxFunc, "\" var: ",p[-8], " declarada como no dimensionada, demasiados parametros")
+        sys.exit()
+    elif dim == 2 :
+        print("ERROR: en la funcion \"", table.auxFunc, "\" var: ",p[-8], " declarada con 2 dimensiones, faltan parametros")
+        sys.exit()    
+
+def p_checkDim2(p):
+    '''
+    checkDim2 : 
+    '''
+    condicion = table.dirFuncs[table.programa].searchIfExists(p[-13])
+    if(condicion == False):
+        dim = len(table.dirFuncs[table.auxFunc].dir_var[p[-13]].dim)
+    else:
+        dim = len(table.dirFuncs[table.programa].dir_var[p[-13]].dim)
+    
+    if dim == 0 :
+        print("ERROR: en la funcion \"", table.auxFunc, "\" var: ",p[-13], " declarada como no dimensionada, demasiados parametros")
+        sys.exit()
+    elif dim == 1 :
+        print("ERROR: en la funcion \"", table.auxFunc, "\" var: ",p[-13], " declarada con una sola dimensiones, demasiados parametros")
+        sys.exit()    
 #! ------------------------------------------------------------
 #! Tipos de Variables, vs tipos de Retorno de Funcion/Metodo
 #! ------------------------------------------------------------
