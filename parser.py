@@ -10,6 +10,7 @@ from lexer import entrada, tokens
 import modif_tables as table
 import memoriaVirtual as mem
 import cuadruplos as cuad
+import archCompilado as arc
 from estructuras import *
 
 # Gramatica
@@ -889,6 +890,8 @@ def p_prueba(p):
     table.dirPrint()
     print("\n")
     cuad.imprimirCuadruplos()
+    #Generacion de archivo
+    arc.generaTxt(table.dirFuncs, table.dictCte, cuad.Quad)
     #cuad.imprimirPilaO()
 
 #? ------------------------------------------------------------

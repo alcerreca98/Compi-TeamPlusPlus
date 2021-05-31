@@ -64,6 +64,11 @@ class funcion(object):
             print(self.params[p])
 
     #Imprime todos los atributos de cada uno de los objetos variable en la tabla de variables locales
+    def printVarTableComp(self):
+        """ Imprime todos los atributos de cada uno de los objetos variable en la tabla de variables locales """
+        #!for var in self.dir_var:
+        #!    self.dir_var[var].printVariableComp()
+
     def printVarTable(self):
         """ Imprime todos los atributos de cada uno de los objetos variable en la tabla de variables locales """
         for var in self.dir_var:
@@ -121,6 +126,11 @@ class variable(object):
     def printVariable(self):
         """ Print de todos los atributos en la instancia de Variable seleccionada """
         print("id =",self.id," tipo =",self.type," dir =", self.dir, " dim =", self.dim)
+
+    def printVariableComp(self):
+        """ Print de todos los atributos en la instancia de Variable seleccionada """
+        temp = str(self.id) + '~' + str(self.type) + '~' + str(self.dir) + '~' + str(self.dim)
+        return temp
 
     def getType(self):
         return self.type

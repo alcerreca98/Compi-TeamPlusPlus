@@ -4,6 +4,9 @@
 # ------------------------------------------------------------
 import ply.lex as lex
 
+archivo = None
+path = None
+
 # Palabras Reservadas
 reserved = {
     'program' : 'PROGRAM',
@@ -152,6 +155,7 @@ path = "PruebasSemantica/" + file
 print("Read from: " + path )
 try:
     test = open(path, "r")
+    archivo = file
     entrada = test.read()
     test.close()
     lex.input(entrada)
