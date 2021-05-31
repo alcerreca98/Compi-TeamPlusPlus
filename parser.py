@@ -250,9 +250,11 @@ def p_idCallaux3(p):
         cuad.contQuad = cuad.contQuad + 1
         #desplazamiento = resultExp2*dim1+resultExp1
         temp = cuad.getAvail('int')
+        table.contadorERAlocalTemporal('int')
         cuad.quadInsert('*',resultExp2, dim1, temp)
         cuad.contQuad = cuad.contQuad + 1
         temp2 = cuad.getAvail('int')
+        table.contadorERAlocalTemporal('int')
         cuad.quadInsert('+',temp, resultExp1, temp2)
         cuad.contQuad = cuad.contQuad + 1
         cuad.quadInsert('+',temp2, dirBase, acceso)
