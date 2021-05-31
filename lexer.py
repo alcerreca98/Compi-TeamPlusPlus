@@ -77,6 +77,7 @@ tokens = [
 
 ] + list(reserved.values())
 
+
 # Caracteres de Delimmitacion
 t_DOT = r'\-\>'
 t_COMMA = r'\,'
@@ -138,6 +139,7 @@ def t_ID(t):
     r'[a-zA-Z][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value, 'ID')
     return t
+
 
 # Lexer
 lex.lex()

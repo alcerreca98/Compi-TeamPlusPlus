@@ -22,7 +22,7 @@ ltC = 26000
 ltB = 28000
 #Constantes
 baseCte = 30000
-basePointer = 32000
+basePointer = 80000
 #gcI = 30000
 #gcF = 32000
 #gcC = 34000

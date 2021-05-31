@@ -3,19 +3,19 @@ program Team_pp;
 var int: i, j[1], p[10,15], o;
 
 float func fact(int: n, float : m)
-var int :b, z[10];
+var int :b, z[10], como;
 var float : y;
 var char : c, ch;{
-	y = n+(p-y*2+j);
+	y = n+(p[2,5]-y*2+j[0]);
 	b = j[1];
 	b = p[5,3];
-	n = p[1-2,5];
+	n = p[1-2, p[n,b]];
     if(y > m) then{
         y = 0-2.5;
     }
     ch = c;
 	read(c);
-	return(j);
+	return(j[0]);
 }
 
 void func pelos(int : y, int : z)
@@ -26,16 +26,16 @@ var int : x, arr[1,2];{
 main()
 var int : loquesea ;
 var float : x,y;{
-    j= p*2;
-	read(p[2]);
-	write("C Quack Quack", j);
-	for loquesea = 0 to 10+j do{
-		j = j + 1;
-		for loquesea = 0 to 10+j do{
-			j = j + 1;
+    j[0]= p[8,10]*2;
+	read(p[2,5]);
+	write("C Quack Quack", j[0]);
+	for loquesea = 0 to 10+j[0] do{
+		j[0] = j[0] + 1;
+		for loquesea = 0 to 10+j[0] do{
+			j[0] = j[0] + 1;
 		}
 	}
-    pelos(loquesea, j);
+    pelos(loquesea, j[0]);
 	fact(loquesea,y);
 
 }

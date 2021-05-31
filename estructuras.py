@@ -4,6 +4,9 @@
 # ------------------------------------------------------------
 import sys
 
+#! ------------------------------------------------------------
+#! Estructura FUNCION
+#! ------------------------------------------------------------
 #Estructura de Funcion
 class funcion(object):
     """ Estructura de Funciones con atributos:
@@ -15,6 +18,11 @@ class funcion(object):
     dir_var -> Dictionary de variables locales de la funcion
 
     params -> Lista de parametros de la funcion
+
+    di -> cuadruplo inicial de la funcion
+
+    tam -> Lista con el numero de variables locales y temporales
+    por tipo, necesarios para calcular el tamaño del ERA 
     
     """
     def __init__(self, id, type):#, vart):
@@ -88,9 +96,21 @@ class funcion(object):
     def fillDI(self, di):
         self.di = di
 
+#! ------------------------------------------------------------
+#! Estructura VARIABLE
+#! ------------------------------------------------------------
 #Estructura de Variables
 class variable(object):
-    """ Estructura de Variables """
+    """ Estructura de Variable con atributos:
+
+    id -> string con el nombre de la variable
+
+    type -> string con el tipo de la variable
+
+    dir -> direccion de memoria asignada a la variable
+
+    dim -> lista de dimensiones para arreglos o matrices
+    """
     def __init__(self, id, type):
         self.id = id
         self.type = type
@@ -105,20 +125,10 @@ class variable(object):
     def getType(self):
         return self.type
 
-#Estructura de clases
-class clases(object):
-    """ Estructura de clases """
-    def __init__(self, id, herencia):
-        self.id = id
-        self.herencia = herencia
 
-#Estructura de objeto
-class objeto(object):
-    """ Estructura de objeto """
-    def __init__(self, id, type):
-        self.id = id
-        self.type = type
-
+#! ------------------------------------------------------------
+#! Estructura CUADRUPLO
+#! ------------------------------------------------------------
 #Estructura de cuadruplos
 class cuadruplo(object):
     """ Estructura de cuadruplos """
@@ -132,8 +142,42 @@ class cuadruplo(object):
     #Print de todos los atributos en la instancia de Cuadruplo seleccionada
     def printCuad(self):
         """ Print de todos los atributos en la instancia de Cuadruplo seleccionada """
-        print(self.cont,"\t",self.action,"\t",self.opIzq,"\t",self.opDer,"\t",self.result)
+        if self.opIzq == None:
+            opeIzq = ''
+        else:
+            opeIzq = self.opIzq
+        
+        if self.opDer == None:
+            opeDer = ''
+        else:
+            opeDer = self.opDer
+        
+        if self.result == None:
+            resultados = ''
+        else:
+            resultados = self.result
+        #print(self.cont,"\t",self.action,"\t",self.opIzq,"\t",self.opDer,"\t",self.result)
+        print('{:<4d} {:10s} {:10s} {:10s} {:10s}'.format(self.cont,self.action,str(opeIzq),str(opeDer),str(resultados)))
 
+#! ------------------------------------------------------------
+#! Estructura CLASES
+#! ------------------------------------------------------------
+#Estructura de clases
+class clases(object):
+    """ Estructura de clases """
+    def __init__(self, id, herencia):
+        self.id = id
+        self.herencia = herencia
+
+#! ------------------------------------------------------------
+#! Estructura OBJETO
+#! ------------------------------------------------------------
+#Estructura de objeto
+class objeto(object):
+    """ Estructura de objeto """
+    def __init__(self, id, type):
+        self.id = id
+        self.type = type
 
 
 
