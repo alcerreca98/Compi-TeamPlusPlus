@@ -4,12 +4,14 @@
 # ------------------------------------------------------------
 
 import sys
-import memoria as mem
+import memory as mem
 import reader
-import numpy as np 
+
 
 #Directorio de funciones
 dirFuncs = reader.dirFunc
+#Tabla de variables globales
+dirVar = reader.dirVar
 #Diccionario de constantes
 dictCte = reader.dict_cte
 #Cuadruplos
