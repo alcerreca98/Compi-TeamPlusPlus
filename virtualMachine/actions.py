@@ -37,7 +37,7 @@ def indicador(cuadr, contProg):
   return contProg + 1
 
 
-while cuad[i].action != 'End':
+while cuad[contProg].action != 'End':
   contProg = indicador(cuad[contProg], contProg)
 
 

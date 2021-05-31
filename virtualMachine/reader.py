@@ -12,9 +12,12 @@ class mv_func(object):
   def __init__(self, id , type, params, di, tam):
     self.id = id
     self.type = type
-    self.params = []
-    self.di = 0
-    self.tam = []
+    self.params = params
+    self.di = di
+    self.tam = tam
+  
+  def printFunc(self):
+    print(self.id, self.type, self.params, self.di, self.tam)
 
 class mv_var(object):
   def __init__(self, id , type, dir, dim):
@@ -22,6 +25,9 @@ class mv_var(object):
     self.type = type
     self.dir = dir
     self.dim = dim
+  
+  def printVar(self):
+    print(self.id, self.type, self.dir, self.dim)
 
 class cuadruplo(object):
   def __init__(self, cont, action, dirIzq, dirDer, result):
@@ -30,6 +36,9 @@ class cuadruplo(object):
     self.dirIzq = dirIzq
     self.dirDer = dirDer
     self.result = result
+  
+  def printCuad(self):
+    print(self.cont, self.action, self.dirIzq, self.dirDer, self.result)
 
 #Lectura del archivo
 def readFile():
@@ -38,7 +47,7 @@ def readFile():
   print("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒ INICIANDO C CUAK CUAK ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒")
   print("▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒", '\n')
   x = input('Ingresar nombre del archivo: ')
-  path = "compilacion/" + x
+  path = "../compilacion/" + x
   print("compilacion/" + path)
   table = 1
   file = open(path, "r")
@@ -54,7 +63,7 @@ def readFile():
       if table == 1:
         func = (line.split('~'))
         #* ID | Type | Params | Dir_inicial | Tam
-        temp = mv_func(func[0], func[1], func[2], func[3], func[4], func[5], func[6])
+        temp = mv_func(func[0], func[1], func[2], func[3], func[4])
         dirFunc.append(temp)
       elif table == 2:
         #* ID | Type | Dir | Dim
@@ -69,7 +78,20 @@ def readFile():
         temp = cuadruplo(func[0], func[1], func[2], func[3], func[4])
         Quad.append(temp)
     file.close
-  print(dirFunc)
-  print(dirVar)
+
+  tam = len(dirFunc)
+  
+  #print(tam)
+  for ids in range(tam):
+    #print(ids)
+    dirFunc[ids].printFunc()
+
+  tam = len(dirVar)
+  for ids in range(tam):
+    dirVar[ids].printVar()
+
+  tam = len(Quad)
+  for ids in range(tam):
+    Quad[ids].printCuad()
   print(dict_cte)
-  print(Quad)
+ 
