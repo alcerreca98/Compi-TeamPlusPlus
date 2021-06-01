@@ -2,8 +2,8 @@
 # Federico Alcerreca Treviño - A01281459
 # Jaime Andres Montemayor Molina - A01176573
 # ------------------------------------------------------------
-
-dirFunc = []
+import re
+dirFunc = {}
 dirVar = []
 dict_cte = {}
 Quad = []
@@ -40,6 +40,61 @@ class cuadruplo(object):
   def printCuad(self):
     print(self.cont, self.action, self.dirIzq, self.dirDer, self.result)
 
+def typeCheck(func):
+  z = re.search('\d+\.\d+', func)
+  x = re.search('[A-Za-z]', func)
+  if(x != None):
+    tipo = "char"
+    return func
+  elif(z != None):
+    auxLlave = float(func)
+    tipo = "float"
+    return auxLlave
+  else:
+    auxLlave = int(func)
+    tipo = "int"
+    return auxLlave
+
+def getType(cte):
+  """ Regresa el tipo de dato """
+  tipo = str(type(cte))
+  temp = None
+  if tipo == "<class 'float'>":
+      temp = 'float'
+      return temp
+  elif tipo == "<class 'int'>":
+      temp = 'int'
+      return temp
+  elif cte[0] == "'":
+      temp = 'char'
+      return temp
+  elif tipo == "<class 'str'>":
+      temp = 'string'
+      return temp
+
+def convList(lista):
+  aux = []
+  lista = lista.lstrip('[')
+  lista = lista.rstrip(']')
+  lista = lista.rstrip()
+  if lista == '':
+    return(aux)
+  else:  
+    aux = lista.split(',')
+    auxList = len(aux)
+    aux = list(map(int, aux))
+    return(aux)
+
+def convParams(lista):
+  aux = []
+  lista = lista.lstrip('[')
+  lista = lista.rstrip(']')
+  if lista == '':
+    return(aux)
+  else:
+    aux = lista.split(',')
+    return(aux)
+
 #Lectura del archivo
 def readFile():
   print('\n')
@@ -54,7 +109,7 @@ def readFile():
   compilacion = file.readlines()
   tam = len(compilacion)
 
-#*Lectura y administracion de categorias
+  #*Lectura y administracion de categorias
   for i in range(tam):
     line = compilacion[i].rstrip('\n')
     if line[0] == '/':
@@ -62,28 +117,29 @@ def readFile():
     else:
       if table == 1:
         func = (line.split('~'))
-        #* ID | Type | Params | Dir_inicial | Tam
-        temp = mv_func(func[0], func[1], func[2], func[3], func[4])
-        dirFunc.append(temp)
+        #* ID | Type | [Params] | Dir_inicial | [Tam]
+        tempParams = convParams(func[2])
+        tempTam = convList(func[4])
+        temp = mv_func(func[0], func[1], tempParams, func[3], tempTam)
+        dirFunc[func[0]] = temp
       elif table == 2:
         #* ID | Type | Dir | Dim
         func = (line.split('~'))
         temp = mv_var(func[0], func[1], func[2], func[3])
         dirVar.append(temp)
       elif table == 3:
+        #* ID | REF
         func = (line.split('~'))
-        dict_cte[func[0]] = func[1]
+        auxLlave = typeCheck(func[0])
+        dict_cte[auxLlave] = int(func[1])
       elif table == 4:
+        #* CONT | Action | opIzq | opDer | Result
         func = (line.split('~'))
         temp = cuadruplo(func[0], func[1], func[2], func[3], func[4])
         Quad.append(temp)
     file.close
-
-  tam = len(dirFunc)
   
-  #print(tam)
-  for ids in range(tam):
-    #print(ids)
+  for ids in dirFunc:
     dirFunc[ids].printFunc()
 
   tam = len(dirVar)
@@ -94,4 +150,3 @@ def readFile():
   for ids in range(tam):
     Quad[ids].printCuad()
   print(dict_cte)
- 

@@ -61,7 +61,7 @@ class funcion(object):
         tam = len(self.params)
         print("Parameters types in order:")
         for p in range(tam) :
-            print(self.params[p])
+            print(self.params[p]) 
 
     #Imprime todos los atributos de cada uno de los objetos variable en la tabla de variables locales
     def printVarTableComp(self):
