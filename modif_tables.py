@@ -204,6 +204,13 @@ def ingresaERAifcLocalTemporal():
     dirFuncs[auxFunc].tam.append(int(ERAltc))
     dirFuncs[auxFunc].tam.append(int(ERAltb))
 
+def ingresaTamifcGlobal():
+    """ ingresa al atributo de tamaño de funcion programa, su tamaño para las integer, float y char globales"""
+    #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios
+    dirFuncs[programa].tam.append(int(gi+1))
+    dirFuncs[programa].tam.append(int(gf+1))
+    dirFuncs[programa].tam.append(int(gc+1))
+
 
 #! ------------------------------------------------------------
 #! Prints
