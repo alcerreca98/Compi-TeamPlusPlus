@@ -22,8 +22,14 @@ from estructuras import *
 #! ------------------------------------------------------------
 def p_program(p):
     '''
-    program : PROGRAM ID initProg SCOLON declarClases declarVar definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    program : PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
     '''
+
+def p_addGlobSize(p):
+    '''
+    addGlobSize : 
+    '''
+    table.ingresaTamifcGlobal()
 
 #Introduce el nombre del programa en la tabla de funciones
 def p_initProg(p):
