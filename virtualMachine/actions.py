@@ -24,12 +24,9 @@ reader.readFile()
 
 #Memoria Global
 mainSize = dirFuncs["Main"].tam
-print(mainSize[1], mainSize[3], mainSize[5], mainSize[7], mainSize[9], mainSize[11], mainSize[13])
-mem.memoria(mainSize[1], mainSize[3], mainSize[5], mainSize[7], mainSize[9], mainSize[11], mainSize[13])
-
-#def cte_finder(dir):
-
-  #if
+mem.memStack.append(mem.memoria(mainSize[0], mainSize[1], mainSize[2], mainSize[3], mainSize[4], mainSize[5], mainSize[6]))
+memoriaMain = mem.memStack[-1]
+memoriaMain.printPrueba()
 
 #*-----------------------------------------------------------------------------
 #*AQUI EMPIEZAN LAS FUNCIONES DE LAS ACCIONES DEFINIDAS EN CUADRUPLOS
@@ -47,7 +44,8 @@ def asigna(cuad, contProg):
     for i in dictCte.items():
       if i[1] == dirIzq:
         op_Der = i[0]
-  #else:
+  else:
+    opDer = mem.get()
 
 
 

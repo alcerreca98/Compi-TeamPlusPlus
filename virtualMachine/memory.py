@@ -49,3 +49,6 @@ class memoria(object):
         self.lTchar.append(None)
     for i in range(int(rltb)):
         self.lTboolean.append(None)
+
+  def printPrueba(self):
+    print("Estoy en el metodo printPrueba")

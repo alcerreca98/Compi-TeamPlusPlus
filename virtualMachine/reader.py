@@ -120,7 +120,7 @@ def readFile():
         #* ID | Type | [Params] | Dir_inicial | [Tam]
         tempParams = convParams(func[2])
         tempTam = convList(func[4])
-        temp = mv_func(func[0], func[1], tempParams, func[3], tempTam)
+        temp = mv_func(func[0], func[1], tempParams, int(func[3]), tempTam)
         dirFunc[func[0]] = temp
       elif table == 2:
         #* ID | Type | Dir | Dim
