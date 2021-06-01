@@ -1,0 +1,15 @@
+program Team_pp;
+
+var int: x1, x2;
+
+main()
+   var int: y1;
+   var float: z1;
+{
+    x2 = 3;
+    y1 = 10;
+    x1 = x2 + y1;
+    x2 = y1 - x1;
+    y1 = x1 * x2;
+    z1 = y1 / x2;
+}

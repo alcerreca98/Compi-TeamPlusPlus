@@ -151,7 +151,7 @@ lex.lex()
 print("===== Iniciando C cuack cuack =====\n")
 file = input('Test file name : ')
 if len(file) < 1 : file = "test-global.txt"
-path = "PruebasSemantica/" + file
+path = "PruebasMV/" + file
 print("Read from: " + path )
 try:
     test = open(path, "r")

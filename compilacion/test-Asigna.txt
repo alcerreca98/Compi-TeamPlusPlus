@@ -1,0 +1,13 @@
+Team_pp~None~[]~0~[1, 0, 0]
+Main~None~[]~1~[1, 0, 0, 0, 0, 0, 0]
+/
+x2~int~2000~[]
+/
+0~30000
+3~30001
+10~30002
+/
+0~Goto~None~None~1
+1~=~30001~None~2000
+2~=~30002~None~16000
+3~ENDProgram~None~None~None
