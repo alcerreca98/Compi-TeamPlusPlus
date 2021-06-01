@@ -23,7 +23,8 @@ ltB = 28000
 
 #*Stack de contexto
 memStack = []
-
+memGlob = []
+pointer = {}
 class memoria(object):
   def __init__(self, rli, rlf, rlc, rlti, rltf, rltc, rltb):
     self.lInt = []
@@ -52,3 +53,6 @@ class memoria(object):
 
   def printPrueba(self):
     print("Estoy en el metodo printPrueba")
+
+  def printMem(self):
+    print(self.lInt, self.lFloat, self.lChar, self.lTint, self.lTfloat, self.lTchar, self.lTboolean)

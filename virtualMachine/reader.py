@@ -7,6 +7,8 @@ dirFunc = {}
 dirVar = []
 dict_cte = {}
 Quad = []
+programa = ""
+boolProg = True
 
 class mv_func(object):
   def __init__(self, id , type, params, di, tam):
@@ -110,6 +112,8 @@ def readFile():
   tam = len(compilacion)
 
   #*Lectura y administracion de categorias
+  global boolProg
+  global programa
   for i in range(tam):
     line = compilacion[i].rstrip('\n')
     if line[0] == '/':
@@ -118,6 +122,9 @@ def readFile():
       if table == 1:
         func = (line.split('~'))
         #* ID | Type | [Params] | Dir_inicial | [Tam]
+        if boolProg == True:
+          programa = func[0]
+          boolProg = False
         tempParams = convParams(func[2])
         tempTam = convList(func[4])
         temp = mv_func(func[0], func[1], tempParams, int(func[3]), tempTam)
@@ -125,7 +132,8 @@ def readFile():
       elif table == 2:
         #* ID | Type | Dir | Dim
         func = (line.split('~'))
-        temp = mv_var(func[0], func[1], func[2], func[3])
+        tempDim = convList(func[3])
+        temp = mv_var(func[0], func[1], int(func[2]), tempDim)
         dirVar.append(temp)
       elif table == 3:
         #* ID | REF
