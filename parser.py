@@ -438,6 +438,7 @@ def p_auxFuncion(p):
     table.auxFunc = p[-1]
     table.ingresarTabla(table.auxFunc, table.tipoMeth)
     if(table.tipoMeth!='void'):
+        table.contadorERAglobal(p_tipoMethod)
         table.dirFuncs[table.programa].addVar(table.auxFunc, table.tipoMeth)
         temp = cuad.getAvailGlobal(table.tipoMeth)
         table.dirFuncs[table.programa].dir_var[table.auxFunc].dir = temp
@@ -602,7 +603,6 @@ def p_coherenceGo(p):
         cuad.quadInsert('=', funcDir, None , Guadalupano)
         cuad.pushPilaO(Guadalupano)
         cuad.pushType(tipoRet)
-        table.contadorERAglobal(tipoRet)
         cuad.contQuad = cuad.contQuad + 1
 
 #! ------------------------------------------------------------

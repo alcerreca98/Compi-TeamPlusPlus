@@ -30,6 +30,7 @@ funcParams = []
 pInt = 0
 pFloat = 0
 pChar = 0
+newMemory = None
 #* ParcheGuadalupano
 ParcheGuadalupano = []
 
@@ -285,16 +286,15 @@ def write(cuad, contProg):
 def era(cuad, contProg):
   global cuadLlamada
   global funcParams
+  global newMemory
   funcName = cuad.result
   funcion = dirFuncs.get(funcName, False)
   if (funcion != False) :
     funcParams = dirFuncs[funcion.id].params
-    print(funcParams)
     cuadLlamada.append(dirFuncs[funcion.id].di)
     eraSize = dirFuncs[funcion.id].tam
     #eraSize = (eraSize.split(','))
     newMemory = mem.memoria(eraSize[0],eraSize[1],eraSize[2],eraSize[3],eraSize[4],eraSize[5],eraSize[6])
-    mem.memStack.append(newMemory)
   else:
     print("No deberia entrar aqui porque el chequeo semantico de que la funcion este declarada está en el compilador")
     sys.exit()
@@ -306,7 +306,7 @@ def params(cuad, contProg):
   global pFloat 
   global pChar
   izq = int(cuad.dirIzq)
-  op_Izq = getParam(izq)
+  op_Izq = getContent(izq)
   res = int(cuad.result)
   paramNum= len(funcParams)
   if(funcParams[res-1]=='int'):
@@ -319,6 +319,7 @@ def params(cuad, contProg):
     auxdir=22000+pChar
     pInt = pChar+1
 
+  mem.memStack.append(newMemory)
   addDirContent(auxdir,op_Izq)
   if(res == paramNum):
     pInt = 0
@@ -332,7 +333,6 @@ def retorno(cuad, contProg):
   res = int(cuad.result)
   valor = getContent(res)
   pg = ParcheGuadalupano.pop()
-  print(pg)
   addDirContent(pg, valor)
   return contProg+1
 
@@ -379,7 +379,7 @@ def getDirContent(auxdir):
       if memactual.lInt[desp] != None:
         return memactual.lInt[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir, contProg)
         sys.exit()
     if tipo == 18:
       memactual = mem.memStack[-1]
@@ -511,70 +511,102 @@ def getParamContent(auxdir):
     if memoriaGlob.lInt[desp] != None:
       return memoriaGlob.lInt[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()
   if tipo == 4:
     if memoriaGlob.lFloat[desp] != None:
       return memoriaGlob.lFloat[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()    
   if tipo == 6:
     if memoriaGlob.lChar[desp] != None:
       return memoriaGlob.lChar[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()
   if tipo == 16:
     memactual = mem.memStack[-2]
     if memactual.lInt[desp] != None:
       return memactual.lInt[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()
   if tipo == 18:
     memactual = mem.memStack[-2]
     if memactual.lFloat[desp] != None:
       return memactual.lFloat[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()
   if tipo == 20:
     memactual = mem.memStack[-2]
     if memactual.lChar[desp] != None:
       return memactual.lChar[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()
   if tipo == 22:
     memactual = mem.memStack[-2]
     if memactual.lTint[desp] != None:
       return memactual.lTint[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()
   if tipo == 24:
     memactual = mem.memStack[-2]
     if memactual.lTfloat[desp] != None:
       return memactual.lTfloat[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()
   if tipo == 26:
     memactual = mem.memStack[-2]
     if memactual.lTchar[desp] != None:
       return memactual.lTchar[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()
   if tipo == 28:
     memactual = mem.memStack[-2]
     if memactual.lTboolean[desp] != None:
       return memactual.lTboolean[desp]
     else:
-      print("Error: variable sin valor",auxdir)
+      print("Error: variable anterior sin valor",auxdir)
       sys.exit()
 
+def addReturnContent(auxdir, content):
+    tipo = auxdir//1000
+    desp = auxdir%1000
+    if tipo == 2:
+      memoriaGlob.lInt[desp] = content
+    if tipo == 4:
+      memoriaGlob.lFloat[desp] = content  
+    if tipo == 6:
+      memoriaGlob.lChar[desp] = content    
+    if tipo == 16:
+      memactual = mem.memStack[-2]
+      memactual.lInt[desp] = content
+    if tipo == 18:
+      memactual = mem.memStack[-2]
+      memactual.lFloat[desp] = content  
+    if tipo == 20:
+      memactual = mem.memStack[-2]
+      memactual.lChar[desp] = content
+    if tipo == 22:
+      memactual = mem.memStack[-2]
+      memactual.lTint[desp] = content
+    if tipo == 24:
+      memactual = mem.memStack[-2]
+      memactual.lTfloat[desp] = content   
+    if tipo == 26:
+      memactual = mem.memStack[-2]
+      memactual.lTchar[desp] = content  
+    if tipo == 28:
+      memactual = mem.memStack[-2]
+      memactual.lTboolean[desp] = content
+    if tipo == 80:
+      mem.pointer[desp] = content
 #!---------------------------------------------------
 #! SWITCH DE ACCIONES
 #!---------------------------------------------------

@@ -1,4 +1,4 @@
-Team_pp~None~[]~0~[3, 0, 0]
+Team_pp~None~[]~0~[1, 0, 0]
 fibo~int~['int']~1~[1, 0, 0, 5, 0, 0, 1]
 Main~None~[]~18~[2, 0, 0, 1, 0, 0, 0]
 /
@@ -22,11 +22,11 @@ fibo~int~2000~[]
 8~GOSUB~None~None~fibo
 9~=~2000~None~22001
 10~ERA~None~None~fibo
-11~+~22001~16000~22002
-12~-~22002~30002~22003
-13~PARAM~22003~None~1
-14~GOSUB~None~None~fibo
-15~=~2000~None~22004
+11~-~16000~30002~22002
+12~PARAM~22002~None~1
+13~GOSUB~None~None~fibo
+14~=~2000~None~22003
+15~+~22001~22003~22004
 16~return~None~None~22004
 17~ENDFunc~None~None~None
 18~write~None~None~30003

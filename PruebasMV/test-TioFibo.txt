@@ -4,7 +4,7 @@ int func fibo(int : x){
 	if(x <=1) then{
         return (x);
     }else{
-        return (fibo(x-1)+fibo(x-2));
+        return ((fibo(x-1))+(fibo(x-2)));
     }
 }
 
