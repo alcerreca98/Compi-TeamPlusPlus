@@ -1,0 +1,20 @@
+program Team_pp;
+
+int func fibo(int : x){
+	if(x <=1) then{
+        return (x);
+    }else{
+        return (fibo(x-1)+fibo(x-2));
+    }
+}
+
+main()
+   var int: n, resultado;
+{   
+    write("dame un numero para la serie Fibonacci");
+    read(n);
+    write("serie de ", n, " digitos= ");
+    resultado = fibo(n);
+    write(resultado);
+
+}

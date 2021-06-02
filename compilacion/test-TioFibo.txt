@@ -1,0 +1,43 @@
+Team_pp~None~[]~0~[3, 0, 0]
+fibo~int~['int']~1~[1, 0, 0, 5, 0, 0, 1]
+Main~None~[]~18~[2, 0, 0, 1, 0, 0, 0]
+/
+fibo~int~2000~[]
+/
+0~30000
+1~30001
+2~30002
+"dame un numero para la serie Fibonacci"~30003
+"serie de "~30004
+" digitos= "~30005
+/
+0~Goto~None~None~18
+1~<=~16000~30001~28000
+2~GotoF~28000~None~5
+3~return~None~None~16000
+4~Goto~None~None~17
+5~ERA~None~None~fibo
+6~-~16000~30001~22000
+7~PARAM~22000~None~1
+8~GOSUB~None~None~fibo
+9~=~2000~None~22001
+10~ERA~None~None~fibo
+11~+~22001~16000~22002
+12~-~22002~30002~22003
+13~PARAM~22003~None~1
+14~GOSUB~None~None~fibo
+15~=~2000~None~22004
+16~return~None~None~22004
+17~ENDFunc~None~None~None
+18~write~None~None~30003
+19~read~None~None~16000
+20~write~None~None~30004
+21~write~None~None~16000
+22~write~None~None~30005
+23~ERA~None~None~fibo
+24~PARAM~16000~None~1
+25~GOSUB~None~None~fibo
+26~=~2000~None~22000
+27~=~22000~None~16001
+28~write~None~None~16001
+29~ENDProgram~None~None~None
