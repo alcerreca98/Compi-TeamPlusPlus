@@ -196,7 +196,7 @@ def expStep3():
           Resultado = Resultado + 1
           return True
         else:
-          print("Error: typemismatch :", tempL, lType, operator, tempR, rType)
+          print("ERROR: typemismatch :", tempL, lType, operator, tempR, rType)
           sys.exit()
   return False
 
@@ -225,7 +225,7 @@ def expStep4():
           Resultado = Resultado + 1
           return True
         else:
-          print("Error: typemismatch :", tempL, lType, operator, tempR, rType)
+          print("ERROR: typemismatch :", tempL, lType, operator, tempR, rType)
           sys.exit()
   return False
 
@@ -254,7 +254,7 @@ def expStep5():
           Resultado = Resultado + 1
           return True
         else:
-          print("Error: typemismatch :", tempL, lType, operator, tempR, rType)
+          print("ERROR: typemismatch :", tempL, lType, operator, tempR, rType)
           sys.exit()
   return False
 
@@ -283,7 +283,7 @@ def expStep6():
           Resultado = Resultado + 1
           return True
         else:
-          print("Error: typemismatch :", tempL, lType, operator, tempR, rType)
+          print("ERROR: typemismatch :", tempL, lType, operator, tempR, rType)
           sys.exit()
   return False
 
@@ -312,7 +312,7 @@ def expStep7():
           Resultado = Resultado + 1
           return True
         else:
-          print("Error: typemismatch :", tempL, lType, operator, tempR, rType)
+          print("ERROR: typemismatch :", tempL, lType, operator, tempR, rType)
           sys.exit()
   return False
 
@@ -341,7 +341,7 @@ def asignaStep2():
         #Resultado = Resultado + 1
         return True
       else:
-        print("Error: typemismatch en asignacion", tempL, lType,"=", tempR, rType)
+        print("ERROR: typemismatch en asignacion", tempL, lType,"=", tempR, rType)
         sys.exit()
   return False
 
@@ -378,7 +378,7 @@ def Gotof_IF():
   exp_type = Ptypes.pop()
   #print(exp_type)
   if exp_type != 'boolean':
-    print('Error: type mismatch, IF')
+    print('ERROR: type mismatch, IF')
     sys.exit()
   else:
     cond = PilaO.pop()
@@ -402,7 +402,7 @@ def Goto_IF():
 def stepWhile2():
   exp_type = Ptypes.pop()
   if exp_type != 'boolean':
-    print('Error: type mismatch, While')
+    print('ERROR: type mismatch, While')
     sys.exit()
   else:
     cond = PilaO.pop()
@@ -434,7 +434,7 @@ def stepFor1():
     Ptypes.append(result_type)
     return True
   else:
-    print("Error: type mismatch, For")
+    print("ERROR: type mismatch, For")
     sys.exit()
   
 #? CUADRUPLOS DE LLAMADA DE FUNCION Y ARREGLOS ESTAN EN EL PARSER!

@@ -96,7 +96,7 @@ def repeatedFunctions(id):
     repeated = dirFuncs.get(id, False)
     if repeated == False:
         return False
-    print("Function : ", id, " already exists")
+    print("ERROR: Function : ", id, " ya existe")
     sys.exit()
     #for ids in dirFuncs:
     #    if id == ids:
@@ -117,7 +117,7 @@ def checkIfExists(id):
         #chequeo existe en locales
         if(dirFuncs[auxFunc].searchIfExists(id) == False):
         #si no existe, print el error
-            print('Variable :  ', id, " is not previously declared as global nor local in function ",auxFunc)
+            print('ERROR: Variable :  ', id, " is not previously declared as global nor local in function ",auxFunc)
             sys.exit()
     return True
         #se comprueba que existe y se hace lo demás.

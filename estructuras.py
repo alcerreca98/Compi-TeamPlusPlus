@@ -85,7 +85,7 @@ class funcion(object):
         repeated = self.dir_var.get(id, False)
         if repeated == False:
             return False
-        print('Variable :  ', id, " already exists in ", self.id)
+        print('ERROR: Variable :  ', id, " already exists in ", self.id)
         sys.exit()
         #for ids in self.dir_var:
         #    if id == ids:

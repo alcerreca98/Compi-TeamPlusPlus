@@ -162,7 +162,7 @@ def p_auxCTE(p):
             cuad.setSaltoLocal(p[-3]-1, table.tipo)
             table.saltoERAlocal(p[-3]-1, table.tipo)
     else:
-        print("Error: Valor de dimensión inválido, debe ser mayor a 0")
+        print("ERROR: Valor de dimensión inválido, debe ser mayor a 0")
         sys.exit()
 
 def p_auxCTE2(p):
@@ -185,7 +185,7 @@ def p_auxCTE2(p):
             cuad.setSaltoLocal(auxSalto, table.tipo)
             table.saltoERAlocal(auxSalto, table.tipo)
     else:
-        print("Error: Valor de dimensión inválido, debe ser mayor a 0")
+        print("ERROR: Valor de dimensión inválido, debe ser mayor a 0")
         sys.exit()
 
 #! ------------------------------------------------------------
@@ -273,7 +273,7 @@ def p_idCallaux3(p):
         cuad.pushType(result_type)
 
     else:
-        print("Error : No se puede accesar a un arreglo/Matriz en indice diferente a integer")
+        print("ERROR : No se puede accesar a un arreglo/Matriz en indice diferente a integer")
         sys.exit()
 
 def p_idCallaux4(p):
@@ -308,7 +308,7 @@ def p_idCallaux4(p):
         cuad.pushPilaO(acceso)
         cuad.pushType(result_type)
     else:
-        print("Error : No se puede accesar a un arreglo/Matriz en indice diferente a integer")
+        print("ERROR : No se puede accesar a un arreglo/Matriz en indice diferente a integer")
         sys.exit()
 
 def p_checkDim(p):
@@ -356,7 +356,7 @@ def p_checkDim2(p):
         print("ERROR: en la funcion \"", table.auxFunc, "\" var: ",p[-13], " declarada como no dimensionada, demasiados parametros")
         sys.exit()
     elif dim == 1 :
-        print("ERROR: en la funcion \"", table.auxFunc, "\" var: ",p[-13], " declarada con una sola dimensiones, demasiados parametros")
+        print("ERROR: en la funcion \"", table.auxFunc, "\" var: ",p[-13], " declarada con una sola dimension, demasiados parametros")
         sys.exit()    
 #! ------------------------------------------------------------
 #! Tipos de Variables, vs tipos de Retorno de Funcion/Metodo
@@ -543,7 +543,7 @@ def p_verExist(p):
     '''
     exist = table.dirFuncs.get(p[-1], False)
     if(exist == False):
-        print("Error : la funcion \"", p[-1] ,"\" no esta previamente declarada")
+        print("ERROR : la funcion \"", p[-1] ,"\" no esta previamente declarada")
         sys.exit()
     
     cuad.quadInsert('ERA', None, None, p[-1])
@@ -562,7 +562,7 @@ def p_paramType(p):
     params = table.dirFuncs[cuad.pointerParam].params
     tam = len(params)
     if(cuad.paramK > tam):
-        print("Error: mas parametros de los esperados")
+        print("ERROR: mas parametros de los esperados")
         sys.exit()
     tipo = table.dirFuncs[cuad.pointerParam].params[cuad.paramK-1]
     num = "Par"+str(cuad.paramK)
@@ -570,7 +570,7 @@ def p_paramType(p):
         cuad.quadInsert('PARAM', arg, None , num)
         cuad.contQuad = cuad.contQuad + 1
     else:
-        print("type mismatch de parametros en llamada", cuad.pointerParam)
+        print("ERROR: type mismatch de parametros en llamada", cuad.pointerParam)
         sys.exit()
 
 def p_paramCount(p):
@@ -587,7 +587,7 @@ def p_coherenceGo(p):
     params = table.dirFuncs[cuad.pointerParam].params
     tam = len(params)
     if(cuad.paramK < tam):
-        print("Error: faltaron parametros")
+        print("ERROR: faltaron parametros")
         sys.exit()
     cuad.quadInsert('GOSUB', None, None , cuad.pointerParam)
     cuad.contQuad = cuad.contQuad + 1

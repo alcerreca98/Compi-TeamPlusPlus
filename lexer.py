@@ -118,7 +118,7 @@ t_ignore = ' \t\n'
 t_CTE_C = r'\'[A-Za-z]\''
 t_LETRERO = r'\"(.*?)\"' #para el write
 
-# Delcaracion de Funciones
+# DecLaracion de Funciones
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
@@ -127,7 +127,6 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0]) # t.lineno
     t.lexer.skip(1)
 
-#'(?:\d+(?:\.\d*)?|\.\d+)'
 def t_CTE_F(t):
     r'\d+\.\d+'
     t.value = float(t.value)
