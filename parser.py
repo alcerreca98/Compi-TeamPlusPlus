@@ -650,13 +650,13 @@ def p_popIO(p):
 def p_escritura(p):
     '''
     escritura   : WRITE pushPoper LPAREN exp popIO lextra RPAREN
-                | WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+                | WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     '''
 
 def p_lextra(p):
     '''
     lextra  : COMMA insertOpWrite exp popIO lextra
-            | COMMA insertOpWrite LETRERO letreroPush popIO lextra
+            | COMMA insertOpWrite LETRERO addCteTable letreroPush popIO lextra
             | empty
     '''
 
@@ -671,7 +671,8 @@ def p_letreroPush(p):
     '''
     letreroPush  :
     '''
-    cuad.pushPilaO(cuad.Resultado)
+    cuad.pushPilaO(table.dictCte[p[-2]])
+    cuad.pushType(cuad.getType(p[-2]))
 
 #! ------------------------------------------------------------
 #! Condicion, If, If Else

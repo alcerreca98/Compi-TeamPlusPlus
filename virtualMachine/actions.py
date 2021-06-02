@@ -48,16 +48,8 @@ def gotoF(cuad, contProg):
   else:
     return int(cuad.result)
 
-#def suma(cuad, contProg):
+
 # todo:  EXPRESIONES ARITMETICAS
-def asigna(cuad, contProg):
-  izq = int(cuad.dirIzq)
-  res = int(cuad.result)
-  #* Get del dato a ingresar
-  op_Der = getContent(izq)
-  #* Guarda a memoria el dato
-  addDirContent(res, op_Der)
-  return contProg + 1
 
 def suma(cuad, contProg):
   izq = int(cuad.dirIzq)
@@ -232,6 +224,44 @@ def opOr(cuad, contProg):
   return contProg + 1
 
 # todo:  ESTATUTOS SECUENCIALES
+
+def asigna(cuad, contProg):
+  izq = int(cuad.dirIzq)
+  res = int(cuad.result)
+  #* Get del dato a ingresar
+  op_Der = getContent(izq)
+  #* Guarda a memoria el dato
+  addDirContent(res, op_Der)
+  return contProg + 1
+
+def read(cuad, contProg):
+  res = int(cuad.result)
+  #* Get del dato a ingresar
+  valor = input()
+  try:
+      valor = int(valor)
+  except ValueError:
+      try:
+          valor = float(valor)
+      except ValueError:
+          pass
+  in_type = reader.getType(valor)
+  res_type = getMemType(res)
+  if (in_type != res_type):
+    print("Error: Type Mismatch en input", in_type, " a ", res_type)
+    sys.exit()
+  #* Guarda a memoria el dato
+  addDirContent(res, valor)
+  return contProg + 1
+
+def write(cuad, contProg):
+  res = int(cuad.result)
+  #* Get del dato a ingresar
+  escribe = getContent(res)
+  #* Imprime el dato
+  print(escribe)
+  return contProg + 1
+
 #!---------------------------------------------------
 #! Manejo de Memoria y Contenido
 #!---------------------------------------------------
@@ -352,6 +382,38 @@ def addDirContent(auxdir, content):
     if tipo == 80:
       mem.pointer[desp] = content
 
+def getMemType(auxdir):
+  tipo = auxdir//1000
+  if tipo == 2:
+    temp = 'int'
+    return temp  
+  if tipo == 4:
+    temp = 'float'
+    return temp
+  if tipo == 6:
+    temp = 'string'
+    return temp
+  if tipo == 16:
+    temp = 'int'
+    return temp
+  if tipo == 18:
+    temp = 'float'
+    return temp
+  if tipo == 20:
+    temp = 'string'
+    return temp
+  if tipo == 22:
+    temp = 'int'
+    return temp
+  if tipo == 24:
+    temp = 'float'
+    return temp
+  if tipo == 26:
+    temp = 'string'
+    return temp
+  if tipo == 28:
+    temp = 'boolean'
+    return temp
 #Switch que selecciona la funcion a ejecutar segun cuadruplos
 def indicador(cuadr, contProg):
   dict_Ind = {
@@ -370,6 +432,8 @@ def indicador(cuadr, contProg):
       '!=' : notEquals,
       '&&' : opAnd,
       '||' : opOr,
+      'read' : read,
+      'write' : write,
   }
   func = dict_Ind.get(cuadr.action, 'False')
   if func != 'False':

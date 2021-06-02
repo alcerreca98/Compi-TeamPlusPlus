@@ -1,0 +1,23 @@
+Team_pp~None~[]~0~[1, 0, 0]
+Main~None~[]~1~[2, 0, 0, 0, 0, 0, 0]
+/
+x2~int~2000~[]
+/
+0~30000
+"Escriba 3 inputs integer: "~30001
+"x2="~30002
+"y1= "~30003
+"y2 ="~30004
+/
+0~Goto~None~None~1
+1~write~None~None~30001
+2~read~None~None~2000
+3~read~None~None~16000
+4~read~None~None~16001
+5~write~None~None~30002
+6~write~None~None~2000
+7~write~None~None~30003
+8~write~None~None~16000
+9~write~None~None~30004
+10~write~None~None~16001
+11~ENDProgram~None~None~None

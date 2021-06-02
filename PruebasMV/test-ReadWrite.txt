@@ -1,0 +1,11 @@
+program Team_pp;
+
+var int:x2;
+
+main()
+   var int: y1, y2;
+{
+    write("Escriba 3 inputs integer: ");
+    read(x2, y1, y2);
+    write("x2=", x2,"y1= ", y1,"y2 =", y2);
+}

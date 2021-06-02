@@ -72,6 +72,8 @@ def getType(cte):
       return temp
   elif tipo == "<class 'str'>":
       temp = 'string'
+  elif tipo == "<class 'bool'>":
+      temp = 'boolean'
       return temp
 
 def convList(lista):

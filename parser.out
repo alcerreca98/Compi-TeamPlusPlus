@@ -89,9 +89,9 @@ Rule 79    listaId -> idCall COMMA popIO insertOpRead listaId
 Rule 80    insertOpRead -> <empty>
 Rule 81    popIO -> <empty>
 Rule 82    escritura -> WRITE pushPoper LPAREN exp popIO lextra RPAREN
-Rule 83    escritura -> WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+Rule 83    escritura -> WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
 Rule 84    lextra -> COMMA insertOpWrite exp popIO lextra
-Rule 85    lextra -> COMMA insertOpWrite LETRERO letreroPush popIO lextra
+Rule 85    lextra -> COMMA insertOpWrite LETRERO addCteTable letreroPush popIO lextra
 Rule 86    lextra -> empty
 Rule 87    insertOpWrite -> <empty>
 Rule 88    letreroPush -> <empty>
@@ -198,7 +198,7 @@ error                :
 
 Nonterminals, with rules where they appear
 
-addCteTable          : 15 16 16 117 118 119
+addCteTable          : 15 16 16 83 85 117 118 119
 addFF                : 23 24 24 116
 addGlobSize          : 1
 asignStep2           : 63
@@ -1014,7 +1014,7 @@ state 72
     (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
     (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> . WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
     (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
@@ -1200,7 +1200,7 @@ state 83
     (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
     (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> . WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
     (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
@@ -1344,7 +1344,7 @@ state 95
 state 96
 
     (82) escritura -> WRITE . pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> WRITE . pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> WRITE . pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -1609,7 +1609,7 @@ state 118
 state 119
 
     (82) escritura -> WRITE pushPoper . LPAREN exp popIO lextra RPAREN
-    (83) escritura -> WRITE pushPoper . LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> WRITE pushPoper . LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
 
     LPAREN          shift and go to state 136
 
@@ -1949,7 +1949,7 @@ state 135
 state 136
 
     (82) escritura -> WRITE pushPoper LPAREN . exp popIO lextra RPAREN
-    (83) escritura -> WRITE pushPoper LPAREN . LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> WRITE pushPoper LPAREN . LETRERO addCteTable letreroPush popIO lextra RPAREN
     (99) exp -> . texp step7
     (100) exp -> . texp step7 OR pushPoper exp
     (101) texp -> . gexp step6
@@ -2374,7 +2374,7 @@ state 151
     (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
     (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> . WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
     (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
@@ -2639,13 +2639,13 @@ state 166
 
 state 167
 
-    (83) escritura -> WRITE pushPoper LPAREN LETRERO . letreroPush popIO lextra RPAREN
-    (88) letreroPush -> .
+    (83) escritura -> WRITE pushPoper LPAREN LETRERO . addCteTable letreroPush popIO lextra RPAREN
+    (122) addCteTable -> .
 
-    COMMA           reduce using rule 88 (letreroPush -> .)
-    RPAREN          reduce using rule 88 (letreroPush -> .)
+    COMMA           reduce using rule 122 (addCteTable -> .)
+    RPAREN          reduce using rule 122 (addCteTable -> .)
 
-    letreroPush                    shift and go to state 193
+    addCteTable                    shift and go to state 193
 
 state 168
 
@@ -2939,7 +2939,7 @@ state 182
     (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
     (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> . WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
     (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
@@ -3049,7 +3049,7 @@ state 192
 
     (82) escritura -> WRITE pushPoper LPAREN exp popIO . lextra RPAREN
     (84) lextra -> . COMMA insertOpWrite exp popIO lextra
-    (85) lextra -> . COMMA insertOpWrite LETRERO letreroPush popIO lextra
+    (85) lextra -> . COMMA insertOpWrite LETRERO addCteTable letreroPush popIO lextra
     (86) lextra -> . empty
     (132) empty -> .
 
@@ -3061,13 +3061,13 @@ state 192
 
 state 193
 
-    (83) escritura -> WRITE pushPoper LPAREN LETRERO letreroPush . popIO lextra RPAREN
-    (81) popIO -> .
+    (83) escritura -> WRITE pushPoper LPAREN LETRERO addCteTable . letreroPush popIO lextra RPAREN
+    (88) letreroPush -> .
 
-    COMMA           reduce using rule 81 (popIO -> .)
-    RPAREN          reduce using rule 81 (popIO -> .)
+    COMMA           reduce using rule 88 (letreroPush -> .)
+    RPAREN          reduce using rule 88 (letreroPush -> .)
 
-    popIO                          shift and go to state 225
+    letreroPush                    shift and go to state 225
 
 state 194
 
@@ -3473,7 +3473,7 @@ state 222
 state 223
 
     (84) lextra -> COMMA . insertOpWrite exp popIO lextra
-    (85) lextra -> COMMA . insertOpWrite LETRERO letreroPush popIO lextra
+    (85) lextra -> COMMA . insertOpWrite LETRERO addCteTable letreroPush popIO lextra
     (87) insertOpWrite -> .
 
     LETRERO         reduce using rule 87 (insertOpWrite -> .)
@@ -3494,17 +3494,13 @@ state 224
 
 state 225
 
-    (83) escritura -> WRITE pushPoper LPAREN LETRERO letreroPush popIO . lextra RPAREN
-    (84) lextra -> . COMMA insertOpWrite exp popIO lextra
-    (85) lextra -> . COMMA insertOpWrite LETRERO letreroPush popIO lextra
-    (86) lextra -> . empty
-    (132) empty -> .
+    (83) escritura -> WRITE pushPoper LPAREN LETRERO addCteTable letreroPush . popIO lextra RPAREN
+    (81) popIO -> .
 
-    COMMA           shift and go to state 223
-    RPAREN          reduce using rule 132 (empty -> .)
+    COMMA           reduce using rule 81 (popIO -> .)
+    RPAREN          reduce using rule 81 (popIO -> .)
 
-    lextra                         shift and go to state 250
-    empty                          shift and go to state 224
+    popIO                          shift and go to state 250
 
 state 226
 
@@ -4181,7 +4177,7 @@ state 248
 state 249
 
     (84) lextra -> COMMA insertOpWrite . exp popIO lextra
-    (85) lextra -> COMMA insertOpWrite . LETRERO letreroPush popIO lextra
+    (85) lextra -> COMMA insertOpWrite . LETRERO addCteTable letreroPush popIO lextra
     (99) exp -> . texp step7
     (100) exp -> . texp step7 OR pushPoper exp
     (101) texp -> . gexp step6
@@ -4230,10 +4226,17 @@ state 249
 
 state 250
 
-    (83) escritura -> WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra . RPAREN
+    (83) escritura -> WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO . lextra RPAREN
+    (84) lextra -> . COMMA insertOpWrite exp popIO lextra
+    (85) lextra -> . COMMA insertOpWrite LETRERO addCteTable letreroPush popIO lextra
+    (86) lextra -> . empty
+    (132) empty -> .
 
-    RPAREN          shift and go to state 275
+    COMMA           shift and go to state 223
+    RPAREN          reduce using rule 132 (empty -> .)
 
+    lextra                         shift and go to state 275
+    empty                          shift and go to state 224
 
 state 251
 
@@ -4280,7 +4283,7 @@ state 252
     (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
     (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> . WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
     (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
@@ -4599,19 +4602,19 @@ state 273
 
 state 274
 
-    (85) lextra -> COMMA insertOpWrite LETRERO . letreroPush popIO lextra
-    (88) letreroPush -> .
+    (85) lextra -> COMMA insertOpWrite LETRERO . addCteTable letreroPush popIO lextra
+    (122) addCteTable -> .
 
-    COMMA           reduce using rule 88 (letreroPush -> .)
-    RPAREN          reduce using rule 88 (letreroPush -> .)
+    COMMA           reduce using rule 122 (addCteTable -> .)
+    RPAREN          reduce using rule 122 (addCteTable -> .)
 
-    letreroPush                    shift and go to state 282
+    addCteTable                    shift and go to state 282
 
 state 275
 
-    (83) escritura -> WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN .
+    (83) escritura -> WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra . RPAREN
 
-    SCOLON          reduce using rule 83 (escritura -> WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN .)
+    RPAREN          shift and go to state 283
 
 
 state 276
@@ -4619,7 +4622,7 @@ state 276
     (89) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos . RBRACE
     (90) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos . RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
 
-    RBRACE          shift and go to state 283
+    RBRACE          shift and go to state 284
 
 
 state 277
@@ -4642,7 +4645,7 @@ state 277
     (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
     (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> . WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
     (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
@@ -4661,7 +4664,7 @@ state 277
     WHILE           shift and go to state 98
     FOR             shift and go to state 99
 
-    listaEstatutos                 shift and go to state 284
+    listaEstatutos                 shift and go to state 285
     estatutos                      shift and go to state 83
     empty                          shift and go to state 84
     llamada                        shift and go to state 85
@@ -4678,7 +4681,7 @@ state 278
 
     (97) cond_f -> FOR asignacion TO exp step1While step1For step2While DO . LBRACE listaEstatutos RBRACE step3While
 
-    LBRACE          shift and go to state 285
+    LBRACE          shift and go to state 286
 
 
 state 279
@@ -4745,7 +4748,7 @@ state 280
     CTE_C           shift and go to state 146
     ID              shift and go to state 81
 
-    exp                            shift and go to state 286
+    exp                            shift and go to state 287
     texp                           shift and go to state 139
     gexp                           shift and go to state 140
     mexp                           shift and go to state 141
@@ -4758,27 +4761,34 @@ state 281
 
     (84) lextra -> COMMA insertOpWrite exp popIO . lextra
     (84) lextra -> . COMMA insertOpWrite exp popIO lextra
-    (85) lextra -> . COMMA insertOpWrite LETRERO letreroPush popIO lextra
+    (85) lextra -> . COMMA insertOpWrite LETRERO addCteTable letreroPush popIO lextra
     (86) lextra -> . empty
     (132) empty -> .
 
     COMMA           shift and go to state 223
     RPAREN          reduce using rule 132 (empty -> .)
 
-    lextra                         shift and go to state 287
+    lextra                         shift and go to state 288
     empty                          shift and go to state 224
 
 state 282
 
-    (85) lextra -> COMMA insertOpWrite LETRERO letreroPush . popIO lextra
-    (81) popIO -> .
+    (85) lextra -> COMMA insertOpWrite LETRERO addCteTable . letreroPush popIO lextra
+    (88) letreroPush -> .
 
-    COMMA           reduce using rule 81 (popIO -> .)
-    RPAREN          reduce using rule 81 (popIO -> .)
+    COMMA           reduce using rule 88 (letreroPush -> .)
+    RPAREN          reduce using rule 88 (letreroPush -> .)
 
-    popIO                          shift and go to state 288
+    letreroPush                    shift and go to state 289
 
 state 283
+
+    (83) escritura -> WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN .
+
+    SCOLON          reduce using rule 83 (escritura -> WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN .)
+
+
+state 284
 
     (89) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE .
     (90) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE . ELSE cond3 LBRACE listaEstatutos RBRACE
@@ -4791,17 +4801,17 @@ state 283
     WHILE           reduce using rule 89 (condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE .)
     FOR             reduce using rule 89 (condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE .)
     RBRACE          reduce using rule 89 (condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE .)
-    ELSE            shift and go to state 289
-
-
-state 284
-
-    (93) cond_w -> WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos . RBRACE step3While
-
-    RBRACE          shift and go to state 290
+    ELSE            shift and go to state 290
 
 
 state 285
+
+    (93) cond_w -> WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos . RBRACE step3While
+
+    RBRACE          shift and go to state 291
+
+
+state 286
 
     (97) cond_f -> FOR asignacion TO exp step1While step1For step2While DO LBRACE . listaEstatutos RBRACE step3While
     (53) listaEstatutos -> . estatutos listaEstatutos
@@ -4821,7 +4831,7 @@ state 285
     (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
     (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> . WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
     (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
@@ -4841,7 +4851,7 @@ state 285
     FOR             shift and go to state 99
 
     asignacion                     shift and go to state 86
-    listaEstatutos                 shift and go to state 291
+    listaEstatutos                 shift and go to state 292
     estatutos                      shift and go to state 83
     empty                          shift and go to state 84
     llamada                        shift and go to state 85
@@ -4853,46 +4863,42 @@ state 285
     cond_f                         shift and go to state 92
     idCall                         shift and go to state 93
 
-state 286
+state 287
 
     (24) idCall -> ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp . idCallaux3 RBRACK rmFF checkDim2
     (27) idCallaux3 -> .
 
     RBRACK          reduce using rule 27 (idCallaux3 -> .)
 
-    idCallaux3                     shift and go to state 292
+    idCallaux3                     shift and go to state 293
 
-state 287
+state 288
 
     (84) lextra -> COMMA insertOpWrite exp popIO lextra .
 
     RPAREN          reduce using rule 84 (lextra -> COMMA insertOpWrite exp popIO lextra .)
 
 
-state 288
-
-    (85) lextra -> COMMA insertOpWrite LETRERO letreroPush popIO . lextra
-    (84) lextra -> . COMMA insertOpWrite exp popIO lextra
-    (85) lextra -> . COMMA insertOpWrite LETRERO letreroPush popIO lextra
-    (86) lextra -> . empty
-    (132) empty -> .
-
-    COMMA           shift and go to state 223
-    RPAREN          reduce using rule 132 (empty -> .)
-
-    lextra                         shift and go to state 293
-    empty                          shift and go to state 224
-
 state 289
+
+    (85) lextra -> COMMA insertOpWrite LETRERO addCteTable letreroPush . popIO lextra
+    (81) popIO -> .
+
+    COMMA           reduce using rule 81 (popIO -> .)
+    RPAREN          reduce using rule 81 (popIO -> .)
+
+    popIO                          shift and go to state 294
+
+state 290
 
     (90) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE . cond3 LBRACE listaEstatutos RBRACE
     (92) cond3 -> .
 
     LBRACE          reduce using rule 92 (cond3 -> .)
 
-    cond3                          shift and go to state 294
+    cond3                          shift and go to state 295
 
-state 290
+state 291
 
     (93) cond_w -> WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE . step3While
     (96) step3While -> .
@@ -4906,37 +4912,44 @@ state 290
     FOR             reduce using rule 96 (step3While -> .)
     RBRACE          reduce using rule 96 (step3While -> .)
 
-    step3While                     shift and go to state 295
-
-state 291
-
-    (97) cond_f -> FOR asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos . RBRACE step3While
-
-    RBRACE          shift and go to state 296
-
+    step3While                     shift and go to state 296
 
 state 292
 
-    (24) idCall -> ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 . RBRACK rmFF checkDim2
+    (97) cond_f -> FOR asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos . RBRACE step3While
 
-    RBRACK          shift and go to state 297
+    RBRACE          shift and go to state 297
 
 
 state 293
 
-    (85) lextra -> COMMA insertOpWrite LETRERO letreroPush popIO lextra .
+    (24) idCall -> ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 . RBRACK rmFF checkDim2
 
-    RPAREN          reduce using rule 85 (lextra -> COMMA insertOpWrite LETRERO letreroPush popIO lextra .)
+    RBRACK          shift and go to state 298
 
 
 state 294
 
-    (90) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 . LBRACE listaEstatutos RBRACE
+    (85) lextra -> COMMA insertOpWrite LETRERO addCteTable letreroPush popIO . lextra
+    (84) lextra -> . COMMA insertOpWrite exp popIO lextra
+    (85) lextra -> . COMMA insertOpWrite LETRERO addCteTable letreroPush popIO lextra
+    (86) lextra -> . empty
+    (132) empty -> .
 
-    LBRACE          shift and go to state 298
+    COMMA           shift and go to state 223
+    RPAREN          reduce using rule 132 (empty -> .)
 
+    lextra                         shift and go to state 299
+    empty                          shift and go to state 224
 
 state 295
+
+    (90) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 . LBRACE listaEstatutos RBRACE
+
+    LBRACE          shift and go to state 300
+
+
+state 296
 
     (93) cond_w -> WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While .
 
@@ -4950,7 +4963,7 @@ state 295
     RBRACE          reduce using rule 93 (cond_w -> WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While .)
 
 
-state 296
+state 297
 
     (97) cond_f -> FOR asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE . step3While
     (96) step3While -> .
@@ -4964,9 +4977,9 @@ state 296
     FOR             reduce using rule 96 (step3While -> .)
     RBRACE          reduce using rule 96 (step3While -> .)
 
-    step3While                     shift and go to state 299
+    step3While                     shift and go to state 301
 
-state 297
+state 298
 
     (24) idCall -> ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK . rmFF checkDim2
     (130) rmFF -> .
@@ -4991,9 +5004,16 @@ state 297
     DO              reduce using rule 130 (rmFF -> .)
     RBRACK          reduce using rule 130 (rmFF -> .)
 
-    rmFF                           shift and go to state 300
+    rmFF                           shift and go to state 302
 
-state 298
+state 299
+
+    (85) lextra -> COMMA insertOpWrite LETRERO addCteTable letreroPush popIO lextra .
+
+    RPAREN          reduce using rule 85 (lextra -> COMMA insertOpWrite LETRERO addCteTable letreroPush popIO lextra .)
+
+
+state 300
 
     (90) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE . listaEstatutos RBRACE
     (53) listaEstatutos -> . estatutos listaEstatutos
@@ -5013,7 +5033,7 @@ state 298
     (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
     (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
     (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> . WRITE pushPoper LPAREN LETRERO letreroPush popIO lextra RPAREN
+    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
     (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
     (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
@@ -5032,7 +5052,7 @@ state 298
     WHILE           shift and go to state 98
     FOR             shift and go to state 99
 
-    listaEstatutos                 shift and go to state 301
+    listaEstatutos                 shift and go to state 303
     estatutos                      shift and go to state 83
     empty                          shift and go to state 84
     llamada                        shift and go to state 85
@@ -5045,7 +5065,7 @@ state 298
     cond_f                         shift and go to state 92
     idCall                         shift and go to state 93
 
-state 299
+state 301
 
     (97) cond_f -> FOR asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While .
 
@@ -5059,7 +5079,7 @@ state 299
     RBRACE          reduce using rule 97 (cond_f -> FOR asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While .)
 
 
-state 300
+state 302
 
     (24) idCall -> ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF . checkDim2
     (31) checkDim2 -> .
@@ -5084,16 +5104,16 @@ state 300
     DO              reduce using rule 31 (checkDim2 -> .)
     RBRACK          reduce using rule 31 (checkDim2 -> .)
 
-    checkDim2                      shift and go to state 302
+    checkDim2                      shift and go to state 304
 
-state 301
+state 303
 
     (90) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos . RBRACE
 
-    RBRACE          shift and go to state 303
+    RBRACE          shift and go to state 305
 
 
-state 302
+state 304
 
     (24) idCall -> ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2 .
 
@@ -5118,7 +5138,7 @@ state 302
     RBRACK          reduce using rule 24 (idCall -> ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2 .)
 
 
-state 303
+state 305
 
     (90) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE .
 
