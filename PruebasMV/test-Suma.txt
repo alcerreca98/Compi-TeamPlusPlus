@@ -1,0 +1,10 @@
+program Team_pp;
+
+var int:x2;
+
+main()
+   var int: y1;
+{
+    x2 = 3 + 8;
+    y1 = 10 + 5;
+}

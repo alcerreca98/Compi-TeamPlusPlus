@@ -1,0 +1,10 @@
+program Team_pp;
+
+var float:x2;
+
+main()
+   var float: y1;
+{
+    x2 = 3.5/2-1;
+    y1 = 10/3.5+6-1*15/3;
+}

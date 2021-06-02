@@ -1,0 +1,11 @@
+program Team_pp;
+
+var int:x2;
+
+main()
+   var int: y1, y2;
+{
+    x2 = 3*(2-1);
+    y1 = 10+6-1*15;
+    y2 = x2;
+}

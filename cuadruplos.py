@@ -388,13 +388,13 @@ def Gotof_IF():
   
 def fillGOTO():
   end = Psaltos.pop()
-  Quad[end].result = contQuad
+  Quad[end].result = contQuad - 1
 
 def Goto_IF():
   quadInsert('Goto', None, None, None)
   falso = Psaltos.pop()
   Psaltos.append(contQuad-1)
-  Quad[falso].result = contQuad
+  Quad[falso].result = contQuad 
   return True
 
 #TODO: puntos neuralgicos CICLO WHILE
