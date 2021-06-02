@@ -7,7 +7,7 @@ Unused terminals:
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+Rule 1     program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
 Rule 2     addGlobSize -> <empty>
 Rule 3     initProg -> <empty>
 Rule 4     auxMain -> <empty>
@@ -284,7 +284,7 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . program
-    (1) program -> . PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (1) program -> . PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
 
     PROGRAM         shift and go to state 2
 
@@ -298,14 +298,14 @@ state 1
 
 state 2
 
-    (1) program -> PROGRAM . ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (1) program -> PROGRAM . ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
 
     ID              shift and go to state 3
 
 
 state 3
 
-    (1) program -> PROGRAM ID . initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (1) program -> PROGRAM ID . initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
     (3) initProg -> .
 
     SCOLON          reduce using rule 3 (initProg -> .)
@@ -314,14 +314,14 @@ state 3
 
 state 4
 
-    (1) program -> PROGRAM ID initProg . SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (1) program -> PROGRAM ID initProg . SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
 
     SCOLON          shift and go to state 5
 
 
 state 5
 
-    (1) program -> PROGRAM ID initProg SCOLON . declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (1) program -> PROGRAM ID initProg SCOLON . declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
     (6) declarClases -> . CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
     (7) declarClases -> . empty
     (132) empty -> .
@@ -339,7 +339,7 @@ state 5
 
 state 6
 
-    (1) program -> PROGRAM ID initProg SCOLON declarClases . declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (1) program -> PROGRAM ID initProg SCOLON declarClases . declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
     (46) declarVar -> . VAR tipo COLON listaIdDeclare SCOLON declarVar
     (47) declarVar -> . empty
     (132) empty -> .
@@ -375,16 +375,24 @@ state 8
 
 state 9
 
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar . addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
-    (2) addGlobSize -> .
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar . definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (48) definFunc -> . tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
+    (49) definFunc -> . empty
+    (36) tipoMethod -> . VOID
+    (37) tipoMethod -> . INT
+    (38) tipoMethod -> . FLOAT
+    (39) tipoMethod -> . CHAR
+    (132) empty -> .
 
-    VOID            reduce using rule 2 (addGlobSize -> .)
-    INT             reduce using rule 2 (addGlobSize -> .)
-    FLOAT           reduce using rule 2 (addGlobSize -> .)
-    CHAR            reduce using rule 2 (addGlobSize -> .)
-    MAIN            reduce using rule 2 (addGlobSize -> .)
+    VOID            shift and go to state 16
+    INT             shift and go to state 17
+    FLOAT           shift and go to state 18
+    CHAR            shift and go to state 19
+    MAIN            reduce using rule 132 (empty -> .)
 
-    addGlobSize                    shift and go to state 13
+    definFunc                      shift and go to state 13
+    tipoMethod                     shift and go to state 14
+    empty                          shift and go to state 15
 
 state 10
 
@@ -394,12 +402,12 @@ state 10
     (34) tipo -> . FLOAT
     (35) tipo -> . CHAR
 
-    ID              shift and go to state 15
-    INT             shift and go to state 16
-    FLOAT           shift and go to state 17
-    CHAR            shift and go to state 18
+    ID              shift and go to state 21
+    INT             shift and go to state 22
+    FLOAT           shift and go to state 23
+    CHAR            shift and go to state 24
 
-    tipo                           shift and go to state 14
+    tipo                           shift and go to state 20
 
 state 11
 
@@ -420,139 +428,134 @@ state 12
     (9) herencia -> . empty
     (132) empty -> .
 
-    LT              shift and go to state 20
+    LT              shift and go to state 26
     LBRACE          reduce using rule 132 (empty -> .)
 
-    herencia                       shift and go to state 19
-    empty                          shift and go to state 21
+    herencia                       shift and go to state 25
+    empty                          shift and go to state 27
 
 state 13
 
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize . definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
-    (48) definFunc -> . tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
-    (49) definFunc -> . empty
-    (36) tipoMethod -> . VOID
-    (37) tipoMethod -> . INT
-    (38) tipoMethod -> . FLOAT
-    (39) tipoMethod -> . CHAR
-    (132) empty -> .
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc . addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (2) addGlobSize -> .
 
-    VOID            shift and go to state 25
-    INT             shift and go to state 26
-    FLOAT           shift and go to state 27
-    CHAR            shift and go to state 28
-    MAIN            reduce using rule 132 (empty -> .)
+    MAIN            reduce using rule 2 (addGlobSize -> .)
 
-    definFunc                      shift and go to state 22
-    tipoMethod                     shift and go to state 23
-    empty                          shift and go to state 24
+    addGlobSize                    shift and go to state 28
 
 state 14
 
-    (46) declarVar -> VAR tipo . COLON listaIdDeclare SCOLON declarVar
+    (48) definFunc -> tipoMethod . FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
 
-    COLON           shift and go to state 29
+    FUNC            shift and go to state 29
 
 
 state 15
-
-    (32) tipo -> ID .
-
-    COLON           reduce using rule 32 (tipo -> ID .)
-
-
-state 16
-
-    (33) tipo -> INT .
-
-    COLON           reduce using rule 33 (tipo -> INT .)
-
-
-state 17
-
-    (34) tipo -> FLOAT .
-
-    COLON           reduce using rule 34 (tipo -> FLOAT .)
-
-
-state 18
-
-    (35) tipo -> CHAR .
-
-    COLON           reduce using rule 35 (tipo -> CHAR .)
-
-
-state 19
-
-    (6) declarClases -> CLASS ID herencia . LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
-
-    LBRACE          shift and go to state 30
-
-
-state 20
-
-    (8) herencia -> LT . EXTENDS ID GT
-
-    EXTENDS         shift and go to state 31
-
-
-state 21
-
-    (9) herencia -> empty .
-
-    LBRACE          reduce using rule 9 (herencia -> empty .)
-
-
-state 22
-
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc . MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
-
-    MAIN            shift and go to state 32
-
-
-state 23
-
-    (48) definFunc -> tipoMethod . FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
-
-    FUNC            shift and go to state 33
-
-
-state 24
 
     (49) definFunc -> empty .
 
     MAIN            reduce using rule 49 (definFunc -> empty .)
 
 
-state 25
+state 16
 
     (36) tipoMethod -> VOID .
 
     FUNC            reduce using rule 36 (tipoMethod -> VOID .)
 
 
-state 26
+state 17
 
     (37) tipoMethod -> INT .
 
     FUNC            reduce using rule 37 (tipoMethod -> INT .)
 
 
-state 27
+state 18
 
     (38) tipoMethod -> FLOAT .
 
     FUNC            reduce using rule 38 (tipoMethod -> FLOAT .)
 
 
-state 28
+state 19
 
     (39) tipoMethod -> CHAR .
 
     FUNC            reduce using rule 39 (tipoMethod -> CHAR .)
 
 
+state 20
+
+    (46) declarVar -> VAR tipo . COLON listaIdDeclare SCOLON declarVar
+
+    COLON           shift and go to state 30
+
+
+state 21
+
+    (32) tipo -> ID .
+
+    COLON           reduce using rule 32 (tipo -> ID .)
+
+
+state 22
+
+    (33) tipo -> INT .
+
+    COLON           reduce using rule 33 (tipo -> INT .)
+
+
+state 23
+
+    (34) tipo -> FLOAT .
+
+    COLON           reduce using rule 34 (tipo -> FLOAT .)
+
+
+state 24
+
+    (35) tipo -> CHAR .
+
+    COLON           reduce using rule 35 (tipo -> CHAR .)
+
+
+state 25
+
+    (6) declarClases -> CLASS ID herencia . LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
+
+    LBRACE          shift and go to state 31
+
+
+state 26
+
+    (8) herencia -> LT . EXTENDS ID GT
+
+    EXTENDS         shift and go to state 32
+
+
+state 27
+
+    (9) herencia -> empty .
+
+    LBRACE          reduce using rule 9 (herencia -> empty .)
+
+
+state 28
+
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize . MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+
+    MAIN            shift and go to state 33
+
+
 state 29
+
+    (48) definFunc -> tipoMethod FUNC . ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
+
+    ID              shift and go to state 34
+
+
+state 30
 
     (46) declarVar -> VAR tipo COLON . listaIdDeclare SCOLON declarVar
     (12) listaIdDeclare -> . idDeclare
@@ -561,58 +564,60 @@ state 29
     (15) idDeclare -> . ID auxDeclare LBRACK CTE_I addCteTable RBRACK auxCTE
     (16) idDeclare -> . ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
 
-    ID              shift and go to state 36
+    ID              shift and go to state 37
 
-    listaIdDeclare                 shift and go to state 34
-    idDeclare                      shift and go to state 35
-
-state 30
-
-    (6) declarClases -> CLASS ID herencia LBRACE . ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
-
-    ATTRIBUTES      shift and go to state 37
-
+    listaIdDeclare                 shift and go to state 35
+    idDeclare                      shift and go to state 36
 
 state 31
 
-    (8) herencia -> LT EXTENDS . ID GT
+    (6) declarClases -> CLASS ID herencia LBRACE . ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
 
-    ID              shift and go to state 38
+    ATTRIBUTES      shift and go to state 38
 
 
 state 32
 
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN . auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (8) herencia -> LT EXTENDS . ID GT
+
+    ID              shift and go to state 39
+
+
+state 33
+
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN . auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
     (4) auxMain -> .
 
     LPAREN          reduce using rule 4 (auxMain -> .)
 
-    auxMain                        shift and go to state 39
-
-state 33
-
-    (48) definFunc -> tipoMethod FUNC . ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
-
-    ID              shift and go to state 40
-
+    auxMain                        shift and go to state 40
 
 state 34
 
-    (46) declarVar -> VAR tipo COLON listaIdDeclare . SCOLON declarVar
+    (48) definFunc -> tipoMethod FUNC ID . auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
+    (50) auxFuncion -> .
 
-    SCOLON          shift and go to state 41
+    LPAREN          reduce using rule 50 (auxFuncion -> .)
 
+    auxFuncion                     shift and go to state 41
 
 state 35
+
+    (46) declarVar -> VAR tipo COLON listaIdDeclare . SCOLON declarVar
+
+    SCOLON          shift and go to state 42
+
+
+state 36
 
     (12) listaIdDeclare -> idDeclare .
     (13) listaIdDeclare -> idDeclare . COMMA listaIdDeclare
 
     SCOLON          reduce using rule 12 (listaIdDeclare -> idDeclare .)
-    COMMA           shift and go to state 42
+    COMMA           shift and go to state 43
 
 
-state 36
+state 37
 
     (14) idDeclare -> ID . auxDeclare auxDeclare2
     (15) idDeclare -> ID . auxDeclare LBRACK CTE_I addCteTable RBRACK auxCTE
@@ -623,9 +628,9 @@ state 36
     COMMA           reduce using rule 17 (auxDeclare -> .)
     SCOLON          reduce using rule 17 (auxDeclare -> .)
 
-    auxDeclare                     shift and go to state 43
+    auxDeclare                     shift and go to state 44
 
-state 37
+state 38
 
     (6) declarClases -> CLASS ID herencia LBRACE ATTRIBUTES . declarAttributes METHODS declarMethods RBRACE declarClases
     (10) declarAttributes -> . tipo COLON listaIdDeclare SCOLON declarAttributes
@@ -636,40 +641,38 @@ state 37
     (35) tipo -> . CHAR
     (132) empty -> .
 
-    ID              shift and go to state 15
-    INT             shift and go to state 16
-    FLOAT           shift and go to state 17
-    CHAR            shift and go to state 18
+    ID              shift and go to state 21
+    INT             shift and go to state 22
+    FLOAT           shift and go to state 23
+    CHAR            shift and go to state 24
     METHODS         reduce using rule 132 (empty -> .)
 
-    declarAttributes               shift and go to state 44
-    tipo                           shift and go to state 45
-    empty                          shift and go to state 46
-
-state 38
-
-    (8) herencia -> LT EXTENDS ID . GT
-
-    GT              shift and go to state 47
-
+    declarAttributes               shift and go to state 45
+    tipo                           shift and go to state 46
+    empty                          shift and go to state 47
 
 state 39
 
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain . LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (8) herencia -> LT EXTENDS ID . GT
 
-    LPAREN          shift and go to state 48
+    GT              shift and go to state 48
 
 
 state 40
 
-    (48) definFunc -> tipoMethod FUNC ID . auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
-    (50) auxFuncion -> .
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain . LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
 
-    LPAREN          reduce using rule 50 (auxFuncion -> .)
+    LPAREN          shift and go to state 49
 
-    auxFuncion                     shift and go to state 49
 
 state 41
+
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion . LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
+
+    LPAREN          shift and go to state 50
+
+
+state 42
 
     (46) declarVar -> VAR tipo COLON listaIdDeclare SCOLON . declarVar
     (46) declarVar -> . VAR tipo COLON listaIdDeclare SCOLON declarVar
@@ -684,10 +687,10 @@ state 41
     MAIN            reduce using rule 132 (empty -> .)
     LBRACE          reduce using rule 132 (empty -> .)
 
-    declarVar                      shift and go to state 50
+    declarVar                      shift and go to state 51
     empty                          shift and go to state 11
 
-state 42
+state 43
 
     (13) listaIdDeclare -> idDeclare COMMA . listaIdDeclare
     (12) listaIdDeclare -> . idDeclare
@@ -696,150 +699,60 @@ state 42
     (15) idDeclare -> . ID auxDeclare LBRACK CTE_I addCteTable RBRACK auxCTE
     (16) idDeclare -> . ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
 
-    ID              shift and go to state 36
+    ID              shift and go to state 37
 
-    idDeclare                      shift and go to state 35
-    listaIdDeclare                 shift and go to state 51
+    idDeclare                      shift and go to state 36
+    listaIdDeclare                 shift and go to state 52
 
-state 43
+state 44
 
     (14) idDeclare -> ID auxDeclare . auxDeclare2
     (15) idDeclare -> ID auxDeclare . LBRACK CTE_I addCteTable RBRACK auxCTE
     (16) idDeclare -> ID auxDeclare . LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
     (18) auxDeclare2 -> .
 
-    LBRACK          shift and go to state 53
+    LBRACK          shift and go to state 54
     COMMA           reduce using rule 18 (auxDeclare2 -> .)
     SCOLON          reduce using rule 18 (auxDeclare2 -> .)
 
-    auxDeclare2                    shift and go to state 52
-
-state 44
-
-    (6) declarClases -> CLASS ID herencia LBRACE ATTRIBUTES declarAttributes . METHODS declarMethods RBRACE declarClases
-
-    METHODS         shift and go to state 54
-
+    auxDeclare2                    shift and go to state 53
 
 state 45
 
-    (10) declarAttributes -> tipo . COLON listaIdDeclare SCOLON declarAttributes
+    (6) declarClases -> CLASS ID herencia LBRACE ATTRIBUTES declarAttributes . METHODS declarMethods RBRACE declarClases
 
-    COLON           shift and go to state 55
+    METHODS         shift and go to state 55
 
 
 state 46
+
+    (10) declarAttributes -> tipo . COLON listaIdDeclare SCOLON declarAttributes
+
+    COLON           shift and go to state 56
+
+
+state 47
 
     (11) declarAttributes -> empty .
 
     METHODS         reduce using rule 11 (declarAttributes -> empty .)
 
 
-state 47
+state 48
 
     (8) herencia -> LT EXTENDS ID GT .
 
     LBRACE          reduce using rule 8 (herencia -> LT EXTENDS ID GT .)
 
 
-state 48
-
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN . RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
-
-    RPAREN          shift and go to state 56
-
-
 state 49
 
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion . LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN . RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
 
-    LPAREN          shift and go to state 57
+    RPAREN          shift and go to state 57
 
 
 state 50
-
-    (46) declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .
-
-    VOID            reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
-    INT             reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
-    FLOAT           reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
-    CHAR            reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
-    MAIN            reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
-    LBRACE          reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
-
-
-state 51
-
-    (13) listaIdDeclare -> idDeclare COMMA listaIdDeclare .
-
-    SCOLON          reduce using rule 13 (listaIdDeclare -> idDeclare COMMA listaIdDeclare .)
-
-
-state 52
-
-    (14) idDeclare -> ID auxDeclare auxDeclare2 .
-
-    COMMA           reduce using rule 14 (idDeclare -> ID auxDeclare auxDeclare2 .)
-    SCOLON          reduce using rule 14 (idDeclare -> ID auxDeclare auxDeclare2 .)
-
-
-state 53
-
-    (15) idDeclare -> ID auxDeclare LBRACK . CTE_I addCteTable RBRACK auxCTE
-    (16) idDeclare -> ID auxDeclare LBRACK . CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
-
-    CTE_I           shift and go to state 58
-
-
-state 54
-
-    (6) declarClases -> CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS . declarMethods RBRACE declarClases
-    (40) declarMethods -> . tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
-    (41) declarMethods -> . empty
-    (36) tipoMethod -> . VOID
-    (37) tipoMethod -> . INT
-    (38) tipoMethod -> . FLOAT
-    (39) tipoMethod -> . CHAR
-    (132) empty -> .
-
-    VOID            shift and go to state 25
-    INT             shift and go to state 26
-    FLOAT           shift and go to state 27
-    CHAR            shift and go to state 28
-    RBRACE          reduce using rule 132 (empty -> .)
-
-    declarMethods                  shift and go to state 59
-    tipoMethod                     shift and go to state 60
-    empty                          shift and go to state 61
-
-state 55
-
-    (10) declarAttributes -> tipo COLON . listaIdDeclare SCOLON declarAttributes
-    (12) listaIdDeclare -> . idDeclare
-    (13) listaIdDeclare -> . idDeclare COMMA listaIdDeclare
-    (14) idDeclare -> . ID auxDeclare auxDeclare2
-    (15) idDeclare -> . ID auxDeclare LBRACK CTE_I addCteTable RBRACK auxCTE
-    (16) idDeclare -> . ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
-
-    ID              shift and go to state 36
-
-    listaIdDeclare                 shift and go to state 62
-    idDeclare                      shift and go to state 35
-
-state 56
-
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN . declarVar LBRACE listaEstatutos RBRACE endProg prueba
-    (46) declarVar -> . VAR tipo COLON listaIdDeclare SCOLON declarVar
-    (47) declarVar -> . empty
-    (132) empty -> .
-
-    VAR             shift and go to state 10
-    LBRACE          reduce using rule 132 (empty -> .)
-
-    declarVar                      shift and go to state 63
-    empty                          shift and go to state 11
-
-state 57
 
     (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN . listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
     (42) listaParam -> . param
@@ -853,17 +766,130 @@ state 57
     (35) tipo -> . CHAR
 
     RPAREN          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 15
-    INT             shift and go to state 16
-    FLOAT           shift and go to state 17
-    CHAR            shift and go to state 18
+    ID              shift and go to state 21
+    INT             shift and go to state 22
+    FLOAT           shift and go to state 23
+    CHAR            shift and go to state 24
 
-    listaParam                     shift and go to state 64
-    param                          shift and go to state 65
-    empty                          shift and go to state 66
-    tipo                           shift and go to state 67
+    listaParam                     shift and go to state 58
+    param                          shift and go to state 59
+    empty                          shift and go to state 60
+    tipo                           shift and go to state 61
+
+state 51
+
+    (46) declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .
+
+    VOID            reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
+    INT             reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
+    FLOAT           reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
+    CHAR            reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
+    MAIN            reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
+    LBRACE          reduce using rule 46 (declarVar -> VAR tipo COLON listaIdDeclare SCOLON declarVar .)
+
+
+state 52
+
+    (13) listaIdDeclare -> idDeclare COMMA listaIdDeclare .
+
+    SCOLON          reduce using rule 13 (listaIdDeclare -> idDeclare COMMA listaIdDeclare .)
+
+
+state 53
+
+    (14) idDeclare -> ID auxDeclare auxDeclare2 .
+
+    COMMA           reduce using rule 14 (idDeclare -> ID auxDeclare auxDeclare2 .)
+    SCOLON          reduce using rule 14 (idDeclare -> ID auxDeclare auxDeclare2 .)
+
+
+state 54
+
+    (15) idDeclare -> ID auxDeclare LBRACK . CTE_I addCteTable RBRACK auxCTE
+    (16) idDeclare -> ID auxDeclare LBRACK . CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
+
+    CTE_I           shift and go to state 62
+
+
+state 55
+
+    (6) declarClases -> CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS . declarMethods RBRACE declarClases
+    (40) declarMethods -> . tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
+    (41) declarMethods -> . empty
+    (36) tipoMethod -> . VOID
+    (37) tipoMethod -> . INT
+    (38) tipoMethod -> . FLOAT
+    (39) tipoMethod -> . CHAR
+    (132) empty -> .
+
+    VOID            shift and go to state 16
+    INT             shift and go to state 17
+    FLOAT           shift and go to state 18
+    CHAR            shift and go to state 19
+    RBRACE          reduce using rule 132 (empty -> .)
+
+    declarMethods                  shift and go to state 63
+    tipoMethod                     shift and go to state 64
+    empty                          shift and go to state 65
+
+state 56
+
+    (10) declarAttributes -> tipo COLON . listaIdDeclare SCOLON declarAttributes
+    (12) listaIdDeclare -> . idDeclare
+    (13) listaIdDeclare -> . idDeclare COMMA listaIdDeclare
+    (14) idDeclare -> . ID auxDeclare auxDeclare2
+    (15) idDeclare -> . ID auxDeclare LBRACK CTE_I addCteTable RBRACK auxCTE
+    (16) idDeclare -> . ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
+
+    ID              shift and go to state 37
+
+    listaIdDeclare                 shift and go to state 66
+    idDeclare                      shift and go to state 36
+
+state 57
+
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN . declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    (46) declarVar -> . VAR tipo COLON listaIdDeclare SCOLON declarVar
+    (47) declarVar -> . empty
+    (132) empty -> .
+
+    VAR             shift and go to state 10
+    LBRACE          reduce using rule 132 (empty -> .)
+
+    declarVar                      shift and go to state 67
+    empty                          shift and go to state 11
 
 state 58
+
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam . RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
+
+    RPAREN          shift and go to state 68
+
+
+state 59
+
+    (42) listaParam -> param .
+    (43) listaParam -> param . COMMA listaParam
+
+    RPAREN          reduce using rule 42 (listaParam -> param .)
+    COMMA           shift and go to state 69
+
+
+state 60
+
+    (44) listaParam -> empty .
+
+    RPAREN          reduce using rule 44 (listaParam -> empty .)
+
+
+state 61
+
+    (45) param -> tipo . COLON ID
+
+    COLON           shift and go to state 70
+
+
+state 62
 
     (15) idDeclare -> ID auxDeclare LBRACK CTE_I . addCteTable RBRACK auxCTE
     (16) idDeclare -> ID auxDeclare LBRACK CTE_I . addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK
@@ -872,83 +898,97 @@ state 58
     RBRACK          reduce using rule 122 (addCteTable -> .)
     COMMA           reduce using rule 122 (addCteTable -> .)
 
-    addCteTable                    shift and go to state 68
+    addCteTable                    shift and go to state 71
 
-state 59
+state 63
 
     (6) declarClases -> CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods . RBRACE declarClases
 
-    RBRACE          shift and go to state 69
+    RBRACE          shift and go to state 72
 
 
-state 60
+state 64
 
     (40) declarMethods -> tipoMethod . FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
 
-    FUNC            shift and go to state 70
+    FUNC            shift and go to state 73
 
 
-state 61
+state 65
 
     (41) declarMethods -> empty .
 
     RBRACE          reduce using rule 41 (declarMethods -> empty .)
 
 
-state 62
+state 66
 
     (10) declarAttributes -> tipo COLON listaIdDeclare . SCOLON declarAttributes
 
-    SCOLON          shift and go to state 71
-
-
-state 63
-
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar . LBRACE listaEstatutos RBRACE endProg prueba
-
-    LBRACE          shift and go to state 72
-
-
-state 64
-
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam . RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
-
-    RPAREN          shift and go to state 73
-
-
-state 65
-
-    (42) listaParam -> param .
-    (43) listaParam -> param . COMMA listaParam
-
-    RPAREN          reduce using rule 42 (listaParam -> param .)
-    COMMA           shift and go to state 74
-
-
-state 66
-
-    (44) listaParam -> empty .
-
-    RPAREN          reduce using rule 44 (listaParam -> empty .)
+    SCOLON          shift and go to state 74
 
 
 state 67
 
-    (45) param -> tipo . COLON ID
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar . LBRACE listaEstatutos RBRACE endProg prueba
 
-    COLON           shift and go to state 75
+    LBRACE          shift and go to state 75
 
 
 state 68
 
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN . declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
+    (46) declarVar -> . VAR tipo COLON listaIdDeclare SCOLON declarVar
+    (47) declarVar -> . empty
+    (132) empty -> .
+
+    VAR             shift and go to state 10
+    LBRACE          reduce using rule 132 (empty -> .)
+
+    declarVar                      shift and go to state 76
+    empty                          shift and go to state 11
+
+state 69
+
+    (43) listaParam -> param COMMA . listaParam
+    (42) listaParam -> . param
+    (43) listaParam -> . param COMMA listaParam
+    (44) listaParam -> . empty
+    (45) param -> . tipo COLON ID
+    (132) empty -> .
+    (32) tipo -> . ID
+    (33) tipo -> . INT
+    (34) tipo -> . FLOAT
+    (35) tipo -> . CHAR
+
+    RPAREN          reduce using rule 132 (empty -> .)
+    ID              shift and go to state 21
+    INT             shift and go to state 22
+    FLOAT           shift and go to state 23
+    CHAR            shift and go to state 24
+
+    param                          shift and go to state 59
+    listaParam                     shift and go to state 77
+    empty                          shift and go to state 60
+    tipo                           shift and go to state 61
+
+state 70
+
+    (45) param -> tipo COLON . ID
+
+    ID              shift and go to state 78
+
+
+state 71
+
     (15) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable . RBRACK auxCTE
     (16) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable . COMMA CTE_I addCteTable auxCTE2 RBRACK
 
-    RBRACK          shift and go to state 76
-    COMMA           shift and go to state 77
+    RBRACK          shift and go to state 79
+    COMMA           shift and go to state 80
 
 
-state 69
+state 72
 
     (6) declarClases -> CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE . declarClases
     (6) declarClases -> . CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases
@@ -963,17 +1003,17 @@ state 69
     CHAR            reduce using rule 132 (empty -> .)
     MAIN            reduce using rule 132 (empty -> .)
 
-    declarClases                   shift and go to state 78
+    declarClases                   shift and go to state 81
     empty                          shift and go to state 8
 
-state 70
+state 73
 
     (40) declarMethods -> tipoMethod FUNC . ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
 
-    ID              shift and go to state 79
+    ID              shift and go to state 82
 
 
-state 71
+state 74
 
     (10) declarAttributes -> tipo COLON listaIdDeclare SCOLON . declarAttributes
     (10) declarAttributes -> . tipo COLON listaIdDeclare SCOLON declarAttributes
@@ -984,19 +1024,19 @@ state 71
     (35) tipo -> . CHAR
     (132) empty -> .
 
-    ID              shift and go to state 15
-    INT             shift and go to state 16
-    FLOAT           shift and go to state 17
-    CHAR            shift and go to state 18
+    ID              shift and go to state 21
+    INT             shift and go to state 22
+    FLOAT           shift and go to state 23
+    CHAR            shift and go to state 24
     METHODS         reduce using rule 132 (empty -> .)
 
-    tipo                           shift and go to state 45
-    declarAttributes               shift and go to state 80
-    empty                          shift and go to state 46
+    tipo                           shift and go to state 46
+    declarAttributes               shift and go to state 83
+    empty                          shift and go to state 47
 
-state 72
+state 75
 
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE . listaEstatutos RBRACE endProg prueba
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE . listaEstatutos RBRACE endProg prueba
     (53) listaEstatutos -> . estatutos listaEstatutos
     (54) listaEstatutos -> . empty
     (55) estatutos -> . llamada SCOLON
@@ -1025,72 +1065,52 @@ state 72
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     RBRACE          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 81
-    RETURN          shift and go to state 94
-    READ            shift and go to state 95
-    WRITE           shift and go to state 96
-    IF              shift and go to state 97
-    WHILE           shift and go to state 98
-    FOR             shift and go to state 99
+    ID              shift and go to state 84
+    RETURN          shift and go to state 97
+    READ            shift and go to state 98
+    WRITE           shift and go to state 99
+    IF              shift and go to state 100
+    WHILE           shift and go to state 101
+    FOR             shift and go to state 102
 
-    listaEstatutos                 shift and go to state 82
-    estatutos                      shift and go to state 83
-    empty                          shift and go to state 84
-    llamada                        shift and go to state 85
-    asignacion                     shift and go to state 86
-    returnf                        shift and go to state 87
-    lectura                        shift and go to state 88
-    escritura                      shift and go to state 89
-    condicion                      shift and go to state 90
-    cond_w                         shift and go to state 91
-    cond_f                         shift and go to state 92
-    idCall                         shift and go to state 93
-
-state 73
-
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN . declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
-    (46) declarVar -> . VAR tipo COLON listaIdDeclare SCOLON declarVar
-    (47) declarVar -> . empty
-    (132) empty -> .
-
-    VAR             shift and go to state 10
-    LBRACE          reduce using rule 132 (empty -> .)
-
-    declarVar                      shift and go to state 100
-    empty                          shift and go to state 11
-
-state 74
-
-    (43) listaParam -> param COMMA . listaParam
-    (42) listaParam -> . param
-    (43) listaParam -> . param COMMA listaParam
-    (44) listaParam -> . empty
-    (45) param -> . tipo COLON ID
-    (132) empty -> .
-    (32) tipo -> . ID
-    (33) tipo -> . INT
-    (34) tipo -> . FLOAT
-    (35) tipo -> . CHAR
-
-    RPAREN          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 15
-    INT             shift and go to state 16
-    FLOAT           shift and go to state 17
-    CHAR            shift and go to state 18
-
-    param                          shift and go to state 65
-    listaParam                     shift and go to state 101
-    empty                          shift and go to state 66
-    tipo                           shift and go to state 67
-
-state 75
-
-    (45) param -> tipo COLON . ID
-
-    ID              shift and go to state 102
-
+    listaEstatutos                 shift and go to state 85
+    estatutos                      shift and go to state 86
+    empty                          shift and go to state 87
+    llamada                        shift and go to state 88
+    asignacion                     shift and go to state 89
+    returnf                        shift and go to state 90
+    lectura                        shift and go to state 91
+    escritura                      shift and go to state 92
+    condicion                      shift and go to state 93
+    cond_w                         shift and go to state 94
+    cond_f                         shift and go to state 95
+    idCall                         shift and go to state 96
 
 state 76
+
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar . setDI LBRACE listaEstatutos RBRACE endF definFunc
+    (51) setDI -> .
+
+    LBRACE          reduce using rule 51 (setDI -> .)
+
+    setDI                          shift and go to state 103
+
+state 77
+
+    (43) listaParam -> param COMMA listaParam .
+
+    RPAREN          reduce using rule 43 (listaParam -> param COMMA listaParam .)
+
+
+state 78
+
+    (45) param -> tipo COLON ID .
+
+    COMMA           reduce using rule 45 (param -> tipo COLON ID .)
+    RPAREN          reduce using rule 45 (param -> tipo COLON ID .)
+
+
+state 79
 
     (15) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable RBRACK . auxCTE
     (19) auxCTE -> .
@@ -1098,16 +1118,16 @@ state 76
     COMMA           reduce using rule 19 (auxCTE -> .)
     SCOLON          reduce using rule 19 (auxCTE -> .)
 
-    auxCTE                         shift and go to state 103
+    auxCTE                         shift and go to state 104
 
-state 77
+state 80
 
     (16) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable COMMA . CTE_I addCteTable auxCTE2 RBRACK
 
-    CTE_I           shift and go to state 104
+    CTE_I           shift and go to state 105
 
 
-state 78
+state 81
 
     (6) declarClases -> CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases .
 
@@ -1119,21 +1139,21 @@ state 78
     MAIN            reduce using rule 6 (declarClases -> CLASS ID herencia LBRACE ATTRIBUTES declarAttributes METHODS declarMethods RBRACE declarClases .)
 
 
-state 79
+state 82
 
     (40) declarMethods -> tipoMethod FUNC ID . LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
 
-    LPAREN          shift and go to state 105
+    LPAREN          shift and go to state 106
 
 
-state 80
+state 83
 
     (10) declarAttributes -> tipo COLON listaIdDeclare SCOLON declarAttributes .
 
     METHODS         reduce using rule 10 (declarAttributes -> tipo COLON listaIdDeclare SCOLON declarAttributes .)
 
 
-state 81
+state 84
 
     (65) llamada -> ID . DOT ID LPAREN enviaParam RPAREN
     (66) llamada -> ID . verExist LPAREN enviaParam coherenceGo RPAREN
@@ -1145,7 +1165,7 @@ state 81
     (25) idCallaux -> .
 
   ! shift/reduce conflict for DOT resolved as shift
-    DOT             shift and go to state 106
+    DOT             shift and go to state 107
     LPAREN          reduce using rule 71 (verExist -> .)
     LBRACK          reduce using rule 25 (idCallaux -> .)
     ASIGNA          reduce using rule 25 (idCallaux -> .)
@@ -1170,17 +1190,17 @@ state 81
 
   ! DOT             [ reduce using rule 25 (idCallaux -> .) ]
 
-    verExist                       shift and go to state 107
-    idCallaux                      shift and go to state 108
+    verExist                       shift and go to state 108
+    idCallaux                      shift and go to state 109
 
-state 82
+state 85
 
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos . RBRACE endProg prueba
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos . RBRACE endProg prueba
 
-    RBRACE          shift and go to state 109
+    RBRACE          shift and go to state 110
 
 
-state 83
+state 86
 
     (53) listaEstatutos -> estatutos . listaEstatutos
     (53) listaEstatutos -> . estatutos listaEstatutos
@@ -1211,70 +1231,70 @@ state 83
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     RBRACE          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 81
-    RETURN          shift and go to state 94
-    READ            shift and go to state 95
-    WRITE           shift and go to state 96
-    IF              shift and go to state 97
-    WHILE           shift and go to state 98
-    FOR             shift and go to state 99
+    ID              shift and go to state 84
+    RETURN          shift and go to state 97
+    READ            shift and go to state 98
+    WRITE           shift and go to state 99
+    IF              shift and go to state 100
+    WHILE           shift and go to state 101
+    FOR             shift and go to state 102
 
-    estatutos                      shift and go to state 83
-    listaEstatutos                 shift and go to state 110
-    empty                          shift and go to state 84
-    llamada                        shift and go to state 85
-    asignacion                     shift and go to state 86
-    returnf                        shift and go to state 87
-    lectura                        shift and go to state 88
-    escritura                      shift and go to state 89
-    condicion                      shift and go to state 90
-    cond_w                         shift and go to state 91
-    cond_f                         shift and go to state 92
-    idCall                         shift and go to state 93
+    estatutos                      shift and go to state 86
+    listaEstatutos                 shift and go to state 111
+    empty                          shift and go to state 87
+    llamada                        shift and go to state 88
+    asignacion                     shift and go to state 89
+    returnf                        shift and go to state 90
+    lectura                        shift and go to state 91
+    escritura                      shift and go to state 92
+    condicion                      shift and go to state 93
+    cond_w                         shift and go to state 94
+    cond_f                         shift and go to state 95
+    idCall                         shift and go to state 96
 
-state 84
+state 87
 
     (54) listaEstatutos -> empty .
 
     RBRACE          reduce using rule 54 (listaEstatutos -> empty .)
 
 
-state 85
+state 88
 
     (55) estatutos -> llamada . SCOLON
-
-    SCOLON          shift and go to state 111
-
-
-state 86
-
-    (56) estatutos -> asignacion . SCOLON
 
     SCOLON          shift and go to state 112
 
 
-state 87
+state 89
 
-    (57) estatutos -> returnf . SCOLON
+    (56) estatutos -> asignacion . SCOLON
 
     SCOLON          shift and go to state 113
 
 
-state 88
+state 90
 
-    (58) estatutos -> lectura . SCOLON
+    (57) estatutos -> returnf . SCOLON
 
     SCOLON          shift and go to state 114
 
 
-state 89
+state 91
 
-    (59) estatutos -> escritura . SCOLON
+    (58) estatutos -> lectura . SCOLON
 
     SCOLON          shift and go to state 115
 
 
-state 90
+state 92
+
+    (59) estatutos -> escritura . SCOLON
+
+    SCOLON          shift and go to state 116
+
+
+state 93
 
     (60) estatutos -> condicion .
 
@@ -1288,7 +1308,7 @@ state 90
     RBRACE          reduce using rule 60 (estatutos -> condicion .)
 
 
-state 91
+state 94
 
     (61) estatutos -> cond_w .
 
@@ -1302,7 +1322,7 @@ state 91
     RBRACE          reduce using rule 61 (estatutos -> cond_w .)
 
 
-state 92
+state 95
 
     (62) estatutos -> cond_f .
 
@@ -1316,32 +1336,32 @@ state 92
     RBRACE          reduce using rule 62 (estatutos -> cond_f .)
 
 
-state 93
+state 96
 
     (63) asignacion -> idCall . ASIGNA pushPoper exp asignStep2
 
-    ASIGNA          shift and go to state 116
+    ASIGNA          shift and go to state 117
 
 
-state 94
+state 97
 
     (75) returnf -> RETURN . pushPoper LPAREN exp RPAREN popReturn
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
 
-    pushPoper                      shift and go to state 117
+    pushPoper                      shift and go to state 118
 
-state 95
+state 98
 
     (77) lectura -> READ . pushPoper LPAREN listaId RPAREN
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
 
-    pushPoper                      shift and go to state 118
+    pushPoper                      shift and go to state 119
 
-state 96
+state 99
 
     (82) escritura -> WRITE . pushPoper LPAREN exp popIO lextra RPAREN
     (83) escritura -> WRITE . pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
@@ -1349,26 +1369,26 @@ state 96
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
 
-    pushPoper                      shift and go to state 119
+    pushPoper                      shift and go to state 120
 
-state 97
+state 100
 
     (89) condicion -> IF . LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> IF . LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
 
-    LPAREN          shift and go to state 120
+    LPAREN          shift and go to state 121
 
 
-state 98
+state 101
 
     (93) cond_w -> WHILE . step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
     (94) step1While -> .
 
     LPAREN          reduce using rule 94 (step1While -> .)
 
-    step1While                     shift and go to state 121
+    step1While                     shift and go to state 122
 
-state 99
+state 102
 
     (97) cond_f -> FOR . asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While
     (63) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
@@ -1377,36 +1397,19 @@ state 99
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    ID              shift and go to state 123
+    ID              shift and go to state 124
 
-    asignacion                     shift and go to state 122
-    idCall                         shift and go to state 93
-
-state 100
-
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar . setDI LBRACE listaEstatutos RBRACE endF definFunc
-    (51) setDI -> .
-
-    LBRACE          reduce using rule 51 (setDI -> .)
-
-    setDI                          shift and go to state 124
-
-state 101
-
-    (43) listaParam -> param COMMA listaParam .
-
-    RPAREN          reduce using rule 43 (listaParam -> param COMMA listaParam .)
-
-
-state 102
-
-    (45) param -> tipo COLON ID .
-
-    COMMA           reduce using rule 45 (param -> tipo COLON ID .)
-    RPAREN          reduce using rule 45 (param -> tipo COLON ID .)
-
+    asignacion                     shift and go to state 123
+    idCall                         shift and go to state 96
 
 state 103
+
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI . LBRACE listaEstatutos RBRACE endF definFunc
+
+    LBRACE          shift and go to state 125
+
+
+state 104
 
     (15) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable RBRACK auxCTE .
 
@@ -1414,16 +1417,16 @@ state 103
     SCOLON          reduce using rule 15 (idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable RBRACK auxCTE .)
 
 
-state 104
+state 105
 
     (16) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I . addCteTable auxCTE2 RBRACK
     (122) addCteTable -> .
 
     RBRACK          reduce using rule 122 (addCteTable -> .)
 
-    addCteTable                    shift and go to state 125
+    addCteTable                    shift and go to state 126
 
-state 105
+state 106
 
     (40) declarMethods -> tipoMethod FUNC ID LPAREN . listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
     (42) listaParam -> . param
@@ -1437,31 +1440,31 @@ state 105
     (35) tipo -> . CHAR
 
     RPAREN          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 15
-    INT             shift and go to state 16
-    FLOAT           shift and go to state 17
-    CHAR            shift and go to state 18
+    ID              shift and go to state 21
+    INT             shift and go to state 22
+    FLOAT           shift and go to state 23
+    CHAR            shift and go to state 24
 
-    listaParam                     shift and go to state 126
-    param                          shift and go to state 65
-    empty                          shift and go to state 66
-    tipo                           shift and go to state 67
-
-state 106
-
-    (65) llamada -> ID DOT . ID LPAREN enviaParam RPAREN
-
-    ID              shift and go to state 127
-
+    listaParam                     shift and go to state 127
+    param                          shift and go to state 59
+    empty                          shift and go to state 60
+    tipo                           shift and go to state 61
 
 state 107
 
-    (66) llamada -> ID verExist . LPAREN enviaParam coherenceGo RPAREN
+    (65) llamada -> ID DOT . ID LPAREN enviaParam RPAREN
 
-    LPAREN          shift and go to state 128
+    ID              shift and go to state 128
 
 
 state 108
+
+    (66) llamada -> ID verExist . LPAREN enviaParam coherenceGo RPAREN
+
+    LPAREN          shift and go to state 129
+
+
+state 109
 
     (21) idCall -> ID idCallaux . checkDim
     (22) idCall -> ID idCallaux . DOT ID
@@ -1469,8 +1472,8 @@ state 108
     (24) idCall -> ID idCallaux . LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
     (29) checkDim -> .
 
-    DOT             shift and go to state 130
-    LBRACK          shift and go to state 131
+    DOT             shift and go to state 131
+    LBRACK          shift and go to state 132
     ASIGNA          reduce using rule 29 (checkDim -> .)
     MULT            reduce using rule 29 (checkDim -> .)
     DIV             reduce using rule 29 (checkDim -> .)
@@ -1491,25 +1494,25 @@ state 108
     DO              reduce using rule 29 (checkDim -> .)
     RBRACK          reduce using rule 29 (checkDim -> .)
 
-    checkDim                       shift and go to state 129
+    checkDim                       shift and go to state 130
 
-state 109
+state 110
 
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE . endProg prueba
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE . endProg prueba
     (5) endProg -> .
 
     $end            reduce using rule 5 (endProg -> .)
 
-    endProg                        shift and go to state 132
+    endProg                        shift and go to state 133
 
-state 110
+state 111
 
     (53) listaEstatutos -> estatutos listaEstatutos .
 
     RBRACE          reduce using rule 53 (listaEstatutos -> estatutos listaEstatutos .)
 
 
-state 111
+state 112
 
     (55) estatutos -> llamada SCOLON .
 
@@ -1523,7 +1526,7 @@ state 111
     RBRACE          reduce using rule 55 (estatutos -> llamada SCOLON .)
 
 
-state 112
+state 113
 
     (56) estatutos -> asignacion SCOLON .
 
@@ -1537,7 +1540,7 @@ state 112
     RBRACE          reduce using rule 56 (estatutos -> asignacion SCOLON .)
 
 
-state 113
+state 114
 
     (57) estatutos -> returnf SCOLON .
 
@@ -1551,7 +1554,7 @@ state 113
     RBRACE          reduce using rule 57 (estatutos -> returnf SCOLON .)
 
 
-state 114
+state 115
 
     (58) estatutos -> lectura SCOLON .
 
@@ -1565,7 +1568,7 @@ state 114
     RBRACE          reduce using rule 58 (estatutos -> lectura SCOLON .)
 
 
-state 115
+state 116
 
     (59) estatutos -> escritura SCOLON .
 
@@ -1579,7 +1582,7 @@ state 115
     RBRACE          reduce using rule 59 (estatutos -> escritura SCOLON .)
 
 
-state 116
+state 117
 
     (63) asignacion -> idCall ASIGNA . pushPoper exp asignStep2
     (131) pushPoper -> .
@@ -1590,31 +1593,31 @@ state 116
     CTE_C           reduce using rule 131 (pushPoper -> .)
     ID              reduce using rule 131 (pushPoper -> .)
 
-    pushPoper                      shift and go to state 133
-
-state 117
-
-    (75) returnf -> RETURN pushPoper . LPAREN exp RPAREN popReturn
-
-    LPAREN          shift and go to state 134
-
+    pushPoper                      shift and go to state 134
 
 state 118
 
-    (77) lectura -> READ pushPoper . LPAREN listaId RPAREN
+    (75) returnf -> RETURN pushPoper . LPAREN exp RPAREN popReturn
 
     LPAREN          shift and go to state 135
 
 
 state 119
 
-    (82) escritura -> WRITE pushPoper . LPAREN exp popIO lextra RPAREN
-    (83) escritura -> WRITE pushPoper . LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
+    (77) lectura -> READ pushPoper . LPAREN listaId RPAREN
 
     LPAREN          shift and go to state 136
 
 
 state 120
+
+    (82) escritura -> WRITE pushPoper . LPAREN exp popIO lextra RPAREN
+    (83) escritura -> WRITE pushPoper . LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
+
+    LPAREN          shift and go to state 137
+
+
+state 121
 
     (89) condicion -> IF LPAREN . exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> IF LPAREN . exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
@@ -1648,36 +1651,36 @@ state 120
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    exp                            shift and go to state 138
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
-
-state 121
-
-    (93) cond_w -> WHILE step1While . LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
-
-    LPAREN          shift and go to state 149
-
+    exp                            shift and go to state 139
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
 state 122
 
-    (97) cond_f -> FOR asignacion . TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While
+    (93) cond_w -> WHILE step1While . LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
 
-    TO              shift and go to state 150
+    LPAREN          shift and go to state 150
 
 
 state 123
+
+    (97) cond_f -> FOR asignacion . TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While
+
+    TO              shift and go to state 151
+
+
+state 124
 
     (21) idCall -> ID . idCallaux checkDim
     (22) idCall -> ID . idCallaux DOT ID
@@ -1691,39 +1694,84 @@ state 123
     COMMA           reduce using rule 25 (idCallaux -> .)
     RPAREN          reduce using rule 25 (idCallaux -> .)
 
-    idCallaux                      shift and go to state 108
-
-state 124
-
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI . LBRACE listaEstatutos RBRACE endF definFunc
-
-    LBRACE          shift and go to state 151
-
+    idCallaux                      shift and go to state 109
 
 state 125
+
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE . listaEstatutos RBRACE endF definFunc
+    (53) listaEstatutos -> . estatutos listaEstatutos
+    (54) listaEstatutos -> . empty
+    (55) estatutos -> . llamada SCOLON
+    (56) estatutos -> . asignacion SCOLON
+    (57) estatutos -> . returnf SCOLON
+    (58) estatutos -> . lectura SCOLON
+    (59) estatutos -> . escritura SCOLON
+    (60) estatutos -> . condicion
+    (61) estatutos -> . cond_w
+    (62) estatutos -> . cond_f
+    (132) empty -> .
+    (65) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
+    (66) llamada -> . ID verExist LPAREN enviaParam coherenceGo RPAREN
+    (63) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
+    (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
+    (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
+    (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
+    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
+    (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
+    (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
+    (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
+    (97) cond_f -> . FOR asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While
+    (21) idCall -> . ID idCallaux checkDim
+    (22) idCall -> . ID idCallaux DOT ID
+    (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
+    (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
+
+    RBRACE          reduce using rule 132 (empty -> .)
+    ID              shift and go to state 84
+    RETURN          shift and go to state 97
+    READ            shift and go to state 98
+    WRITE           shift and go to state 99
+    IF              shift and go to state 100
+    WHILE           shift and go to state 101
+    FOR             shift and go to state 102
+
+    listaEstatutos                 shift and go to state 152
+    estatutos                      shift and go to state 86
+    empty                          shift and go to state 87
+    llamada                        shift and go to state 88
+    asignacion                     shift and go to state 89
+    returnf                        shift and go to state 90
+    lectura                        shift and go to state 91
+    escritura                      shift and go to state 92
+    condicion                      shift and go to state 93
+    cond_w                         shift and go to state 94
+    cond_f                         shift and go to state 95
+    idCall                         shift and go to state 96
+
+state 126
 
     (16) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable . auxCTE2 RBRACK
     (20) auxCTE2 -> .
 
     RBRACK          reduce using rule 20 (auxCTE2 -> .)
 
-    auxCTE2                        shift and go to state 152
-
-state 126
-
-    (40) declarMethods -> tipoMethod FUNC ID LPAREN listaParam . RPAREN LBRACE listaEstatutos RBRACE declarMethods
-
-    RPAREN          shift and go to state 153
-
+    auxCTE2                        shift and go to state 153
 
 state 127
 
-    (65) llamada -> ID DOT ID . LPAREN enviaParam RPAREN
+    (40) declarMethods -> tipoMethod FUNC ID LPAREN listaParam . RPAREN LBRACE listaEstatutos RBRACE declarMethods
 
-    LPAREN          shift and go to state 154
+    RPAREN          shift and go to state 154
 
 
 state 128
+
+    (65) llamada -> ID DOT ID . LPAREN enviaParam RPAREN
+
+    LPAREN          shift and go to state 155
+
+
+state 129
 
     (66) llamada -> ID verExist LPAREN . enviaParam coherenceGo RPAREN
     (67) enviaParam -> . paramReferencia
@@ -1762,25 +1810,25 @@ state 128
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     RPAREN          reduce using rule 132 (empty -> .)
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    enviaParam                     shift and go to state 155
-    paramReferencia                shift and go to state 156
-    empty                          shift and go to state 157
-    exp                            shift and go to state 158
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    enviaParam                     shift and go to state 156
+    paramReferencia                shift and go to state 157
+    empty                          shift and go to state 158
+    exp                            shift and go to state 159
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 129
+state 130
 
     (21) idCall -> ID idCallaux checkDim .
 
@@ -1805,14 +1853,14 @@ state 129
     RBRACK          reduce using rule 21 (idCall -> ID idCallaux checkDim .)
 
 
-state 130
+state 131
 
     (22) idCall -> ID idCallaux DOT . ID
 
-    ID              shift and go to state 159
+    ID              shift and go to state 160
 
 
-state 131
+state 132
 
     (23) idCall -> ID idCallaux LBRACK . addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> ID idCallaux LBRACK . addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
@@ -1824,18 +1872,18 @@ state 131
     CTE_C           reduce using rule 129 (addFF -> .)
     ID              reduce using rule 129 (addFF -> .)
 
-    addFF                          shift and go to state 160
+    addFF                          shift and go to state 161
 
-state 132
+state 133
 
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg . prueba
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg . prueba
     (133) prueba -> .
 
     $end            reduce using rule 133 (prueba -> .)
 
-    prueba                         shift and go to state 161
+    prueba                         shift and go to state 162
 
-state 133
+state 134
 
     (63) asignacion -> idCall ASIGNA pushPoper . exp asignStep2
     (99) exp -> . texp step7
@@ -1868,22 +1916,22 @@ state 133
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    idCall                         shift and go to state 148
-    exp                            shift and go to state 162
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
+    idCall                         shift and go to state 149
+    exp                            shift and go to state 163
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
 
-state 134
+state 135
 
     (75) returnf -> RETURN pushPoper LPAREN . exp RPAREN popReturn
     (99) exp -> . texp step7
@@ -1916,22 +1964,22 @@ state 134
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    exp                            shift and go to state 163
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    exp                            shift and go to state 164
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 135
+state 136
 
     (77) lectura -> READ pushPoper LPAREN . listaId RPAREN
     (78) listaId -> . idCall popIO
@@ -1941,12 +1989,12 @@ state 135
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    ID              shift and go to state 123
+    ID              shift and go to state 124
 
-    listaId                        shift and go to state 164
-    idCall                         shift and go to state 165
+    listaId                        shift and go to state 165
+    idCall                         shift and go to state 166
 
-state 136
+state 137
 
     (82) escritura -> WRITE pushPoper LPAREN . exp popIO lextra RPAREN
     (83) escritura -> WRITE pushPoper LPAREN . LETRERO addCteTable letreroPush popIO lextra RPAREN
@@ -1980,23 +2028,23 @@ state 136
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LETRERO         shift and go to state 167
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LETRERO         shift and go to state 168
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    exp                            shift and go to state 166
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    exp                            shift and go to state 167
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 137
+state 138
 
     (116) f -> LPAREN . addFF exp RPAREN rmFF
     (129) addFF -> .
@@ -2007,17 +2055,17 @@ state 137
     CTE_C           reduce using rule 129 (addFF -> .)
     ID              reduce using rule 129 (addFF -> .)
 
-    addFF                          shift and go to state 168
+    addFF                          shift and go to state 169
 
-state 138
+state 139
 
     (89) condicion -> IF LPAREN exp . RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> IF LPAREN exp . RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
 
-    RPAREN          shift and go to state 169
+    RPAREN          shift and go to state 170
 
 
-state 139
+state 140
 
     (99) exp -> texp . step7
     (100) exp -> texp . step7 OR pushPoper exp
@@ -2031,9 +2079,9 @@ state 139
     DO              reduce using rule 128 (step7 -> .)
     RBRACK          reduce using rule 128 (step7 -> .)
 
-    step7                          shift and go to state 170
+    step7                          shift and go to state 171
 
-state 140
+state 141
 
     (101) texp -> gexp . step6
     (102) texp -> gexp . step6 AND pushPoper texp
@@ -2048,9 +2096,9 @@ state 140
     DO              reduce using rule 127 (step6 -> .)
     RBRACK          reduce using rule 127 (step6 -> .)
 
-    step6                          shift and go to state 171
+    step6                          shift and go to state 172
 
-state 141
+state 142
 
     (103) gexp -> mexp . step5
     (104) gexp -> mexp . step5 LT pushPoper gexp
@@ -2076,9 +2124,9 @@ state 141
     DO              reduce using rule 126 (step5 -> .)
     RBRACK          reduce using rule 126 (step5 -> .)
 
-    step5                          shift and go to state 172
+    step5                          shift and go to state 173
 
-state 142
+state 143
 
     (110) mexp -> t . step4
     (111) mexp -> t . step4 PLUS pushPoper mexp
@@ -2102,9 +2150,9 @@ state 142
     DO              reduce using rule 125 (step4 -> .)
     RBRACK          reduce using rule 125 (step4 -> .)
 
-    step4                          shift and go to state 173
+    step4                          shift and go to state 174
 
-state 143
+state 144
 
     (113) t -> f . step3
     (114) t -> f . step3 MULT pushPoper t
@@ -2130,37 +2178,11 @@ state 143
     DO              reduce using rule 124 (step3 -> .)
     RBRACK          reduce using rule 124 (step3 -> .)
 
-    step3                          shift and go to state 174
-
-state 144
-
-    (117) f -> CTE_I . addCteTable step1
-    (122) addCteTable -> .
-
-    MULT            reduce using rule 122 (addCteTable -> .)
-    DIV             reduce using rule 122 (addCteTable -> .)
-    PLUS            reduce using rule 122 (addCteTable -> .)
-    MINUS           reduce using rule 122 (addCteTable -> .)
-    LT              reduce using rule 122 (addCteTable -> .)
-    GT              reduce using rule 122 (addCteTable -> .)
-    LTE             reduce using rule 122 (addCteTable -> .)
-    GTE             reduce using rule 122 (addCteTable -> .)
-    EQUALS          reduce using rule 122 (addCteTable -> .)
-    NEQUALS         reduce using rule 122 (addCteTable -> .)
-    AND             reduce using rule 122 (addCteTable -> .)
-    OR              reduce using rule 122 (addCteTable -> .)
-    RPAREN          reduce using rule 122 (addCteTable -> .)
-    COMMA           reduce using rule 122 (addCteTable -> .)
-    SCOLON          reduce using rule 122 (addCteTable -> .)
-    TO              reduce using rule 122 (addCteTable -> .)
-    DO              reduce using rule 122 (addCteTable -> .)
-    RBRACK          reduce using rule 122 (addCteTable -> .)
-
-    addCteTable                    shift and go to state 175
+    step3                          shift and go to state 175
 
 state 145
 
-    (118) f -> CTE_F . addCteTable step1
+    (117) f -> CTE_I . addCteTable step1
     (122) addCteTable -> .
 
     MULT            reduce using rule 122 (addCteTable -> .)
@@ -2186,7 +2208,7 @@ state 145
 
 state 146
 
-    (119) f -> CTE_C . addCteTable step1
+    (118) f -> CTE_F . addCteTable step1
     (122) addCteTable -> .
 
     MULT            reduce using rule 122 (addCteTable -> .)
@@ -2212,6 +2234,32 @@ state 146
 
 state 147
 
+    (119) f -> CTE_C . addCteTable step1
+    (122) addCteTable -> .
+
+    MULT            reduce using rule 122 (addCteTable -> .)
+    DIV             reduce using rule 122 (addCteTable -> .)
+    PLUS            reduce using rule 122 (addCteTable -> .)
+    MINUS           reduce using rule 122 (addCteTable -> .)
+    LT              reduce using rule 122 (addCteTable -> .)
+    GT              reduce using rule 122 (addCteTable -> .)
+    LTE             reduce using rule 122 (addCteTable -> .)
+    GTE             reduce using rule 122 (addCteTable -> .)
+    EQUALS          reduce using rule 122 (addCteTable -> .)
+    NEQUALS         reduce using rule 122 (addCteTable -> .)
+    AND             reduce using rule 122 (addCteTable -> .)
+    OR              reduce using rule 122 (addCteTable -> .)
+    RPAREN          reduce using rule 122 (addCteTable -> .)
+    COMMA           reduce using rule 122 (addCteTable -> .)
+    SCOLON          reduce using rule 122 (addCteTable -> .)
+    TO              reduce using rule 122 (addCteTable -> .)
+    DO              reduce using rule 122 (addCteTable -> .)
+    RBRACK          reduce using rule 122 (addCteTable -> .)
+
+    addCteTable                    shift and go to state 178
+
+state 148
+
     (120) f -> llamada .
 
     MULT            reduce using rule 120 (f -> llamada .)
@@ -2234,7 +2282,7 @@ state 147
     RBRACK          reduce using rule 120 (f -> llamada .)
 
 
-state 148
+state 149
 
     (121) f -> idCall .
 
@@ -2258,7 +2306,7 @@ state 148
     RBRACK          reduce using rule 121 (f -> idCall .)
 
 
-state 149
+state 150
 
     (93) cond_w -> WHILE step1While LPAREN . exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
     (99) exp -> . texp step7
@@ -2291,22 +2339,22 @@ state 149
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    exp                            shift and go to state 178
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    exp                            shift and go to state 179
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 150
+state 151
 
     (97) cond_f -> FOR asignacion TO . exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While
     (99) exp -> . texp step7
@@ -2339,88 +2387,43 @@ state 150
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    exp                            shift and go to state 179
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
-
-state 151
-
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE . listaEstatutos RBRACE endF definFunc
-    (53) listaEstatutos -> . estatutos listaEstatutos
-    (54) listaEstatutos -> . empty
-    (55) estatutos -> . llamada SCOLON
-    (56) estatutos -> . asignacion SCOLON
-    (57) estatutos -> . returnf SCOLON
-    (58) estatutos -> . lectura SCOLON
-    (59) estatutos -> . escritura SCOLON
-    (60) estatutos -> . condicion
-    (61) estatutos -> . cond_w
-    (62) estatutos -> . cond_f
-    (132) empty -> .
-    (65) llamada -> . ID DOT ID LPAREN enviaParam RPAREN
-    (66) llamada -> . ID verExist LPAREN enviaParam coherenceGo RPAREN
-    (63) asignacion -> . idCall ASIGNA pushPoper exp asignStep2
-    (75) returnf -> . RETURN pushPoper LPAREN exp RPAREN popReturn
-    (77) lectura -> . READ pushPoper LPAREN listaId RPAREN
-    (82) escritura -> . WRITE pushPoper LPAREN exp popIO lextra RPAREN
-    (83) escritura -> . WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO lextra RPAREN
-    (89) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE
-    (90) condicion -> . IF LPAREN exp RPAREN cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
-    (93) cond_w -> . WHILE step1While LPAREN exp RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
-    (97) cond_f -> . FOR asignacion TO exp step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While
-    (21) idCall -> . ID idCallaux checkDim
-    (22) idCall -> . ID idCallaux DOT ID
-    (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
-    (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
-
-    RBRACE          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 81
-    RETURN          shift and go to state 94
-    READ            shift and go to state 95
-    WRITE           shift and go to state 96
-    IF              shift and go to state 97
-    WHILE           shift and go to state 98
-    FOR             shift and go to state 99
-
-    listaEstatutos                 shift and go to state 180
-    estatutos                      shift and go to state 83
-    empty                          shift and go to state 84
-    llamada                        shift and go to state 85
-    asignacion                     shift and go to state 86
-    returnf                        shift and go to state 87
-    lectura                        shift and go to state 88
-    escritura                      shift and go to state 89
-    condicion                      shift and go to state 90
-    cond_w                         shift and go to state 91
-    cond_f                         shift and go to state 92
-    idCall                         shift and go to state 93
+    exp                            shift and go to state 180
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
 state 152
 
-    (16) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 . RBRACK
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos . RBRACE endF definFunc
 
-    RBRACK          shift and go to state 181
+    RBRACE          shift and go to state 181
 
 
 state 153
 
-    (40) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN . LBRACE listaEstatutos RBRACE declarMethods
+    (16) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 . RBRACK
 
-    LBRACE          shift and go to state 182
+    RBRACK          shift and go to state 182
 
 
 state 154
+
+    (40) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN . LBRACE listaEstatutos RBRACE declarMethods
+
+    LBRACE          shift and go to state 183
+
+
+state 155
 
     (65) llamada -> ID DOT ID LPAREN . enviaParam RPAREN
     (67) enviaParam -> . paramReferencia
@@ -2459,48 +2462,48 @@ state 154
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     RPAREN          reduce using rule 132 (empty -> .)
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    enviaParam                     shift and go to state 183
-    paramReferencia                shift and go to state 156
-    empty                          shift and go to state 157
-    exp                            shift and go to state 158
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    enviaParam                     shift and go to state 184
+    paramReferencia                shift and go to state 157
+    empty                          shift and go to state 158
+    exp                            shift and go to state 159
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 155
+state 156
 
     (66) llamada -> ID verExist LPAREN enviaParam . coherenceGo RPAREN
     (74) coherenceGo -> .
 
     RPAREN          reduce using rule 74 (coherenceGo -> .)
 
-    coherenceGo                    shift and go to state 184
+    coherenceGo                    shift and go to state 185
 
-state 156
+state 157
 
     (67) enviaParam -> paramReferencia .
 
     RPAREN          reduce using rule 67 (enviaParam -> paramReferencia .)
 
 
-state 157
+state 158
 
     (68) enviaParam -> empty .
 
     RPAREN          reduce using rule 68 (enviaParam -> empty .)
 
 
-state 158
+state 159
 
     (69) paramReferencia -> exp . paramType
     (70) paramReferencia -> exp . paramType COMMA paramCount paramReferencia
@@ -2509,9 +2512,9 @@ state 158
     COMMA           reduce using rule 72 (paramType -> .)
     RPAREN          reduce using rule 72 (paramType -> .)
 
-    paramType                      shift and go to state 185
+    paramType                      shift and go to state 186
 
-state 159
+state 160
 
     (22) idCall -> ID idCallaux DOT ID .
 
@@ -2536,7 +2539,7 @@ state 159
     RBRACK          reduce using rule 22 (idCall -> ID idCallaux DOT ID .)
 
 
-state 160
+state 161
 
     (23) idCall -> ID idCallaux LBRACK addFF . exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> ID idCallaux LBRACK addFF . exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
@@ -2570,29 +2573,29 @@ state 160
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    exp                            shift and go to state 186
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
-
-state 161
-
-    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba .
-
-    $end            reduce using rule 1 (program -> PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba .)
-
+    exp                            shift and go to state 187
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
 state 162
+
+    (1) program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba .
+
+    $end            reduce using rule 1 (program -> PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba .)
+
+
+state 163
 
     (63) asignacion -> idCall ASIGNA pushPoper exp . asignStep2
     (64) asignStep2 -> .
@@ -2600,34 +2603,34 @@ state 162
     SCOLON          reduce using rule 64 (asignStep2 -> .)
     TO              reduce using rule 64 (asignStep2 -> .)
 
-    asignStep2                     shift and go to state 187
-
-state 163
-
-    (75) returnf -> RETURN pushPoper LPAREN exp . RPAREN popReturn
-
-    RPAREN          shift and go to state 188
-
+    asignStep2                     shift and go to state 188
 
 state 164
 
-    (77) lectura -> READ pushPoper LPAREN listaId . RPAREN
+    (75) returnf -> RETURN pushPoper LPAREN exp . RPAREN popReturn
 
     RPAREN          shift and go to state 189
 
 
 state 165
 
+    (77) lectura -> READ pushPoper LPAREN listaId . RPAREN
+
+    RPAREN          shift and go to state 190
+
+
+state 166
+
     (78) listaId -> idCall . popIO
     (79) listaId -> idCall . COMMA popIO insertOpRead listaId
     (81) popIO -> .
 
-    COMMA           shift and go to state 191
+    COMMA           shift and go to state 192
     RPAREN          reduce using rule 81 (popIO -> .)
 
-    popIO                          shift and go to state 190
+    popIO                          shift and go to state 191
 
-state 166
+state 167
 
     (82) escritura -> WRITE pushPoper LPAREN exp . popIO lextra RPAREN
     (81) popIO -> .
@@ -2635,9 +2638,9 @@ state 166
     COMMA           reduce using rule 81 (popIO -> .)
     RPAREN          reduce using rule 81 (popIO -> .)
 
-    popIO                          shift and go to state 192
+    popIO                          shift and go to state 193
 
-state 167
+state 168
 
     (83) escritura -> WRITE pushPoper LPAREN LETRERO . addCteTable letreroPush popIO lextra RPAREN
     (122) addCteTable -> .
@@ -2645,9 +2648,9 @@ state 167
     COMMA           reduce using rule 122 (addCteTable -> .)
     RPAREN          reduce using rule 122 (addCteTable -> .)
 
-    addCteTable                    shift and go to state 193
+    addCteTable                    shift and go to state 194
 
-state 168
+state 169
 
     (116) f -> LPAREN addFF . exp RPAREN rmFF
     (99) exp -> . texp step7
@@ -2680,22 +2683,22 @@ state 168
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    exp                            shift and go to state 194
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    exp                            shift and go to state 195
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 169
+state 170
 
     (89) condicion -> IF LPAREN exp RPAREN . cond1 THEN LBRACE listaEstatutos RBRACE
     (90) condicion -> IF LPAREN exp RPAREN . cond1 THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
@@ -2703,9 +2706,9 @@ state 169
 
     THEN            reduce using rule 91 (cond1 -> .)
 
-    cond1                          shift and go to state 195
+    cond1                          shift and go to state 196
 
-state 170
+state 171
 
     (99) exp -> texp step7 .
     (100) exp -> texp step7 . OR pushPoper exp
@@ -2716,10 +2719,10 @@ state 170
     TO              reduce using rule 99 (exp -> texp step7 .)
     DO              reduce using rule 99 (exp -> texp step7 .)
     RBRACK          reduce using rule 99 (exp -> texp step7 .)
-    OR              shift and go to state 196
+    OR              shift and go to state 197
 
 
-state 171
+state 172
 
     (101) texp -> gexp step6 .
     (102) texp -> gexp step6 . AND pushPoper texp
@@ -2731,10 +2734,10 @@ state 171
     TO              reduce using rule 101 (texp -> gexp step6 .)
     DO              reduce using rule 101 (texp -> gexp step6 .)
     RBRACK          reduce using rule 101 (texp -> gexp step6 .)
-    AND             shift and go to state 197
+    AND             shift and go to state 198
 
 
-state 172
+state 173
 
     (103) gexp -> mexp step5 .
     (104) gexp -> mexp step5 . LT pushPoper gexp
@@ -2752,15 +2755,15 @@ state 172
     TO              reduce using rule 103 (gexp -> mexp step5 .)
     DO              reduce using rule 103 (gexp -> mexp step5 .)
     RBRACK          reduce using rule 103 (gexp -> mexp step5 .)
-    LT              shift and go to state 198
-    GT              shift and go to state 199
-    LTE             shift and go to state 200
-    GTE             shift and go to state 201
-    EQUALS          shift and go to state 202
-    NEQUALS         shift and go to state 203
+    LT              shift and go to state 199
+    GT              shift and go to state 200
+    LTE             shift and go to state 201
+    GTE             shift and go to state 202
+    EQUALS          shift and go to state 203
+    NEQUALS         shift and go to state 204
 
 
-state 173
+state 174
 
     (110) mexp -> t step4 .
     (111) mexp -> t step4 . PLUS pushPoper mexp
@@ -2780,11 +2783,11 @@ state 173
     TO              reduce using rule 110 (mexp -> t step4 .)
     DO              reduce using rule 110 (mexp -> t step4 .)
     RBRACK          reduce using rule 110 (mexp -> t step4 .)
-    PLUS            shift and go to state 204
-    MINUS           shift and go to state 205
+    PLUS            shift and go to state 205
+    MINUS           shift and go to state 206
 
 
-state 174
+state 175
 
     (113) t -> f step3 .
     (114) t -> f step3 . MULT pushPoper t
@@ -2806,39 +2809,13 @@ state 174
     TO              reduce using rule 113 (t -> f step3 .)
     DO              reduce using rule 113 (t -> f step3 .)
     RBRACK          reduce using rule 113 (t -> f step3 .)
-    MULT            shift and go to state 206
-    DIV             shift and go to state 207
+    MULT            shift and go to state 207
+    DIV             shift and go to state 208
 
-
-state 175
-
-    (117) f -> CTE_I addCteTable . step1
-    (123) step1 -> .
-
-    MULT            reduce using rule 123 (step1 -> .)
-    DIV             reduce using rule 123 (step1 -> .)
-    PLUS            reduce using rule 123 (step1 -> .)
-    MINUS           reduce using rule 123 (step1 -> .)
-    LT              reduce using rule 123 (step1 -> .)
-    GT              reduce using rule 123 (step1 -> .)
-    LTE             reduce using rule 123 (step1 -> .)
-    GTE             reduce using rule 123 (step1 -> .)
-    EQUALS          reduce using rule 123 (step1 -> .)
-    NEQUALS         reduce using rule 123 (step1 -> .)
-    AND             reduce using rule 123 (step1 -> .)
-    OR              reduce using rule 123 (step1 -> .)
-    RPAREN          reduce using rule 123 (step1 -> .)
-    COMMA           reduce using rule 123 (step1 -> .)
-    SCOLON          reduce using rule 123 (step1 -> .)
-    TO              reduce using rule 123 (step1 -> .)
-    DO              reduce using rule 123 (step1 -> .)
-    RBRACK          reduce using rule 123 (step1 -> .)
-
-    step1                          shift and go to state 208
 
 state 176
 
-    (118) f -> CTE_F addCteTable . step1
+    (117) f -> CTE_I addCteTable . step1
     (123) step1 -> .
 
     MULT            reduce using rule 123 (step1 -> .)
@@ -2864,7 +2841,7 @@ state 176
 
 state 177
 
-    (119) f -> CTE_C addCteTable . step1
+    (118) f -> CTE_F addCteTable . step1
     (123) step1 -> .
 
     MULT            reduce using rule 123 (step1 -> .)
@@ -2890,28 +2867,60 @@ state 177
 
 state 178
 
-    (93) cond_w -> WHILE step1While LPAREN exp . RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
+    (119) f -> CTE_C addCteTable . step1
+    (123) step1 -> .
 
-    RPAREN          shift and go to state 211
+    MULT            reduce using rule 123 (step1 -> .)
+    DIV             reduce using rule 123 (step1 -> .)
+    PLUS            reduce using rule 123 (step1 -> .)
+    MINUS           reduce using rule 123 (step1 -> .)
+    LT              reduce using rule 123 (step1 -> .)
+    GT              reduce using rule 123 (step1 -> .)
+    LTE             reduce using rule 123 (step1 -> .)
+    GTE             reduce using rule 123 (step1 -> .)
+    EQUALS          reduce using rule 123 (step1 -> .)
+    NEQUALS         reduce using rule 123 (step1 -> .)
+    AND             reduce using rule 123 (step1 -> .)
+    OR              reduce using rule 123 (step1 -> .)
+    RPAREN          reduce using rule 123 (step1 -> .)
+    COMMA           reduce using rule 123 (step1 -> .)
+    SCOLON          reduce using rule 123 (step1 -> .)
+    TO              reduce using rule 123 (step1 -> .)
+    DO              reduce using rule 123 (step1 -> .)
+    RBRACK          reduce using rule 123 (step1 -> .)
 
+    step1                          shift and go to state 211
 
 state 179
+
+    (93) cond_w -> WHILE step1While LPAREN exp . RPAREN step2While DO LBRACE listaEstatutos RBRACE step3While
+
+    RPAREN          shift and go to state 212
+
+
+state 180
 
     (97) cond_f -> FOR asignacion TO exp . step1While step1For step2While DO LBRACE listaEstatutos RBRACE step3While
     (94) step1While -> .
 
     DO              reduce using rule 94 (step1While -> .)
 
-    step1While                     shift and go to state 212
-
-state 180
-
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos . RBRACE endF definFunc
-
-    RBRACE          shift and go to state 213
-
+    step1While                     shift and go to state 213
 
 state 181
+
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE . endF definFunc
+    (52) endF -> .
+
+    VOID            reduce using rule 52 (endF -> .)
+    INT             reduce using rule 52 (endF -> .)
+    FLOAT           reduce using rule 52 (endF -> .)
+    CHAR            reduce using rule 52 (endF -> .)
+    MAIN            reduce using rule 52 (endF -> .)
+
+    endF                           shift and go to state 214
+
+state 182
 
     (16) idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK .
 
@@ -2919,7 +2928,7 @@ state 181
     SCOLON          reduce using rule 16 (idDeclare -> ID auxDeclare LBRACK CTE_I addCteTable COMMA CTE_I addCteTable auxCTE2 RBRACK .)
 
 
-state 182
+state 183
 
     (40) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE . listaEstatutos RBRACE declarMethods
     (53) listaEstatutos -> . estatutos listaEstatutos
@@ -2950,62 +2959,62 @@ state 182
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     RBRACE          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 81
-    RETURN          shift and go to state 94
-    READ            shift and go to state 95
-    WRITE           shift and go to state 96
-    IF              shift and go to state 97
-    WHILE           shift and go to state 98
-    FOR             shift and go to state 99
+    ID              shift and go to state 84
+    RETURN          shift and go to state 97
+    READ            shift and go to state 98
+    WRITE           shift and go to state 99
+    IF              shift and go to state 100
+    WHILE           shift and go to state 101
+    FOR             shift and go to state 102
 
-    listaEstatutos                 shift and go to state 214
-    estatutos                      shift and go to state 83
-    empty                          shift and go to state 84
-    llamada                        shift and go to state 85
-    asignacion                     shift and go to state 86
-    returnf                        shift and go to state 87
-    lectura                        shift and go to state 88
-    escritura                      shift and go to state 89
-    condicion                      shift and go to state 90
-    cond_w                         shift and go to state 91
-    cond_f                         shift and go to state 92
-    idCall                         shift and go to state 93
-
-state 183
-
-    (65) llamada -> ID DOT ID LPAREN enviaParam . RPAREN
-
-    RPAREN          shift and go to state 215
-
+    listaEstatutos                 shift and go to state 215
+    estatutos                      shift and go to state 86
+    empty                          shift and go to state 87
+    llamada                        shift and go to state 88
+    asignacion                     shift and go to state 89
+    returnf                        shift and go to state 90
+    lectura                        shift and go to state 91
+    escritura                      shift and go to state 92
+    condicion                      shift and go to state 93
+    cond_w                         shift and go to state 94
+    cond_f                         shift and go to state 95
+    idCall                         shift and go to state 96
 
 state 184
 
-    (66) llamada -> ID verExist LPAREN enviaParam coherenceGo . RPAREN
+    (65) llamada -> ID DOT ID LPAREN enviaParam . RPAREN
 
     RPAREN          shift and go to state 216
 
 
 state 185
 
+    (66) llamada -> ID verExist LPAREN enviaParam coherenceGo . RPAREN
+
+    RPAREN          shift and go to state 217
+
+
+state 186
+
     (69) paramReferencia -> exp paramType .
     (70) paramReferencia -> exp paramType . COMMA paramCount paramReferencia
 
     RPAREN          reduce using rule 69 (paramReferencia -> exp paramType .)
-    COMMA           shift and go to state 217
+    COMMA           shift and go to state 218
 
 
-state 186
+state 187
 
     (23) idCall -> ID idCallaux LBRACK addFF exp . RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> ID idCallaux LBRACK addFF exp . idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
     (26) idCallaux2 -> .
 
-    RBRACK          shift and go to state 218
+    RBRACK          shift and go to state 219
     COMMA           reduce using rule 26 (idCallaux2 -> .)
 
-    idCallaux2                     shift and go to state 219
+    idCallaux2                     shift and go to state 220
 
-state 187
+state 188
 
     (63) asignacion -> idCall ASIGNA pushPoper exp asignStep2 .
 
@@ -3013,39 +3022,39 @@ state 187
     TO              reduce using rule 63 (asignacion -> idCall ASIGNA pushPoper exp asignStep2 .)
 
 
-state 188
+state 189
 
     (75) returnf -> RETURN pushPoper LPAREN exp RPAREN . popReturn
     (76) popReturn -> .
 
     SCOLON          reduce using rule 76 (popReturn -> .)
 
-    popReturn                      shift and go to state 220
+    popReturn                      shift and go to state 221
 
-state 189
+state 190
 
     (77) lectura -> READ pushPoper LPAREN listaId RPAREN .
 
     SCOLON          reduce using rule 77 (lectura -> READ pushPoper LPAREN listaId RPAREN .)
 
 
-state 190
+state 191
 
     (78) listaId -> idCall popIO .
 
     RPAREN          reduce using rule 78 (listaId -> idCall popIO .)
 
 
-state 191
+state 192
 
     (79) listaId -> idCall COMMA . popIO insertOpRead listaId
     (81) popIO -> .
 
     ID              reduce using rule 81 (popIO -> .)
 
-    popIO                          shift and go to state 221
+    popIO                          shift and go to state 222
 
-state 192
+state 193
 
     (82) escritura -> WRITE pushPoper LPAREN exp popIO . lextra RPAREN
     (84) lextra -> . COMMA insertOpWrite exp popIO lextra
@@ -3053,13 +3062,13 @@ state 192
     (86) lextra -> . empty
     (132) empty -> .
 
-    COMMA           shift and go to state 223
+    COMMA           shift and go to state 224
     RPAREN          reduce using rule 132 (empty -> .)
 
-    lextra                         shift and go to state 222
-    empty                          shift and go to state 224
+    lextra                         shift and go to state 223
+    empty                          shift and go to state 225
 
-state 193
+state 194
 
     (83) escritura -> WRITE pushPoper LPAREN LETRERO addCteTable . letreroPush popIO lextra RPAREN
     (88) letreroPush -> .
@@ -3067,39 +3076,26 @@ state 193
     COMMA           reduce using rule 88 (letreroPush -> .)
     RPAREN          reduce using rule 88 (letreroPush -> .)
 
-    letreroPush                    shift and go to state 225
-
-state 194
-
-    (116) f -> LPAREN addFF exp . RPAREN rmFF
-
-    RPAREN          shift and go to state 226
-
+    letreroPush                    shift and go to state 226
 
 state 195
 
-    (89) condicion -> IF LPAREN exp RPAREN cond1 . THEN LBRACE listaEstatutos RBRACE
-    (90) condicion -> IF LPAREN exp RPAREN cond1 . THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
+    (116) f -> LPAREN addFF exp . RPAREN rmFF
 
-    THEN            shift and go to state 227
+    RPAREN          shift and go to state 227
 
 
 state 196
 
-    (100) exp -> texp step7 OR . pushPoper exp
-    (131) pushPoper -> .
+    (89) condicion -> IF LPAREN exp RPAREN cond1 . THEN LBRACE listaEstatutos RBRACE
+    (90) condicion -> IF LPAREN exp RPAREN cond1 . THEN LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
 
-    LPAREN          reduce using rule 131 (pushPoper -> .)
-    CTE_I           reduce using rule 131 (pushPoper -> .)
-    CTE_F           reduce using rule 131 (pushPoper -> .)
-    CTE_C           reduce using rule 131 (pushPoper -> .)
-    ID              reduce using rule 131 (pushPoper -> .)
+    THEN            shift and go to state 228
 
-    pushPoper                      shift and go to state 228
 
 state 197
 
-    (102) texp -> gexp step6 AND . pushPoper texp
+    (100) exp -> texp step7 OR . pushPoper exp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3112,7 +3108,7 @@ state 197
 
 state 198
 
-    (104) gexp -> mexp step5 LT . pushPoper gexp
+    (102) texp -> gexp step6 AND . pushPoper texp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3125,7 +3121,7 @@ state 198
 
 state 199
 
-    (105) gexp -> mexp step5 GT . pushPoper gexp
+    (104) gexp -> mexp step5 LT . pushPoper gexp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3138,7 +3134,7 @@ state 199
 
 state 200
 
-    (106) gexp -> mexp step5 LTE . pushPoper gexp
+    (105) gexp -> mexp step5 GT . pushPoper gexp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3151,7 +3147,7 @@ state 200
 
 state 201
 
-    (107) gexp -> mexp step5 GTE . pushPoper gexp
+    (106) gexp -> mexp step5 LTE . pushPoper gexp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3164,7 +3160,7 @@ state 201
 
 state 202
 
-    (108) gexp -> mexp step5 EQUALS . pushPoper gexp
+    (107) gexp -> mexp step5 GTE . pushPoper gexp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3177,7 +3173,7 @@ state 202
 
 state 203
 
-    (109) gexp -> mexp step5 NEQUALS . pushPoper gexp
+    (108) gexp -> mexp step5 EQUALS . pushPoper gexp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3190,7 +3186,7 @@ state 203
 
 state 204
 
-    (111) mexp -> t step4 PLUS . pushPoper mexp
+    (109) gexp -> mexp step5 NEQUALS . pushPoper gexp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3203,7 +3199,7 @@ state 204
 
 state 205
 
-    (112) mexp -> t step4 MINUS . pushPoper mexp
+    (111) mexp -> t step4 PLUS . pushPoper mexp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3216,7 +3212,7 @@ state 205
 
 state 206
 
-    (114) t -> f step3 MULT . pushPoper t
+    (112) mexp -> t step4 MINUS . pushPoper mexp
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3229,7 +3225,7 @@ state 206
 
 state 207
 
-    (115) t -> f step3 DIV . pushPoper t
+    (114) t -> f step3 MULT . pushPoper t
     (131) pushPoper -> .
 
     LPAREN          reduce using rule 131 (pushPoper -> .)
@@ -3241,6 +3237,19 @@ state 207
     pushPoper                      shift and go to state 239
 
 state 208
+
+    (115) t -> f step3 DIV . pushPoper t
+    (131) pushPoper -> .
+
+    LPAREN          reduce using rule 131 (pushPoper -> .)
+    CTE_I           reduce using rule 131 (pushPoper -> .)
+    CTE_F           reduce using rule 131 (pushPoper -> .)
+    CTE_C           reduce using rule 131 (pushPoper -> .)
+    ID              reduce using rule 131 (pushPoper -> .)
+
+    pushPoper                      shift and go to state 240
+
+state 209
 
     (117) f -> CTE_I addCteTable step1 .
 
@@ -3264,7 +3273,7 @@ state 208
     RBRACK          reduce using rule 117 (f -> CTE_I addCteTable step1 .)
 
 
-state 209
+state 210
 
     (118) f -> CTE_F addCteTable step1 .
 
@@ -3288,7 +3297,7 @@ state 209
     RBRACK          reduce using rule 118 (f -> CTE_F addCteTable step1 .)
 
 
-state 210
+state 211
 
     (119) f -> CTE_C addCteTable step1 .
 
@@ -3312,45 +3321,53 @@ state 210
     RBRACK          reduce using rule 119 (f -> CTE_C addCteTable step1 .)
 
 
-state 211
+state 212
 
     (93) cond_w -> WHILE step1While LPAREN exp RPAREN . step2While DO LBRACE listaEstatutos RBRACE step3While
     (95) step2While -> .
 
     DO              reduce using rule 95 (step2While -> .)
 
-    step2While                     shift and go to state 240
+    step2While                     shift and go to state 241
 
-state 212
+state 213
 
     (97) cond_f -> FOR asignacion TO exp step1While . step1For step2While DO LBRACE listaEstatutos RBRACE step3While
     (98) step1For -> .
 
     DO              reduce using rule 98 (step1For -> .)
 
-    step1For                       shift and go to state 241
-
-state 213
-
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE . endF definFunc
-    (52) endF -> .
-
-    VOID            reduce using rule 52 (endF -> .)
-    INT             reduce using rule 52 (endF -> .)
-    FLOAT           reduce using rule 52 (endF -> .)
-    CHAR            reduce using rule 52 (endF -> .)
-    MAIN            reduce using rule 52 (endF -> .)
-
-    endF                           shift and go to state 242
+    step1For                       shift and go to state 242
 
 state 214
 
-    (40) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos . RBRACE declarMethods
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF . definFunc
+    (48) definFunc -> . tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
+    (49) definFunc -> . empty
+    (36) tipoMethod -> . VOID
+    (37) tipoMethod -> . INT
+    (38) tipoMethod -> . FLOAT
+    (39) tipoMethod -> . CHAR
+    (132) empty -> .
 
-    RBRACE          shift and go to state 243
+    VOID            shift and go to state 16
+    INT             shift and go to state 17
+    FLOAT           shift and go to state 18
+    CHAR            shift and go to state 19
+    MAIN            reduce using rule 132 (empty -> .)
 
+    tipoMethod                     shift and go to state 14
+    definFunc                      shift and go to state 243
+    empty                          shift and go to state 15
 
 state 215
+
+    (40) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos . RBRACE declarMethods
+
+    RBRACE          shift and go to state 244
+
+
+state 216
 
     (65) llamada -> ID DOT ID LPAREN enviaParam RPAREN .
 
@@ -3374,7 +3391,7 @@ state 215
     RBRACK          reduce using rule 65 (llamada -> ID DOT ID LPAREN enviaParam RPAREN .)
 
 
-state 216
+state 217
 
     (66) llamada -> ID verExist LPAREN enviaParam coherenceGo RPAREN .
 
@@ -3398,7 +3415,7 @@ state 216
     RBRACK          reduce using rule 66 (llamada -> ID verExist LPAREN enviaParam coherenceGo RPAREN .)
 
 
-state 217
+state 218
 
     (70) paramReferencia -> exp paramType COMMA . paramCount paramReferencia
     (73) paramCount -> .
@@ -3409,9 +3426,9 @@ state 217
     CTE_C           reduce using rule 73 (paramCount -> .)
     ID              reduce using rule 73 (paramCount -> .)
 
-    paramCount                     shift and go to state 244
+    paramCount                     shift and go to state 245
 
-state 218
+state 219
 
     (23) idCall -> ID idCallaux LBRACK addFF exp RBRACK . rmFF idCallaux4 checkDim1
     (130) rmFF -> .
@@ -3436,41 +3453,41 @@ state 218
     DO              reduce using rule 130 (rmFF -> .)
     RBRACK          reduce using rule 130 (rmFF -> .)
 
-    rmFF                           shift and go to state 245
+    rmFF                           shift and go to state 246
 
-state 219
+state 220
 
     (24) idCall -> ID idCallaux LBRACK addFF exp idCallaux2 . rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
     (130) rmFF -> .
 
     COMMA           reduce using rule 130 (rmFF -> .)
 
-    rmFF                           shift and go to state 246
+    rmFF                           shift and go to state 247
 
-state 220
+state 221
 
     (75) returnf -> RETURN pushPoper LPAREN exp RPAREN popReturn .
 
     SCOLON          reduce using rule 75 (returnf -> RETURN pushPoper LPAREN exp RPAREN popReturn .)
 
 
-state 221
+state 222
 
     (79) listaId -> idCall COMMA popIO . insertOpRead listaId
     (80) insertOpRead -> .
 
     ID              reduce using rule 80 (insertOpRead -> .)
 
-    insertOpRead                   shift and go to state 247
+    insertOpRead                   shift and go to state 248
 
-state 222
+state 223
 
     (82) escritura -> WRITE pushPoper LPAREN exp popIO lextra . RPAREN
 
-    RPAREN          shift and go to state 248
+    RPAREN          shift and go to state 249
 
 
-state 223
+state 224
 
     (84) lextra -> COMMA . insertOpWrite exp popIO lextra
     (85) lextra -> COMMA . insertOpWrite LETRERO addCteTable letreroPush popIO lextra
@@ -3483,16 +3500,16 @@ state 223
     CTE_C           reduce using rule 87 (insertOpWrite -> .)
     ID              reduce using rule 87 (insertOpWrite -> .)
 
-    insertOpWrite                  shift and go to state 249
+    insertOpWrite                  shift and go to state 250
 
-state 224
+state 225
 
     (86) lextra -> empty .
 
     RPAREN          reduce using rule 86 (lextra -> empty .)
 
 
-state 225
+state 226
 
     (83) escritura -> WRITE pushPoper LPAREN LETRERO addCteTable letreroPush . popIO lextra RPAREN
     (81) popIO -> .
@@ -3500,9 +3517,9 @@ state 225
     COMMA           reduce using rule 81 (popIO -> .)
     RPAREN          reduce using rule 81 (popIO -> .)
 
-    popIO                          shift and go to state 250
+    popIO                          shift and go to state 251
 
-state 226
+state 227
 
     (116) f -> LPAREN addFF exp RPAREN . rmFF
     (130) rmFF -> .
@@ -3526,17 +3543,17 @@ state 226
     DO              reduce using rule 130 (rmFF -> .)
     RBRACK          reduce using rule 130 (rmFF -> .)
 
-    rmFF                           shift and go to state 251
+    rmFF                           shift and go to state 252
 
-state 227
+state 228
 
     (89) condicion -> IF LPAREN exp RPAREN cond1 THEN . LBRACE listaEstatutos RBRACE
     (90) condicion -> IF LPAREN exp RPAREN cond1 THEN . LBRACE listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
 
-    LBRACE          shift and go to state 252
+    LBRACE          shift and go to state 253
 
 
-state 228
+state 229
 
     (100) exp -> texp step7 OR pushPoper . exp
     (99) exp -> . texp step7
@@ -3569,22 +3586,22 @@ state 228
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    texp                           shift and go to state 139
-    exp                            shift and go to state 253
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    texp                           shift and go to state 140
+    exp                            shift and go to state 254
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 229
+state 230
 
     (102) texp -> gexp step6 AND pushPoper . texp
     (101) texp -> . gexp step6
@@ -3615,21 +3632,21 @@ state 229
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    gexp                           shift and go to state 140
-    texp                           shift and go to state 254
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    gexp                           shift and go to state 141
+    texp                           shift and go to state 255
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 230
+state 231
 
     (104) gexp -> mexp step5 LT pushPoper . gexp
     (103) gexp -> . mexp step5
@@ -3658,20 +3675,20 @@ state 230
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    mexp                           shift and go to state 141
-    gexp                           shift and go to state 255
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    mexp                           shift and go to state 142
+    gexp                           shift and go to state 256
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 231
+state 232
 
     (105) gexp -> mexp step5 GT pushPoper . gexp
     (103) gexp -> . mexp step5
@@ -3700,20 +3717,20 @@ state 231
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    mexp                           shift and go to state 141
-    gexp                           shift and go to state 256
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    mexp                           shift and go to state 142
+    gexp                           shift and go to state 257
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 232
+state 233
 
     (106) gexp -> mexp step5 LTE pushPoper . gexp
     (103) gexp -> . mexp step5
@@ -3742,20 +3759,20 @@ state 232
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    mexp                           shift and go to state 141
-    gexp                           shift and go to state 257
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    mexp                           shift and go to state 142
+    gexp                           shift and go to state 258
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 233
+state 234
 
     (107) gexp -> mexp step5 GTE pushPoper . gexp
     (103) gexp -> . mexp step5
@@ -3784,20 +3801,20 @@ state 233
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    mexp                           shift and go to state 141
-    gexp                           shift and go to state 258
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    mexp                           shift and go to state 142
+    gexp                           shift and go to state 259
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 234
+state 235
 
     (108) gexp -> mexp step5 EQUALS pushPoper . gexp
     (103) gexp -> . mexp step5
@@ -3826,20 +3843,20 @@ state 234
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    mexp                           shift and go to state 141
-    gexp                           shift and go to state 259
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    mexp                           shift and go to state 142
+    gexp                           shift and go to state 260
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 235
+state 236
 
     (109) gexp -> mexp step5 NEQUALS pushPoper . gexp
     (103) gexp -> . mexp step5
@@ -3868,20 +3885,20 @@ state 235
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    mexp                           shift and go to state 141
-    gexp                           shift and go to state 260
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    mexp                           shift and go to state 142
+    gexp                           shift and go to state 261
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 236
+state 237
 
     (111) mexp -> t step4 PLUS pushPoper . mexp
     (110) mexp -> . t step4
@@ -3903,19 +3920,19 @@ state 236
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    t                              shift and go to state 142
-    mexp                           shift and go to state 261
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    t                              shift and go to state 143
+    mexp                           shift and go to state 262
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 237
+state 238
 
     (112) mexp -> t step4 MINUS pushPoper . mexp
     (110) mexp -> . t step4
@@ -3937,19 +3954,19 @@ state 237
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    t                              shift and go to state 142
-    mexp                           shift and go to state 262
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    t                              shift and go to state 143
+    mexp                           shift and go to state 263
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 238
+state 239
 
     (114) t -> f step3 MULT pushPoper . t
     (113) t -> . f step3
@@ -3968,18 +3985,18 @@ state 238
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    f                              shift and go to state 143
-    t                              shift and go to state 263
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    f                              shift and go to state 144
+    t                              shift and go to state 264
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 239
+state 240
 
     (115) t -> f step3 DIV pushPoper . t
     (113) t -> . f step3
@@ -3998,55 +4015,41 @@ state 239
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    f                              shift and go to state 143
-    t                              shift and go to state 264
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    f                              shift and go to state 144
+    t                              shift and go to state 265
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 240
+state 241
 
     (93) cond_w -> WHILE step1While LPAREN exp RPAREN step2While . DO LBRACE listaEstatutos RBRACE step3While
 
-    DO              shift and go to state 265
+    DO              shift and go to state 266
 
 
-state 241
+state 242
 
     (97) cond_f -> FOR asignacion TO exp step1While step1For . step2While DO LBRACE listaEstatutos RBRACE step3While
     (95) step2While -> .
 
     DO              reduce using rule 95 (step2While -> .)
 
-    step2While                     shift and go to state 266
-
-state 242
-
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF . definFunc
-    (48) definFunc -> . tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc
-    (49) definFunc -> . empty
-    (36) tipoMethod -> . VOID
-    (37) tipoMethod -> . INT
-    (38) tipoMethod -> . FLOAT
-    (39) tipoMethod -> . CHAR
-    (132) empty -> .
-
-    VOID            shift and go to state 25
-    INT             shift and go to state 26
-    FLOAT           shift and go to state 27
-    CHAR            shift and go to state 28
-    MAIN            reduce using rule 132 (empty -> .)
-
-    tipoMethod                     shift and go to state 23
-    definFunc                      shift and go to state 267
-    empty                          shift and go to state 24
+    step2While                     shift and go to state 267
 
 state 243
+
+    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc .
+
+    MAIN            reduce using rule 48 (definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc .)
+
+
+state 244
 
     (40) declarMethods -> tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE . declarMethods
     (40) declarMethods -> . tipoMethod FUNC ID LPAREN listaParam RPAREN LBRACE listaEstatutos RBRACE declarMethods
@@ -4057,17 +4060,17 @@ state 243
     (39) tipoMethod -> . CHAR
     (132) empty -> .
 
-    VOID            shift and go to state 25
-    INT             shift and go to state 26
-    FLOAT           shift and go to state 27
-    CHAR            shift and go to state 28
+    VOID            shift and go to state 16
+    INT             shift and go to state 17
+    FLOAT           shift and go to state 18
+    CHAR            shift and go to state 19
     RBRACE          reduce using rule 132 (empty -> .)
 
-    tipoMethod                     shift and go to state 60
+    tipoMethod                     shift and go to state 64
     declarMethods                  shift and go to state 268
-    empty                          shift and go to state 61
+    empty                          shift and go to state 65
 
-state 244
+state 245
 
     (70) paramReferencia -> exp paramType COMMA paramCount . paramReferencia
     (69) paramReferencia -> . exp paramType
@@ -4102,23 +4105,23 @@ state 244
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
-    exp                            shift and go to state 158
+    exp                            shift and go to state 159
     paramReferencia                shift and go to state 269
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 245
+state 246
 
     (23) idCall -> ID idCallaux LBRACK addFF exp RBRACK rmFF . idCallaux4 checkDim1
     (28) idCallaux4 -> .
@@ -4145,14 +4148,14 @@ state 245
 
     idCallaux4                     shift and go to state 270
 
-state 246
+state 247
 
     (24) idCall -> ID idCallaux LBRACK addFF exp idCallaux2 rmFF . COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     COMMA           shift and go to state 271
 
 
-state 247
+state 248
 
     (79) listaId -> idCall COMMA popIO insertOpRead . listaId
     (78) listaId -> . idCall popIO
@@ -4162,19 +4165,19 @@ state 247
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    ID              shift and go to state 123
+    ID              shift and go to state 124
 
-    idCall                         shift and go to state 165
+    idCall                         shift and go to state 166
     listaId                        shift and go to state 272
 
-state 248
+state 249
 
     (82) escritura -> WRITE pushPoper LPAREN exp popIO lextra RPAREN .
 
     SCOLON          reduce using rule 82 (escritura -> WRITE pushPoper LPAREN exp popIO lextra RPAREN .)
 
 
-state 249
+state 250
 
     (84) lextra -> COMMA insertOpWrite . exp popIO lextra
     (85) lextra -> COMMA insertOpWrite . LETRERO addCteTable letreroPush popIO lextra
@@ -4209,22 +4212,22 @@ state 249
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     LETRERO         shift and go to state 274
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
     exp                            shift and go to state 273
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
-state 250
+state 251
 
     (83) escritura -> WRITE pushPoper LPAREN LETRERO addCteTable letreroPush popIO . lextra RPAREN
     (84) lextra -> . COMMA insertOpWrite exp popIO lextra
@@ -4232,13 +4235,13 @@ state 250
     (86) lextra -> . empty
     (132) empty -> .
 
-    COMMA           shift and go to state 223
+    COMMA           shift and go to state 224
     RPAREN          reduce using rule 132 (empty -> .)
 
     lextra                         shift and go to state 275
-    empty                          shift and go to state 224
+    empty                          shift and go to state 225
 
-state 251
+state 252
 
     (116) f -> LPAREN addFF exp RPAREN rmFF .
 
@@ -4262,7 +4265,7 @@ state 251
     RBRACK          reduce using rule 116 (f -> LPAREN addFF exp RPAREN rmFF .)
 
 
-state 252
+state 253
 
     (89) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE . listaEstatutos RBRACE
     (90) condicion -> IF LPAREN exp RPAREN cond1 THEN LBRACE . listaEstatutos RBRACE ELSE cond3 LBRACE listaEstatutos RBRACE
@@ -4294,28 +4297,28 @@ state 252
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     RBRACE          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 81
-    RETURN          shift and go to state 94
-    READ            shift and go to state 95
-    WRITE           shift and go to state 96
-    IF              shift and go to state 97
-    WHILE           shift and go to state 98
-    FOR             shift and go to state 99
+    ID              shift and go to state 84
+    RETURN          shift and go to state 97
+    READ            shift and go to state 98
+    WRITE           shift and go to state 99
+    IF              shift and go to state 100
+    WHILE           shift and go to state 101
+    FOR             shift and go to state 102
 
     listaEstatutos                 shift and go to state 276
-    estatutos                      shift and go to state 83
-    empty                          shift and go to state 84
-    llamada                        shift and go to state 85
-    asignacion                     shift and go to state 86
-    returnf                        shift and go to state 87
-    lectura                        shift and go to state 88
-    escritura                      shift and go to state 89
-    condicion                      shift and go to state 90
-    cond_w                         shift and go to state 91
-    cond_f                         shift and go to state 92
-    idCall                         shift and go to state 93
+    estatutos                      shift and go to state 86
+    empty                          shift and go to state 87
+    llamada                        shift and go to state 88
+    asignacion                     shift and go to state 89
+    returnf                        shift and go to state 90
+    lectura                        shift and go to state 91
+    escritura                      shift and go to state 92
+    condicion                      shift and go to state 93
+    cond_w                         shift and go to state 94
+    cond_f                         shift and go to state 95
+    idCall                         shift and go to state 96
 
-state 253
+state 254
 
     (100) exp -> texp step7 OR pushPoper exp .
 
@@ -4327,7 +4330,7 @@ state 253
     RBRACK          reduce using rule 100 (exp -> texp step7 OR pushPoper exp .)
 
 
-state 254
+state 255
 
     (102) texp -> gexp step6 AND pushPoper texp .
 
@@ -4340,7 +4343,7 @@ state 254
     RBRACK          reduce using rule 102 (texp -> gexp step6 AND pushPoper texp .)
 
 
-state 255
+state 256
 
     (104) gexp -> mexp step5 LT pushPoper gexp .
 
@@ -4354,7 +4357,7 @@ state 255
     RBRACK          reduce using rule 104 (gexp -> mexp step5 LT pushPoper gexp .)
 
 
-state 256
+state 257
 
     (105) gexp -> mexp step5 GT pushPoper gexp .
 
@@ -4368,7 +4371,7 @@ state 256
     RBRACK          reduce using rule 105 (gexp -> mexp step5 GT pushPoper gexp .)
 
 
-state 257
+state 258
 
     (106) gexp -> mexp step5 LTE pushPoper gexp .
 
@@ -4382,7 +4385,7 @@ state 257
     RBRACK          reduce using rule 106 (gexp -> mexp step5 LTE pushPoper gexp .)
 
 
-state 258
+state 259
 
     (107) gexp -> mexp step5 GTE pushPoper gexp .
 
@@ -4396,7 +4399,7 @@ state 258
     RBRACK          reduce using rule 107 (gexp -> mexp step5 GTE pushPoper gexp .)
 
 
-state 259
+state 260
 
     (108) gexp -> mexp step5 EQUALS pushPoper gexp .
 
@@ -4410,7 +4413,7 @@ state 259
     RBRACK          reduce using rule 108 (gexp -> mexp step5 EQUALS pushPoper gexp .)
 
 
-state 260
+state 261
 
     (109) gexp -> mexp step5 NEQUALS pushPoper gexp .
 
@@ -4424,7 +4427,7 @@ state 260
     RBRACK          reduce using rule 109 (gexp -> mexp step5 NEQUALS pushPoper gexp .)
 
 
-state 261
+state 262
 
     (111) mexp -> t step4 PLUS pushPoper mexp .
 
@@ -4444,7 +4447,7 @@ state 261
     RBRACK          reduce using rule 111 (mexp -> t step4 PLUS pushPoper mexp .)
 
 
-state 262
+state 263
 
     (112) mexp -> t step4 MINUS pushPoper mexp .
 
@@ -4464,7 +4467,7 @@ state 262
     RBRACK          reduce using rule 112 (mexp -> t step4 MINUS pushPoper mexp .)
 
 
-state 263
+state 264
 
     (114) t -> f step3 MULT pushPoper t .
 
@@ -4486,7 +4489,7 @@ state 263
     RBRACK          reduce using rule 114 (t -> f step3 MULT pushPoper t .)
 
 
-state 264
+state 265
 
     (115) t -> f step3 DIV pushPoper t .
 
@@ -4508,25 +4511,18 @@ state 264
     RBRACK          reduce using rule 115 (t -> f step3 DIV pushPoper t .)
 
 
-state 265
+state 266
 
     (93) cond_w -> WHILE step1While LPAREN exp RPAREN step2While DO . LBRACE listaEstatutos RBRACE step3While
 
     LBRACE          shift and go to state 277
 
 
-state 266
+state 267
 
     (97) cond_f -> FOR asignacion TO exp step1While step1For step2While . DO LBRACE listaEstatutos RBRACE step3While
 
     DO              shift and go to state 278
-
-
-state 267
-
-    (48) definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc .
-
-    MAIN            reduce using rule 48 (definFunc -> tipoMethod FUNC ID auxFuncion LPAREN listaParam RPAREN declarVar setDI LBRACE listaEstatutos RBRACE endF definFunc .)
 
 
 state 268
@@ -4656,26 +4652,26 @@ state 277
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     RBRACE          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 81
-    RETURN          shift and go to state 94
-    READ            shift and go to state 95
-    WRITE           shift and go to state 96
-    IF              shift and go to state 97
-    WHILE           shift and go to state 98
-    FOR             shift and go to state 99
+    ID              shift and go to state 84
+    RETURN          shift and go to state 97
+    READ            shift and go to state 98
+    WRITE           shift and go to state 99
+    IF              shift and go to state 100
+    WHILE           shift and go to state 101
+    FOR             shift and go to state 102
 
     listaEstatutos                 shift and go to state 285
-    estatutos                      shift and go to state 83
-    empty                          shift and go to state 84
-    llamada                        shift and go to state 85
-    asignacion                     shift and go to state 86
-    returnf                        shift and go to state 87
-    lectura                        shift and go to state 88
-    escritura                      shift and go to state 89
-    condicion                      shift and go to state 90
-    cond_w                         shift and go to state 91
-    cond_f                         shift and go to state 92
-    idCall                         shift and go to state 93
+    estatutos                      shift and go to state 86
+    empty                          shift and go to state 87
+    llamada                        shift and go to state 88
+    asignacion                     shift and go to state 89
+    returnf                        shift and go to state 90
+    lectura                        shift and go to state 91
+    escritura                      shift and go to state 92
+    condicion                      shift and go to state 93
+    cond_w                         shift and go to state 94
+    cond_f                         shift and go to state 95
+    idCall                         shift and go to state 96
 
 state 278
 
@@ -4742,20 +4738,20 @@ state 280
     (23) idCall -> . ID idCallaux LBRACK addFF exp RBRACK rmFF idCallaux4 checkDim1
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
-    LPAREN          shift and go to state 137
-    CTE_I           shift and go to state 144
-    CTE_F           shift and go to state 145
-    CTE_C           shift and go to state 146
-    ID              shift and go to state 81
+    LPAREN          shift and go to state 138
+    CTE_I           shift and go to state 145
+    CTE_F           shift and go to state 146
+    CTE_C           shift and go to state 147
+    ID              shift and go to state 84
 
     exp                            shift and go to state 287
-    texp                           shift and go to state 139
-    gexp                           shift and go to state 140
-    mexp                           shift and go to state 141
-    t                              shift and go to state 142
-    f                              shift and go to state 143
-    llamada                        shift and go to state 147
-    idCall                         shift and go to state 148
+    texp                           shift and go to state 140
+    gexp                           shift and go to state 141
+    mexp                           shift and go to state 142
+    t                              shift and go to state 143
+    f                              shift and go to state 144
+    llamada                        shift and go to state 148
+    idCall                         shift and go to state 149
 
 state 281
 
@@ -4765,11 +4761,11 @@ state 281
     (86) lextra -> . empty
     (132) empty -> .
 
-    COMMA           shift and go to state 223
+    COMMA           shift and go to state 224
     RPAREN          reduce using rule 132 (empty -> .)
 
     lextra                         shift and go to state 288
-    empty                          shift and go to state 224
+    empty                          shift and go to state 225
 
 state 282
 
@@ -4842,26 +4838,26 @@ state 286
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     RBRACE          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 81
-    RETURN          shift and go to state 94
-    READ            shift and go to state 95
-    WRITE           shift and go to state 96
-    IF              shift and go to state 97
-    WHILE           shift and go to state 98
-    FOR             shift and go to state 99
+    ID              shift and go to state 84
+    RETURN          shift and go to state 97
+    READ            shift and go to state 98
+    WRITE           shift and go to state 99
+    IF              shift and go to state 100
+    WHILE           shift and go to state 101
+    FOR             shift and go to state 102
 
-    asignacion                     shift and go to state 86
+    asignacion                     shift and go to state 89
     listaEstatutos                 shift and go to state 292
-    estatutos                      shift and go to state 83
-    empty                          shift and go to state 84
-    llamada                        shift and go to state 85
-    returnf                        shift and go to state 87
-    lectura                        shift and go to state 88
-    escritura                      shift and go to state 89
-    condicion                      shift and go to state 90
-    cond_w                         shift and go to state 91
-    cond_f                         shift and go to state 92
-    idCall                         shift and go to state 93
+    estatutos                      shift and go to state 86
+    empty                          shift and go to state 87
+    llamada                        shift and go to state 88
+    returnf                        shift and go to state 90
+    lectura                        shift and go to state 91
+    escritura                      shift and go to state 92
+    condicion                      shift and go to state 93
+    cond_w                         shift and go to state 94
+    cond_f                         shift and go to state 95
+    idCall                         shift and go to state 96
 
 state 287
 
@@ -4936,11 +4932,11 @@ state 294
     (86) lextra -> . empty
     (132) empty -> .
 
-    COMMA           shift and go to state 223
+    COMMA           shift and go to state 224
     RPAREN          reduce using rule 132 (empty -> .)
 
     lextra                         shift and go to state 299
-    empty                          shift and go to state 224
+    empty                          shift and go to state 225
 
 state 295
 
@@ -5044,26 +5040,26 @@ state 300
     (24) idCall -> . ID idCallaux LBRACK addFF exp idCallaux2 rmFF COMMA addFF exp idCallaux3 RBRACK rmFF checkDim2
 
     RBRACE          reduce using rule 132 (empty -> .)
-    ID              shift and go to state 81
-    RETURN          shift and go to state 94
-    READ            shift and go to state 95
-    WRITE           shift and go to state 96
-    IF              shift and go to state 97
-    WHILE           shift and go to state 98
-    FOR             shift and go to state 99
+    ID              shift and go to state 84
+    RETURN          shift and go to state 97
+    READ            shift and go to state 98
+    WRITE           shift and go to state 99
+    IF              shift and go to state 100
+    WHILE           shift and go to state 101
+    FOR             shift and go to state 102
 
     listaEstatutos                 shift and go to state 303
-    estatutos                      shift and go to state 83
-    empty                          shift and go to state 84
-    llamada                        shift and go to state 85
-    asignacion                     shift and go to state 86
-    returnf                        shift and go to state 87
-    lectura                        shift and go to state 88
-    escritura                      shift and go to state 89
-    condicion                      shift and go to state 90
-    cond_w                         shift and go to state 91
-    cond_f                         shift and go to state 92
-    idCall                         shift and go to state 93
+    estatutos                      shift and go to state 86
+    empty                          shift and go to state 87
+    llamada                        shift and go to state 88
+    asignacion                     shift and go to state 89
+    returnf                        shift and go to state 90
+    lectura                        shift and go to state 91
+    escritura                      shift and go to state 92
+    condicion                      shift and go to state 93
+    cond_w                         shift and go to state 94
+    cond_f                         shift and go to state 95
+    idCall                         shift and go to state 96
 
 state 301
 
@@ -5154,4 +5150,4 @@ state 305
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for DOT in state 81 resolved as shift
+WARNING: shift/reduce conflict for DOT in state 84 resolved as shift

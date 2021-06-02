@@ -1,0 +1,24 @@
+program Team_pp;
+var int:x2;
+
+int func fact(int : y, int : z)
+var int : x1;{
+    x1= 100;
+	write("Si entre a fact", y, z);
+    return (x1);
+}
+
+void func pelos(int : y, int : z)
+var int : x;{
+	x = y;
+}
+
+main()
+   var int: y1, y2,y3;
+{
+    x2 = 3*(2-1);
+    y1 = 10+6-1*15;
+    y2 = x2;
+
+    y3= fact(y2, x2);
+}
