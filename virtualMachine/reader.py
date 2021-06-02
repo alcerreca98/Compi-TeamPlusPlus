@@ -4,7 +4,7 @@
 # ------------------------------------------------------------
 import re
 dirFunc = {}
-dirVar = []
+dirVar = {}
 dict_cte = {}
 Quad = []
 programa = ""
@@ -97,6 +97,14 @@ def convParams(lista):
     return(aux)
   else:
     aux = lista.split(',')
+    tam = len(aux)
+    for i in range(tam):
+      if(aux[i].find('int')!=-1):
+        aux[i]='int'
+      if(aux[i].find('float')!=-1):
+        aux[i]='int'
+      if(aux[i].find('char')!=-1):
+        aux[i]='int'
     return(aux)
 
 #Lectura del archivo
@@ -136,7 +144,7 @@ def readFile():
         func = (line.split('~'))
         tempDim = convList(func[3])
         temp = mv_var(func[0], func[1], int(func[2]), tempDim)
-        dirVar.append(temp)
+        dirVar[func[0]]=temp
       elif table == 3:
         #* ID | REF
         func = (line.split('~'))
@@ -152,8 +160,7 @@ def readFile():
   for ids in dirFunc:
     dirFunc[ids].printFunc()
 
-  tam = len(dirVar)
-  for ids in range(tam):
+  for ids in dirVar:
     dirVar[ids].printVar()
 
   tam = len(Quad)

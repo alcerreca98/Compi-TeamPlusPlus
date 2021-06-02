@@ -1,0 +1,42 @@
+Team_pp~None~[]~0~[2, 0, 0]
+fact~int~['int', 'int']~1~[3, 0, 0, 0, 0, 0, 0]
+pelos~void~['int', 'int']~7~[3, 0, 0, 0, 0, 0, 0]
+Main~None~[]~9~[3, 0, 0, 6, 0, 0, 0]
+/
+x2~int~2000~[]
+fact~int~2001~[]
+/
+0~30000
+100~30001
+"Si entre a fact"~30002
+3~30003
+2~30004
+1~30005
+10~30006
+6~30007
+15~30008
+/
+0~Goto~None~None~9
+1~=~30001~None~16002
+2~write~None~None~30002
+3~write~None~None~16000
+4~write~None~None~16001
+5~return~None~None~16002
+6~ENDFunc~None~None~None
+7~=~16000~None~16002
+8~ENDFunc~None~None~None
+9~-~30004~30005~22000
+10~*~30003~22000~22001
+11~=~22001~None~2000
+12~+~30006~30007~22002
+13~*~30005~30008~22003
+14~-~22002~22003~22004
+15~=~22004~None~16000
+16~=~2000~None~16001
+17~ERA~None~None~fact
+18~PARAM~16001~None~1
+19~PARAM~2000~None~2
+20~GOSUB~None~None~fact
+21~=~2001~None~22005
+22~=~22005~None~16002
+23~ENDProgram~None~None~None

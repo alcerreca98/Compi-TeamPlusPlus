@@ -211,7 +211,20 @@ def ingresaTamifcGlobal():
     dirFuncs[programa].tam.append(int(gf+1))
     dirFuncs[programa].tam.append(int(gc+1))
 
+def contadorERAglobal(type):
+    """ #define el tipo e incrementa en 1 el contadorERA de variables locales NO temporales """
+    global gi
+    global gf
+    global gc
 
+    if type == 'int':
+        gi = gi +1
+    elif type == 'float':
+        gf = gf +1
+    elif type == 'char':
+        gc = gc +1
+    else:
+        print("No deberia entrar aqui ERR")
 #! ------------------------------------------------------------
 #! Prints
 #! ------------------------------------------------------------

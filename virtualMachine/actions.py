@@ -6,7 +6,7 @@
 import sys
 import memory as mem
 import reader
-
+import re
 
 #Directorio de funciones
 dirFuncs = reader.dirFunc
@@ -17,20 +17,21 @@ dictCte = reader.dict_cte
 #Cuadruplos
 cuad = reader.Quad
 
-#Variables globales
+#?Variables globales
+#* Instruction Pointer
 contProg = 0
-
-reader.readFile()
-
-#Memoria Global
-globSize = dirFuncs[reader.programa].tam
-mem.memGlob.append(mem.memoria(globSize[0], globSize[1], globSize[2], 0, 0, 0, 0))
-memoriaGlob = mem.memGlob[-1]
-
-mainSize = dirFuncs["Main"].tam
-mem.memStack.append(mem.memoria(mainSize[0], mainSize[1], mainSize[2], mainSize[3], mainSize[4], mainSize[5], mainSize[6]))
-memoriaMain = mem.memStack[-1]
-
+#llamada de funciones
+#* de donde vengo
+migajita = []
+#* a donde voy
+cuadLlamada = []
+#* sus parametros
+funcParams = []
+pInt = 0
+pFloat = 0
+pChar = 0
+#* ParcheGuadalupano
+ParcheGuadalupano = []
 
 #!---------------------------------------------------
 #! Funciones de Acciones Cuadruplos
@@ -48,6 +49,23 @@ def gotoF(cuad, contProg):
   else:
     return int(cuad.result)
 
+def gosub(cuad, contProg):
+  global ParcheGuadalupano
+  global migajita
+  global cuadLlamada
+  Nombre = cuad.result
+  pg=dirVar.get(Nombre, False)
+  if(pg != False):
+    ParcheGuadalupano.append(dirVar[Nombre].dir)
+  migajita.append(contProg)
+  salto = cuadLlamada.pop()
+  return salto
+
+def endfunc(cuad, contProg):
+  global migajita
+  returnCuad = migajita.pop()
+  mem.memStack.pop()
+  return returnCuad+1
 
 # todo:  EXPRESIONES ARITMETICAS
 
@@ -262,10 +280,67 @@ def write(cuad, contProg):
   print(escribe)
   return contProg + 1
 
+# todo:  LLAMADA DE FUNCIONES
+
+def era(cuad, contProg):
+  global cuadLlamada
+  global funcParams
+  funcName = cuad.result
+  funcion = dirFuncs.get(funcName, False)
+  if (funcion != False) :
+    funcParams = dirFuncs[funcion.id].params
+    print(funcParams)
+    cuadLlamada.append(dirFuncs[funcion.id].di)
+    eraSize = dirFuncs[funcion.id].tam
+    #eraSize = (eraSize.split(','))
+    newMemory = mem.memoria(eraSize[0],eraSize[1],eraSize[2],eraSize[3],eraSize[4],eraSize[5],eraSize[6])
+    mem.memStack.append(newMemory)
+  else:
+    print("No deberia entrar aqui porque el chequeo semantico de que la funcion este declarada está en el compilador")
+    sys.exit()
+  return contProg + 1
+
+def params(cuad, contProg):
+  global funcParams
+  global pInt
+  global pFloat 
+  global pChar
+  izq = int(cuad.dirIzq)
+  op_Izq = getParam(izq)
+  res = int(cuad.result)
+  paramNum= len(funcParams)
+  if(funcParams[res-1]=='int'):
+    auxdir=16000+pInt
+    pInt = pInt+1
+  elif(funcParams[res-1]=='float'):
+    auxdir=18000+pFloat
+    pInt = pFloat+1
+  elif(funcParams[res-1]=='char'):
+    auxdir=22000+pChar
+    pInt = pChar+1
+
+  addDirContent(auxdir,op_Izq)
+  if(res == paramNum):
+    pInt = 0
+    pFloat = 0
+    pChar = 0
+  
+  return contProg + 1
+
+def retorno(cuad, contProg):
+  global ParcheGuadalupano
+  res = int(cuad.result)
+  valor = getContent(res)
+  pg = ParcheGuadalupano.pop()
+  print(pg)
+  addDirContent(pg, valor)
+  return contProg+1
+
+
 #!---------------------------------------------------
 #! Manejo de Memoria y Contenido
 #!---------------------------------------------------
-
+#obtiene el valor del contenido en una dada dirección, sea de constante, apuntador, local o global
 def getContent(dir):
   if dir >= 30000 and dir < 40000:
     for i in dictCte.items():
@@ -277,7 +352,7 @@ def getContent(dir):
   else:
     valor = getDirContent(dir)
   return valor
-
+#obtiene el valor del contenido en una dada dirección local o global
 def getDirContent(auxdir):
     tipo = auxdir//1000
     desp = auxdir%1000
@@ -348,7 +423,7 @@ def getDirContent(auxdir):
       else:
         print("Error: variable sin valor",auxdir)
         sys.exit()
-
+#Inserta en una direccion dada, el contenido especificado
 def addDirContent(auxdir, content):
     tipo = auxdir//1000
     desp = auxdir%1000
@@ -381,7 +456,7 @@ def addDirContent(auxdir, content):
       memactual.lTboolean[desp] = content
     if tipo == 80:
       mem.pointer[desp] = content
-
+#regresa el tipo de memoria esperado segun el mapa de memoria paraa su direccion
 def getMemType(auxdir):
   tipo = auxdir//1000
   if tipo == 2:
@@ -414,11 +489,102 @@ def getMemType(auxdir):
   if tipo == 28:
     temp = 'boolean'
     return temp
+
+# TODO: getParam y getParamContenta hacen lo mismo que getContent y getDirContent
+# TODO: con la diferencia de que la busqueda de locales lo hacen en la memoria ANTERIOR al contexto
+def getParam(dir):
+  if dir >= 30000 and dir < 40000:
+    for i in dictCte.items():
+      if i[1] == dir:
+        valor = i[0]
+  elif dir >= 80000:
+    desp = dir%1000
+    valor = getParamContent(mem.pointer[desp])
+  else:
+    valor = getParamContent(dir)
+  return valor
+
+def getParamContent(auxdir):
+  tipo = auxdir//1000
+  desp = auxdir%1000
+  if tipo == 2:
+    if memoriaGlob.lInt[desp] != None:
+      return memoriaGlob.lInt[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()
+  if tipo == 4:
+    if memoriaGlob.lFloat[desp] != None:
+      return memoriaGlob.lFloat[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()    
+  if tipo == 6:
+    if memoriaGlob.lChar[desp] != None:
+      return memoriaGlob.lChar[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()
+  if tipo == 16:
+    memactual = mem.memStack[-2]
+    if memactual.lInt[desp] != None:
+      return memactual.lInt[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()
+  if tipo == 18:
+    memactual = mem.memStack[-2]
+    if memactual.lFloat[desp] != None:
+      return memactual.lFloat[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()
+  if tipo == 20:
+    memactual = mem.memStack[-2]
+    if memactual.lChar[desp] != None:
+      return memactual.lChar[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()
+  if tipo == 22:
+    memactual = mem.memStack[-2]
+    if memactual.lTint[desp] != None:
+      return memactual.lTint[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()
+  if tipo == 24:
+    memactual = mem.memStack[-2]
+    if memactual.lTfloat[desp] != None:
+      return memactual.lTfloat[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()
+  if tipo == 26:
+    memactual = mem.memStack[-2]
+    if memactual.lTchar[desp] != None:
+      return memactual.lTchar[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()
+  if tipo == 28:
+    memactual = mem.memStack[-2]
+    if memactual.lTboolean[desp] != None:
+      return memactual.lTboolean[desp]
+    else:
+      print("Error: variable sin valor",auxdir)
+      sys.exit()
+
+#!---------------------------------------------------
+#! SWITCH DE ACCIONES
+#!---------------------------------------------------
 #Switch que selecciona la funcion a ejecutar segun cuadruplos
 def indicador(cuadr, contProg):
   dict_Ind = {
       'Goto': goto,
       'GotoF': gotoF,
+      'GOSUB': gosub,
+      'ENDFunc': endfunc,
       '+' : suma,
       '-' : resta,
       '/' : div,
@@ -434,12 +600,30 @@ def indicador(cuadr, contProg):
       '||' : opOr,
       'read' : read,
       'write' : write,
+      'ERA' : era,
+      'PARAM' : params,
+      'return' : retorno,
   }
   func = dict_Ind.get(cuadr.action, 'False')
   if func != 'False':
     position = func(cuadr, contProg)
     return position
   return contProg + 1
+
+
+#!---------------------------------------------------
+#! EJECUCION
+#!---------------------------------------------------
+
+reader.readFile()
+#? Inicializa Memoria Global
+globSize = dirFuncs[reader.programa].tam
+mem.memGlob.append(mem.memoria(globSize[0], globSize[1], globSize[2], 0, 0, 0, 0))
+memoriaGlob = mem.memGlob[-1]
+#? Inicializa Primera Memoria Local, contexto : Main
+mainSize = dirFuncs["Main"].tam
+mem.memStack.append(mem.memoria(mainSize[0], mainSize[1], mainSize[2], mainSize[3], mainSize[4], mainSize[5], mainSize[6]))
+memoriaMain = mem.memStack[-1]
 
 while cuad[contProg].action != 'ENDProgram':
   contProg = indicador(cuad[contProg], contProg)

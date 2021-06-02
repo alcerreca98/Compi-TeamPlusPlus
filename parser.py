@@ -22,7 +22,7 @@ from estructuras import *
 #! ------------------------------------------------------------
 def p_program(p):
     '''
-    program : PROGRAM ID initProg SCOLON declarClases declarVar addGlobSize definFunc MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
+    program : PROGRAM ID initProg SCOLON declarClases declarVar definFunc addGlobSize MAIN auxMain LPAREN RPAREN declarVar LBRACE listaEstatutos RBRACE endProg prueba
     '''
 
 def p_addGlobSize(p):
@@ -565,7 +565,8 @@ def p_paramType(p):
         print("Error: mas parametros de los esperados")
         sys.exit()
     tipo = table.dirFuncs[cuad.pointerParam].params[cuad.paramK-1]
-    num = "Par"+str(cuad.paramK)
+    #num = "Par"+str(cuad.paramK)
+    num = cuad.paramK
     if(arg_type == tipo):
         cuad.quadInsert('PARAM', arg, None , num)
         cuad.contQuad = cuad.contQuad + 1
@@ -596,7 +597,12 @@ def p_coherenceGo(p):
     if(tipoRet != 'void'):
         Guadalupano = cuad.getAvail(tipoRet)
         table.contadorERAlocalTemporal(tipoRet)
-        cuad.quadInsert('=', cuad.pointerParam, None , Guadalupano)
+        func = table.dirFuncs[table.programa].dir_var.get(cuad.pointerParam)
+        funcDir= func.dir
+        cuad.quadInsert('=', funcDir, None , Guadalupano)
+        cuad.pushPilaO(Guadalupano)
+        cuad.pushType(tipoRet)
+        table.contadorERAglobal(tipoRet)
         cuad.contQuad = cuad.contQuad + 1
 
 #! ------------------------------------------------------------
