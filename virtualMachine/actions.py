@@ -17,7 +17,7 @@ dictCte = reader.dict_cte
 #Cuadruplos
 cuad = reader.Quad
 
-#?Variables globales
+#? Variables globales
 #* Instruction Pointer
 contProg = 0
 #llamada de funciones
@@ -377,6 +377,7 @@ def getContent(dir):
   else:
     valor = getDirContent(dir)
   return valor
+
 #obtiene el valor del contenido en una dada dirección local o global
 def getDirContent(auxdir):
     tipo = auxdir//1000
@@ -487,6 +488,7 @@ def addDirContent(auxdir, content):
     if tipo == 80:
       address = mem.pointer[desp]
       addDirContent(address,content)
+
 #regresa el tipo de memoria esperado segun el mapa de memoria paraa su direccion
 def getMemType(auxdir):
   tipo = auxdir//1000
@@ -523,6 +525,7 @@ def getMemType(auxdir):
 
 # TODO: getParam y getParamContenta hacen lo mismo que getContent y getDirContent
 # TODO: con la diferencia de que la busqueda de locales lo hacen en la memoria ANTERIOR al contexto
+#? Quedaron Obsoletos cuando pasamos a activar la memoria en params y no en ERA
 def getParam(dir):
   if dir >= 30000 and dir < 40000:
     for i in dictCte.items():
@@ -638,6 +641,7 @@ def addReturnContent(auxdir, content):
       memactual.lTboolean[desp] = content
     if tipo == 80:
       mem.pointer[desp] = content
+
 #!---------------------------------------------------
 #! SWITCH DE ACCIONES
 #!---------------------------------------------------

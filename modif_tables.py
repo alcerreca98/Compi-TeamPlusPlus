@@ -72,7 +72,12 @@ def clearVarSize():
     ERAltc = 0
     ERAltb = 0
 
-#Insertar datos a tabla de funciones
+#! ------------------------------------------------------------
+#! Manejo de Inserts a Estructuras
+#! ------------------------------------------------------------
+#? Todas estas funciones se utilizan mas que nada en Definicion de Funciones
+#? y declaración de variables, arreglos y matrices
+#Insertar datos a tabla de funciones dado el nombre de la funcion y su tipo
 def ingresarTabla(id, type):
     """ Insertar datos a tabla de funciones, params = id y tipo"""
     #chequeo dobles funciones
@@ -80,7 +85,7 @@ def ingresarTabla(id, type):
         #ingresa la funcion a directorio de Funciones si no se repite
         dirFuncs[id] = funcion(id, type)
     
-#Crear e insertar en tabla de variables con chequeo semantico de declaracion doble
+#Crear e insertar una variable, dada su nombre y tipo, en tabla de variables con chequeo semantico de declaracion doble
 def ingresarVariables(id, type):
     """ Crear e insertar en tabla de variables con chequeo semantico de declaracion doble """
     #chequeo contra globales
@@ -90,7 +95,22 @@ def ingresarVariables(id, type):
             #ingresa la variable a la tabla de variables si no se repite
             dirFuncs[auxFunc].addVar(id, type)
 
+#agrega el tipo de la variable a la lista de Parametros de la funcion
+def ingresarParams(type):
+    """ agrega el tipo de la variable a la lista de Parametros de la funcion """
+    dirFuncs[auxFunc].addParam(type)
+
+#agrega una constante a la tabla de constantes con el chequeo semantico de duplicados
+def addCte(cte_key):
+    global cte
+    temp = dictCte.get(cte_key,False)
+    if(temp == False):
+        dir_num = cte + mem.baseCte
+        dictCte[cte_key] = dir_num
+        cte = cte + 1
+
 #Busca si el nombre de la funcion ya estaba previamente declarado
+#el retorno es booleano y se espera False para pasar el chequeo
 def repeatedFunctions(id):
     """ Busca si el nombre de la funcion ya estaba previamente declarado """
     repeated = dirFuncs.get(id, False)
@@ -103,11 +123,6 @@ def repeatedFunctions(id):
     #        print("Function : ", id, " already exists")
     #        sys.exit()
     #return False
-
-#agrega el tipo de la variable a la lista de Parametros de la funcion
-def ingresarParams(type):
-    """ agrega el tipo de la variable a la lista de Parametros de la funcion """
-    dirFuncs[auxFunc].addParam(type)
 
 #Busca si la variable estaba previamente declarada ya sea en contexto global o local
 def checkIfExists(id):
@@ -122,21 +137,11 @@ def checkIfExists(id):
     return True
         #se comprueba que existe y se hace lo demás.
 
-#! ------------------------------------------------------------
-#! MANEJO Dict (Tabla) DE CONSTANTES
-#! ------------------------------------------------------------
-#agrega una constante a la tabla de constantes con el chequeo semantico de duplicados
-def addCte(cte_key):
-    global cte
-    temp = dictCte.get(cte_key,False)
-    if(temp == False):
-        dir_num = cte + mem.baseCte
-        dictCte[cte_key] = dir_num
-        cte = cte + 1
-
 #!------------------------------------------------------------
-#! SET DE CONTADORES PARA TAMAÑO "ERA"
+#! Manejo Contadores Tamaño "ERA"
 #! ------------------------------------------------------------
+#? Todas estas funciones se utilizan mas que nada en Definicion de Funciones
+#? y declaración de variables, arreglos y matrices
 #define el tipo e incrementa en 1 el contadorERA de variables locales NO temporales
 def contadorERAlocal(type):
     """ #define el tipo e incrementa en 1 el contadorERA de variables locales NO temporales """
@@ -204,6 +209,7 @@ def ingresaERAifcLocalTemporal():
     dirFuncs[auxFunc].tam.append(int(ERAltc))
     dirFuncs[auxFunc].tam.append(int(ERAltb))
 
+#ingresa al atributo de tamaño de funcion programa, su tamaño para las integer, float y char globales
 def ingresaTamifcGlobal():
     """ ingresa al atributo de tamaño de funcion programa, su tamaño para las integer, float y char globales"""
     #Agrega a el tamaño de la funcion, los espacios necesarios de int, float y char locales necesarios

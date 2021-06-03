@@ -23,8 +23,16 @@ ltB = 28000
 
 #*Stack de contexto
 memStack = []
+#*Memoria Global siempre activa
 memGlob = []
+#* Diccionario de Apuntadores de Acceso para Arreglos/Matrices
 pointer = {}
+
+#!---------------------------------------------------
+#! Clase Memoria
+#!---------------------------------------------------
+#? 7 Arreglos, uno para cada tipo de dato int, float char
+#? adempas de sus respectivos temporales y boolean temporal
 class memoria(object):
   def __init__(self, rli, rlf, rlc, rlti, rltf, rltc, rltb):
     self.lInt = []
@@ -35,7 +43,8 @@ class memoria(object):
     self.lTchar = []
     self.lTboolean = []
 
-    #*Inicializar espacios de las variables locales y temporales
+    #*Inicializar espacios de las variables locales y temporales como None
+    #*genera los espacios en blanco segun el tamaño del ERA
     for i in range(int(rli)):
         self.lInt.append(None)
     for i in range(int(rlf)):
@@ -54,6 +63,7 @@ class memoria(object):
   def printPrueba(self):
     print("Estoy en el metodo printPrueba")
 
+    #Print de todas las listas de datos de la instancia memoria
   def printMem(self):
     print("-----------------------------------------")
     print("lint: ",self.lInt)

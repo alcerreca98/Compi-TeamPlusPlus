@@ -7,7 +7,10 @@ import ply.lex as lex
 archivo = None
 path = None
 
-# Palabras Reservadas
+
+#! ------------------------------------------------------------
+#! Palabras reservadas
+#! ------------------------------------------------------------
 reserved = {
     'program' : 'PROGRAM',
     'func' : 'FUNC',
@@ -41,7 +44,9 @@ reserved = {
     'to' : 'TO',
 }
 
-# Lista de Tokens
+#! ------------------------------------------------------------
+#! Lista tokens
+#! ------------------------------------------------------------
 tokens = [
     'ID',
     #'CLASS_ID'
@@ -81,7 +86,9 @@ tokens = [
 ] + list(reserved.values())
 
 
-# Caracteres de Delimmitacion
+#! ------------------------------------------------------------
+#! Caracteres Delimitacion
+#! ------------------------------------------------------------
 t_DOT = r'\-\>'
 t_COMMA = r'\,'
 t_SCOLON = r'\;'
@@ -94,7 +101,9 @@ t_LBRACK = r'\['
 t_RBRACK = r'\]'
 t_QUOTE = r'\"'
     
-# Operadores Logicos y de Comparacion
+#! ------------------------------------------------------------
+#! Operadores Logicos y Comparacion
+#! ------------------------------------------------------------
 t_EQUALS = r'=='
 t_NEQUALS = r'!='
 t_GTE = r'>='
@@ -104,7 +113,9 @@ t_LT = r'\<'
 t_AND = r'&&'
 t_OR = r'\|\|'
 
-# Operadores Aritmeticos
+#! ------------------------------------------------------------
+#! Operadores Aritmeticos
+#! ------------------------------------------------------------
 t_ASIGNA = r'\='
 t_PLUS = r'\+'
 t_MINUS = r'\-'
@@ -143,7 +154,9 @@ def t_ID(t):
     return t
 
 
-# Lexer
+#! ------------------------------------------------------------
+#! Llamada a Lexer
+#! ------------------------------------------------------------
 lex.lex()
 
 #Test

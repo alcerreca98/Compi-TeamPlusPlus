@@ -4,8 +4,11 @@
 # ------------------------------------------------------------
 import sys
 
-
-# Declaracion de cubo semantico
+#! ------------------------------------------------------------
+#!                      CUBO SEMANTICO
+#! ------------------------------------------------------------
+#? Clase que sirve para comparar la semantica de tipos en sus
+#? interacciones durante evaluacion de expresiones
 class SemanticCube:
     def __init__(self):
         self.cube = {

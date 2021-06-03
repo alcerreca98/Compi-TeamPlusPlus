@@ -63,22 +63,25 @@ class funcion(object):
         for p in range(tam) :
             print(self.params[p]) 
 
-    #Imprime todos los atributos de cada uno de los objetos variable en la tabla de variables locales
+    #Imprime todos los atributos de cada uno de los objetos variable en la tabla de variables locales en formato de arch Obj
     def printVarTableComp(self):
         """ Imprime todos los atributos de cada uno de los objetos variable en la tabla de variables locales """
         #!for var in self.dir_var:
         #!    self.dir_var[var].printVariableComp()
 
+    #print de la tabla de variables de la funcion
     def printVarTable(self):
         """ Imprime todos los atributos de cada uno de los objetos variable en la tabla de variables locales """
         for var in self.dir_var:
             self.dir_var[var].printVariable()
     
+    #print de la lista de tamaño de la funcion
     def printSize(self):
         print(self.tam)
         #tam = len(self.tam)
         #for i in range(tam):
         #    print(self.tam[i])
+    
     #Busca si hay dobles declaracones de variable e imprime error si existen
     def repeatedVariables(self, id):
         """ Busca si hay dobles declaracones e imprime error si existen """
@@ -98,6 +101,7 @@ class funcion(object):
         """ Busca si al momento de llamar la variable ya este previamente declarada """
         return self.dir_var.get(id, False)
     
+    #set de la direccion del cuadruplo inicial
     def fillDI(self, di):
         self.di = di
 
@@ -126,12 +130,14 @@ class variable(object):
     def printVariable(self):
         """ Print de todos los atributos en la instancia de Variable seleccionada """
         print("id =",self.id," tipo =",self.type," dir =", self.dir, " dim =", self.dim)
-
+    
+    #Print de todos los atributos en la instancia de Variable seleccionada en formato de archivo Obj
     def printVariableComp(self):
         """ Print de todos los atributos en la instancia de Variable seleccionada """
         temp = str(self.id) + '~' + str(self.type) + '~' + str(self.dir) + '~' + str(self.dim)
         return temp
 
+    #getter de atributo type
     def getType(self):
         return self.type
 

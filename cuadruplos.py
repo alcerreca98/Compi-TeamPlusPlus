@@ -374,6 +374,7 @@ def popReturn():
   return False
 
 #TODO: puntos neuralgicos CONDICION IF
+#punto neuralgico 1 IF
 def Gotof_IF():
   exp_type = Ptypes.pop()
   #print(exp_type)
@@ -385,11 +386,13 @@ def Gotof_IF():
     quadInsert('GotoF', cond, None, None)
     Psaltos.append(contQuad-1)
     return True
-  
+
+#fill del goto para el else 
 def fillGOTO():
   end = Psaltos.pop()
   Quad[end].result = contQuad - 1
 
+#punto neuralgico 2 IF 
 def Goto_IF():
   quadInsert('Goto', None, None, None)
   falso = Psaltos.pop()

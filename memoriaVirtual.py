@@ -2,6 +2,11 @@
 # Federico Alcerreca Treviño - A01281459
 # Jaime Andres Montemayor Molina - A01176573
 # ------------------------------------------------------------
+
+#! ------------------------------------------------------------
+#! MAPA DE MEMORIA COMPILACION
+#! ------------------------------------------------------------
+#? Se declaran rangos de memoria a asignar por tipo de dato y contexto
 #Direcciones Globales
 gI = 2000
 gF = 4000
@@ -20,9 +25,12 @@ ltI = 22000
 ltF = 24000
 ltC = 26000
 ltB = 28000
+
+#? Además de declarar direcciones para las constantes y los apuntadores de acceso
 #Constantes
 baseCte = 30000
 basePointer = 80000
+
 #gcI = 30000
 #gcF = 32000
 #gcC = 34000
