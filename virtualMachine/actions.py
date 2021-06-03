@@ -117,7 +117,9 @@ def div(cuad, contProg):
   op_Izq = getContent(izq)
   #* Get contenido Operando Derecho  
   op_Der = getContent(der)
-
+  if(op_Der == 0):
+    print("ERROR: division por 0")
+    sys.exit()
   resultMult = op_Izq / op_Der
   addDirContent(res, resultMult)
   return contProg + 1
@@ -336,6 +338,29 @@ def retorno(cuad, contProg):
   addDirContent(pg, valor)
   return contProg+1
 
+# todo:  ARREGLOS / MATRICES
+
+def verif(cuad, contProg):
+  exp = getContent(int(cuad.dirIzq))
+  limInf = getContent(int(cuad.dirDer))
+  limSup = getContent(int(cuad.result))
+  if((exp<limInf) or (exp>limSup)):
+    print("Error en index", exp, " in ",contProg," out of bounds")
+    sys.exit()
+  return contProg+1
+
+def sumaDimensionada(cuad, contProg):
+  izq = int(cuad.dirIzq)
+  der = int(cuad.dirDer)
+  res = int(cuad.result)
+  #* Get contenido Operando Izquierdo
+  op_Izq = getContent(izq)
+  #* Get contenido Operando Derecho  
+  op_Der = getContent(der)
+  desp = res%1000
+  resultSuma = op_Izq + op_Der
+  mem.pointer[desp]=resultSuma
+  return contProg + 1
 
 #!---------------------------------------------------
 #! Manejo de Memoria y Contenido
@@ -360,19 +385,19 @@ def getDirContent(auxdir):
       if memoriaGlob.lInt[desp] != None:
         return memoriaGlob.lInt[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir,contProg)
         sys.exit()
     if tipo == 4:
       if memoriaGlob.lFloat[desp] != None:
         return memoriaGlob.lFloat[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir,contProg)
         sys.exit()    
     if tipo == 6:
       if memoriaGlob.lChar[desp] != None:
         return memoriaGlob.lChar[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir,contProg)
         sys.exit()
     if tipo == 16:
       memactual = mem.memStack[-1]
@@ -386,43 +411,48 @@ def getDirContent(auxdir):
       if memactual.lFloat[desp] != None:
         return memactual.lFloat[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir,contProg)
         sys.exit()
     if tipo == 20:
       memactual = mem.memStack[-1]
       if memactual.lChar[desp] != None:
         return memactual.lChar[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir,contProg)
         sys.exit()
     if tipo == 22:
       memactual = mem.memStack[-1]
       if memactual.lTint[desp] != None:
         return memactual.lTint[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir,contProg)
         sys.exit()
     if tipo == 24:
       memactual = mem.memStack[-1]
       if memactual.lTfloat[desp] != None:
         return memactual.lTfloat[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir,contProg)
         sys.exit()
     if tipo == 26:
       memactual = mem.memStack[-1]
       if memactual.lTchar[desp] != None:
         return memactual.lTchar[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir,contProg)
         sys.exit()
     if tipo == 28:
       memactual = mem.memStack[-1]
       if memactual.lTboolean[desp] != None:
         return memactual.lTboolean[desp]
       else:
-        print("Error: variable sin valor",auxdir)
+        print("Error: variable sin valor",auxdir,contProg)
         sys.exit()
+    if tipo == 80:
+      valor = mem.pointer[desp]
+      print("get dir content de :",valor)
+      return getDirContent(valor)
+
 #Inserta en una direccion dada, el contenido especificado
 def addDirContent(auxdir, content):
     tipo = auxdir//1000
@@ -455,7 +485,8 @@ def addDirContent(auxdir, content):
       memactual = mem.memStack[-1]
       memactual.lTboolean[desp] = content
     if tipo == 80:
-      mem.pointer[desp] = content
+      address = mem.pointer[desp]
+      addDirContent(address,content)
 #regresa el tipo de memoria esperado segun el mapa de memoria paraa su direccion
 def getMemType(auxdir):
   tipo = auxdir//1000
@@ -635,6 +666,8 @@ def indicador(cuadr, contProg):
       'ERA' : era,
       'PARAM' : params,
       'return' : retorno,
+      'VER' : verif,
+      '+t' : sumaDimensionada,
   }
   func = dict_Ind.get(cuadr.action, 'False')
   if func != 'False':

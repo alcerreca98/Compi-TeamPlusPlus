@@ -1,0 +1,28 @@
+Team_pp~None~[]~0~[0, 0, 0]
+Main~None~[]~1~[2, 0, 0, 2, 0, 0, 2]
+/
+/
+0~30000
+2~30001
+1~30002
+3~30003
+"x es igual a: "~30004
+/
+0~Goto~None~None~1
+1~=~30000~None~16000
+2~=~30000~None~16001
+3~<=~16000~30001~28000
+4~GotoF~28000~None~17
+5~+~16000~30002~22000
+6~=~22000~None~16000
+7~=~30000~None~16001
+8~!=~16001~30003~28001
+9~GotoF~28001~None~14
+10~+~16001~30002~22001
+11~=~22001~None~16001
+12~write~None~None~16001
+13~Goto~None~None~8
+14~write~None~None~30004
+15~write~None~None~16000
+16~Goto~None~None~3
+17~ENDProgram~None~None~None

@@ -263,7 +263,8 @@ def p_idCallaux3(p):
         table.contadorERAlocalTemporal('int')
         cuad.quadInsert('+',temp, resultExp1, temp2)
         cuad.contQuad = cuad.contQuad + 1
-        cuad.quadInsert('+',temp2, dirBase, acceso)
+        pointerBase = table.dictCte.get(dirBase)
+        cuad.quadInsert('+t',temp2, pointerBase, acceso)
         cuad.contQuad = cuad.contQuad + 1
 
         cuad.PilaO.pop()
@@ -299,7 +300,8 @@ def p_idCallaux4(p):
         cuad.quadInsert("VER", resultExp, limInf, limSup)
         cuad.contQuad = cuad.contQuad + 1
         desplazamiento = resultExp
-        cuad.quadInsert('+',desplazamiento, dirBase, acceso)
+        pointerBase = table.dictCte.get(dirBase)
+        cuad.quadInsert('+t',desplazamiento, pointerBase, acceso)
         cuad.contQuad = cuad.contQuad + 1
 
         cuad.PilaO.pop()

@@ -1,0 +1,18 @@
+program Team_pp;
+
+main()
+var int: x, y;{   
+    x=0;
+    y=0;
+
+    if(x < y) then{
+        write("True Externo");
+    }else{
+        write("False Externo");
+        if(x >= y) then{
+            write("True Interno");
+        }else{
+            write("False Interno");
+        }
+    }
+}

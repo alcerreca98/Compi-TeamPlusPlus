@@ -1,0 +1,24 @@
+Team_pp~None~[]~0~[0, 0, 0]
+Main~None~[]~1~[2, 0, 0, 0, 0, 0, 2]
+/
+/
+0~30000
+"True Externo"~30001
+"False Externo"~30002
+"True Interno"~30003
+"False Interno"~30004
+/
+0~Goto~None~None~1
+1~=~30000~None~16000
+2~=~30000~None~16001
+3~<~16000~16001~28000
+4~GotoF~28000~None~7
+5~write~None~None~30001
+6~Goto~None~None~13
+7~write~None~None~30002
+8~>=~16000~16001~28001
+9~GotoF~28001~None~12
+10~write~None~None~30003
+11~Goto~None~None~13
+12~write~None~None~30004
+13~ENDProgram~None~None~None

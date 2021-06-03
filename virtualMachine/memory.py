@@ -55,4 +55,12 @@ class memoria(object):
     print("Estoy en el metodo printPrueba")
 
   def printMem(self):
-    print(self.lInt, self.lFloat, self.lChar, self.lTint, self.lTfloat, self.lTchar, self.lTboolean)
+    print("-----------------------------------------")
+    print("lint: ",self.lInt)
+    print("lfloat: ", self.lFloat)
+    print("lchar: ",self.lChar)
+    print("ltint: ",self.lTint)
+    print("ltfloat: ",self.lTfloat)
+    print("ltchar: ", self.lTchar)
+    print("ltbool: ", self.lTboolean)
+    print("-----------------------------------------")
