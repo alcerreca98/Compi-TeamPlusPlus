@@ -101,5 +101,10 @@
 <p>
     Terminamos la generación de cuadruplos para código de funciones e implementacion de parche guadalupano. Junto con su set de tests para funcionalidad y semántica.
 </p>
-
+<h3>
+    Entrega FINAL
+</h3>
+<p>
+    Terminada la generacion de cuadruplos de arreglos, se crea el escritor del obj para código intermedio, terminamos el lector del codigo intermedio del lado de la maquina virtual y logramos sacar adelante el manejo de memoria y todas las acciones de ejecución fuera del scope de orientada a objetos. Clases, metodos, atributos de clase y objetos no estan soportados en nuestra version fonal del compilador.
+    Se hicieron pruebas para todos los operadores aritmeticos, condiciones, ciclos, input/output, llamada de funciones y manejo de arreglos. Todo parece estar funcionando.
 
